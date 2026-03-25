@@ -1,0 +1,238 @@
+@import "tailwindcss";
+
+/* ============================================================
+   AZAETOGO — Design System (Tailwind CSS v4)
+   ============================================================ */
+
+@theme {
+  /* ----------------------------------------------------------
+     COULEURS PRIMAIRES
+     ---------------------------------------------------------- */
+
+  /* Orangé — couleur principale */
+  --color-orange-50: #fef0ea;
+  --color-orange-100: #fcd9c7;
+  --color-orange-200: #f9b593;
+  --color-orange-300: #f5905f;
+  --color-orange-400: #f07a45;
+  --color-orange-500: #e8591a;
+  --color-orange-600: #c44a14;
+  --color-orange-700: #a03c10;
+  --color-orange-800: #7c2e0c;
+  --color-orange-900: #581f08;
+  --color-orange-primary: #e8591a;
+  --color-orange-light: #f07a45;
+  --color-orange-dark: #c44a14;
+
+  /* Navy — couleur secondaire */
+  --color-navy-50: #e8ebf0;
+  --color-navy-100: #c5cdd9;
+  --color-navy-200: #9aaabf;
+  --color-navy-300: #6e86a5;
+  --color-navy-400: #4e6990;
+  --color-navy-500: #1a2b4a;
+  --color-navy-600: #16243e;
+  --color-navy-700: #111d33;
+  --color-navy-800: #0d1627;
+  --color-navy-900: #080f1b;
+  --color-navy-primary: #1a2b4a;
+  --color-navy-light: #2c4070;
+  --color-navy-dark: #111d33;
+
+  /* Vert — couleur d'accent */
+  --color-green-50: #e8f3ef;
+  --color-green-100: #c2ddd4;
+  --color-green-200: #97c6b7;
+  --color-green-300: #6aaf98;
+  --color-green-400: #479d81;
+  --color-green-500: #2e7d5e;
+  --color-green-600: #276b50;
+  --color-green-700: #1f5843;
+  --color-green-800: #174535;
+  --color-green-900: #0f3227;
+  --color-green-accent: #2e7d5e;
+  --color-green-light: #3fa07a;
+  --color-green-dark: #1f5c43;
+
+  /* Neutres — §3.1 PRD */
+  --color-warm-white: #fafaf8;
+  --color-light-gray: #f5f5f5;   /* Fond clair PRD exact */
+  --color-body-text: #333333;    /* Texte corps PRD exact */
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHIES
+     ---------------------------------------------------------- */
+  --font-playfair: "Playfair Display", Georgia, serif;
+  --font-source-sans: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+
+  /* ----------------------------------------------------------
+     ANIMATIONS
+     ---------------------------------------------------------- */
+  --animate-fade-in: fadeIn 0.6s ease-out both;
+  --animate-slide-up: slideUp 0.6s ease-out both;
+  --animate-count-up: countUp 2s ease-out both;
+  --animate-slide-in-right: slideInRight 0.5s ease-out both;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes countUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* ----------------------------------------------------------
+     BREAKPOINTS — standards (déjà inclus dans Tailwind v4,
+     redéclarés ici pour référence explicite)
+     ---------------------------------------------------------- */
+  --breakpoint-sm: 40rem;   /* 640px  */
+  --breakpoint-md: 48rem;   /* 768px  */
+  --breakpoint-lg: 64rem;   /* 1024px */
+  --breakpoint-xl: 80rem;   /* 1280px */
+  --breakpoint-2xl: 96rem;  /* 1536px */
+}
+
+/* ============================================================
+   VARIABLES CSS GLOBALES — Design Tokens Azaetogo
+   ============================================================ */
+:root {
+  /* Palette principale */
+  --azae-orange: #e8591a;
+  --azae-orange-light: #f07a45;
+  --azae-orange-dark: #c44a14;
+
+  --azae-navy: #1a2b4a;
+  --azae-navy-light: #2c4070;
+  --azae-navy-dark: #111d33;
+
+  --azae-green: #2e7d5e;
+  --azae-green-light: #3fa07a;
+  --azae-green-dark: #1f5c43;
+
+  /* Surfaces */
+  --background: #ffffff;
+  --foreground: #1a2b4a;
+  --muted: #f5f5f3;
+  --muted-foreground: #6b7280;
+  --border: #e5e7eb;
+  --input: #ffffff;
+  --ring: #e8591a;
+
+  /* Carte / Popover */
+  --card: #ffffff;
+  --card-foreground: #1a2b4a;
+  --popover: #ffffff;
+  --popover-foreground: #1a2b4a;
+
+  /* Statuts sémantiques */
+  --primary: #e8591a;
+  --primary-foreground: #ffffff;
+  --secondary: #1a2b4a;
+  --secondary-foreground: #ffffff;
+  --accent: #2e7d5e;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --success: #16a34a;
+  --warning: #d97706;
+
+  /* Rayon de bordure */
+  --radius: 0.5rem;
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: #333333; /* §3.1 PRD — texte corps */
+  font-family: var(--font-source-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--azae-navy);
+}
+
+/* Sélection de texte aux couleurs Azaetogo */
+::selection {
+  background-color: var(--azae-orange);
+  color: #ffffff;
+}
+
+/* Focus visible accessible */
+:focus-visible {
+  outline: 2px solid var(--azae-orange);
+  outline-offset: 2px;
+}
+
+/* Scrollbar personnalisée (navigateurs Webkit) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--azae-orange);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--azae-orange-dark);
+}
