@@ -1,9 +1,8 @@
-/* API Upload fichiers — images, vidéos, documents */
+/* API Upload fichiers — images, vidéos, documents (Supabase Storage) */
 
 import { auth } from "@/lib/auth"
 import { NextRequest, NextResponse } from "next/server"
-import { writeFile, mkdir } from "fs/promises"
-import { join } from "path"
+import { createClient } from "@supabase/supabase-js"
 import { randomBytes } from "crypto"
 
 const ALLOWED_ROLES = ["SUPER_ADMIN", "ADMIN", "EDITOR"]
@@ -38,6 +37,13 @@ function hasMagicBytes(buf: Buffer, magic: number[]): boolean {
   return magic.every((byte, i) => buf[i] === byte)
 }
 
+function getSupabaseAdmin() {
+  const url = process.env.SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) throw new Error("SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY sont requis")
+  return createClient(url, key)
+}
+
 export async function POST(req: NextRequest) {
   const session = await auth()
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -57,10 +63,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: `Type de fichier non autorisé : ${file.type}` }, { status: 400 })
   }
 
-  /* Lire le buffer une seule fois pour les magic bytes + écriture */
+  /* Lire le buffer une seule fois pour les magic bytes + upload */
   const buffer = Buffer.from(await file.arrayBuffer())
 
-  /* S5 — Vérification magic bytes côté serveur (indépendant du client) */
+  /* Vérification magic bytes côté serveur (indépendant du client) */
   if (config.magic !== null && !hasMagicBytes(buffer, config.magic)) {
     return NextResponse.json(
       { error: "Contenu du fichier incohérent avec le type déclaré." },
@@ -68,17 +74,35 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  /* S6 — Extension dérivée du MIME serveur, jamais du nom client */
+  /* Extension dérivée du MIME serveur, jamais du nom client */
   const filename = `${Date.now()}-${randomBytes(8).toString("hex")}.${config.ext}`
+  const storagePath = `${config.folder}/${filename}`
 
-  const uploadDir = join(process.cwd(), "public", "uploads", config.folder)
-  await mkdir(uploadDir, { recursive: true })
-  await writeFile(join(uploadDir, filename), buffer)
+  try {
+    const supabase = getSupabaseAdmin()
 
-  return NextResponse.json({
-    url: `/uploads/${config.folder}/${filename}`,
-    name: file.name,
-    type: file.type,
-    size: file.size,
-  })
+    const { error: uploadError } = await supabase.storage
+      .from("uploads")
+      .upload(storagePath, buffer, {
+        contentType: file.type,
+        upsert: false,
+      })
+
+    if (uploadError) {
+      console.error("Supabase Storage upload error:", uploadError)
+      return NextResponse.json({ error: "Erreur lors de l'upload du fichier." }, { status: 500 })
+    }
+
+    const { data: publicData } = supabase.storage.from("uploads").getPublicUrl(storagePath)
+
+    return NextResponse.json({
+      url: publicData.publicUrl,
+      name: file.name,
+      type: file.type,
+      size: file.size,
+    })
+  } catch (err) {
+    console.error("Upload error:", err)
+    return NextResponse.json({ error: "Erreur serveur lors de l'upload." }, { status: 500 })
+  }
 }
