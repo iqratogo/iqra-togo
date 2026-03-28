@@ -1,0 +1,162 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À Propos",
+    "team": "Notre Équipe",
+    "news": "Actualités",
+    "media": "Médias",
+    "contact": "Contact",
+    "login": "Connexion",
+    "donate": "Faire un don",
+    "news_sub": {
+      "header": "Actualités",
+      "subheader": "Suivez nos projets, communiqués et partenariats",
+      "projects": "Projets",
+      "projects_desc": "Nos actions sur le terrain, en cours et réalisées au Togo.",
+      "communiques": "Communiqués",
+      "communiques_desc": "Prises de position officielles et annonces de l'ONG.",
+      "partners": "Partenaires",
+      "partners_desc": "Découvrez les organisations qui soutiennent notre mission.",
+      "see_all": "Voir toutes les actualités →"
+    },
+    "open_menu": "Ouvrir le menu",
+    "close_menu": "Fermer le menu"
+  },
+  "home": {
+    "hero": {
+      "badge": "ONG Humanitaire Togolaise",
+      "title": "Ensemble, nous changeons des vies au Togo",
+      "subtitle": "Depuis plus de 15 ans, Azaetogo soutient les familles et étudiants togolais dans leur accès à l'éducation et au bien-être social.",
+      "donate_btn": "Faire un don",
+      "discover_btn": "Découvrir notre mission",
+      "members": "membres actifs",
+      "projects_done": "projets réalisés",
+      "families": "familles aidées"
+    },
+    "mission": {
+      "eyebrow": "Notre Raison d'Être",
+      "title": "Ce qui nous anime",
+      "p1": "Depuis plus de 15 ans, Azaetogo œuvre pour l'accès à l'éducation, la santé et l'intégration sociale des jeunes et familles togolais.",
+      "p2": "Chaque année, nous accompagnons des centaines de bénéficiaires à travers nos programmes de soutien, de formation et de développement communautaire.",
+      "discover_btn": "Découvrir notre histoire"
+    },
+    "news": {
+      "eyebrow": "Sur le terrain",
+      "title": "Dernières actualités",
+      "see_all": "Voir toutes les actualités"
+    },
+    "donate": {
+      "eyebrow": "Agir concrètement",
+      "title": "Soutenez notre mission",
+      "subtitle": "Chaque don contribue directement à l'éducation et au bien-être des familles togolaises.",
+      "donate_btn": "Faire un don maintenant"
+    },
+    "partners": {
+      "title": "Ils nous font confiance"
+    },
+    "newsletter": {
+      "title": "Restez informé",
+      "subtitle": "Recevez nos actualités, rapports d'impact et invitations à nos événements.",
+      "placeholder": "Votre email",
+      "subscribe_btn": "S'abonner",
+      "privacy": "Pas de spam. Désinscription possible à tout moment.",
+      "success": "Merci ! Vérifiez votre boîte mail pour confirmer.",
+      "error_email": "Email invalide",
+      "error_generic": "Une erreur est survenue. Réessayez."
+    }
+  },
+  "footer": {
+    "description": "ONG humanitaire togolaise œuvrant pour l'accès à l'éducation et le bien-être des familles et étudiants togolais.",
+    "nav_title": "Navigation",
+    "news_title": "Actualités récentes",
+    "contact_title": "Contact",
+    "no_news": "Aucune actualité pour le moment.",
+    "secure_payment": "Paiement sécurisé PayDunya",
+    "official_ngo": "ONG Officielle Togo",
+    "rights": "Tous droits réservés.",
+    "legal": "Mentions légales",
+    "privacy": "Confidentialité"
+  },
+  "common": {
+    "read_more": "Lire la suite",
+    "see_all": "Voir tout",
+    "loading": "Chargement…",
+    "error": "Une erreur est survenue.",
+    "back": "Retour",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "search": "Rechercher",
+    "no_result": "Aucun résultat",
+    "page": "Page",
+    "of": "sur",
+    "prev": "Précédent",
+    "next": "Suivant"
+  },
+  "pages": {
+    "about": {
+      "title": "À Propos",
+      "breadcrumb": "À Propos"
+    },
+    "team": {
+      "title": "Notre Équipe",
+      "breadcrumb": "Équipe",
+      "subtitle": "Des hommes et des femmes engagés, unis par la même conviction : agir concrètement pour le Togo.",
+      "join_title": "Rejoindre l'équipe",
+      "join_subtitle": "Vous souhaitez contribuer à notre mission ? Nous serions ravis d'étudier votre candidature.",
+      "join_btn": "Nous contacter",
+      "empty": "Les membres de l'équipe seront affichés ici prochainement.",
+      "dept_all": "Tous",
+      "dept_direction": "Direction",
+      "dept_programmes": "Programmes",
+      "dept_communication": "Communication",
+      "dept_finance": "Finance",
+      "no_bio": "Aucune biographie disponible.",
+      "no_members_dept": "Aucun membre dans ce département pour le moment.",
+      "view_profile": "Voir le profil",
+      "contact": "Contacter"
+    },
+    "news": {
+      "title": "Actualités",
+      "subtitle": "Projets, communiqués officiels et partenariats — toute l'actualité d'Azaetogo.",
+      "projects_section": "Projets récents",
+      "communiques_section": "Derniers communiqués",
+      "partners_section": "Nos partenaires",
+      "see_projects": "Voir tous les projets",
+      "see_communiques": "Tous les communiqués",
+      "see_partners": "Tous les partenaires",
+      "no_project": "Aucun projet disponible.",
+      "no_communique": "Aucun communiqué disponible."
+    },
+    "contact": {
+      "title": "Contactez-nous",
+      "subtitle": "Une question, un projet, une envie d'agir ? Notre équipe est à votre écoute et vous répondra dans les meilleurs délais.",
+      "form_title": "Envoyez-nous un message",
+      "coords_title": "Nos coordonnées",
+      "hours_title": "Horaires",
+      "follow": "Suivez-nous",
+      "address": "Adresse",
+      "address_val": "Lomé, Togo",
+      "mon_fri": "Lundi – Vendredi",
+      "sat": "Samedi",
+      "sun": "Dimanche",
+      "closed": "Fermé"
+    },
+    "media": {
+      "title": "Médiathèque",
+      "subtitle": "Photos, vidéos et documents de nos actions sur le terrain et événements."
+    },
+    "donate": {
+      "title": "Faire un don",
+      "subtitle": "Votre générosité change des vies au Togo."
+    }
+  },
+  "meta": {
+    "site_name": "Azaetogo",
+    "default_title": "Azaetogo — ONG Humanitaire Togolaise",
+    "default_description": "Azaetogo soutient les familles et étudiants togolais dans leur accès à l'éducation et au bien-être social.",
+    "og_locale": "fr_FR"
+  }
+}

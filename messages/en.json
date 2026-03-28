@@ -1,0 +1,162 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "team": "Our Team",
+    "news": "News",
+    "media": "Media",
+    "contact": "Contact",
+    "login": "Sign In",
+    "donate": "Donate",
+    "news_sub": {
+      "header": "News",
+      "subheader": "Follow our projects, press releases and partnerships",
+      "projects": "Projects",
+      "projects_desc": "Our field actions, ongoing and completed in Togo.",
+      "communiques": "Press Releases",
+      "communiques_desc": "Official positions and announcements from the NGO.",
+      "partners": "Partners",
+      "partners_desc": "Discover the organizations that support our mission.",
+      "see_all": "See all news →"
+    },
+    "open_menu": "Open menu",
+    "close_menu": "Close menu"
+  },
+  "home": {
+    "hero": {
+      "badge": "Togolese Humanitarian NGO",
+      "title": "Together, we change lives in Togo",
+      "subtitle": "For over 15 years, Azaetogo has been supporting Togolese families and students in their access to education and social well-being.",
+      "donate_btn": "Donate",
+      "discover_btn": "Discover our mission",
+      "members": "active members",
+      "projects_done": "completed projects",
+      "families": "families supported"
+    },
+    "mission": {
+      "eyebrow": "Our Purpose",
+      "title": "What drives us",
+      "p1": "For over 15 years, Azaetogo has worked to improve access to education, healthcare, and social integration for young people and families in Togo.",
+      "p2": "Every year, we support hundreds of beneficiaries through our assistance, training, and community development programs.",
+      "discover_btn": "Discover our story"
+    },
+    "news": {
+      "eyebrow": "In the field",
+      "title": "Latest news",
+      "see_all": "See all news"
+    },
+    "donate": {
+      "eyebrow": "Take action",
+      "title": "Support our mission",
+      "subtitle": "Every donation directly contributes to education and well-being for Togolese families.",
+      "donate_btn": "Donate now"
+    },
+    "partners": {
+      "title": "They trust us"
+    },
+    "newsletter": {
+      "title": "Stay informed",
+      "subtitle": "Receive our news, impact reports and event invitations.",
+      "placeholder": "Your email",
+      "subscribe_btn": "Subscribe",
+      "privacy": "No spam. Unsubscribe at any time.",
+      "success": "Thank you! Check your inbox to confirm.",
+      "error_email": "Invalid email",
+      "error_generic": "An error occurred. Please try again."
+    }
+  },
+  "footer": {
+    "description": "Togolese humanitarian NGO working for access to education and well-being for Togolese families and students.",
+    "nav_title": "Navigation",
+    "news_title": "Recent News",
+    "contact_title": "Contact",
+    "no_news": "No news at the moment.",
+    "secure_payment": "Secure payment via PayDunya",
+    "official_ngo": "Official NGO Togo",
+    "rights": "All rights reserved.",
+    "legal": "Legal Notice",
+    "privacy": "Privacy Policy"
+  },
+  "common": {
+    "read_more": "Read more",
+    "see_all": "See all",
+    "loading": "Loading…",
+    "error": "An error occurred.",
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "search": "Search",
+    "no_result": "No results",
+    "page": "Page",
+    "of": "of",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "pages": {
+    "about": {
+      "title": "About Us",
+      "breadcrumb": "About"
+    },
+    "team": {
+      "title": "Our Team",
+      "breadcrumb": "Team",
+      "subtitle": "Men and women committed to the same conviction: taking concrete action for Togo.",
+      "join_title": "Join the team",
+      "join_subtitle": "Would you like to contribute to our mission? We would be delighted to consider your application.",
+      "join_btn": "Contact us",
+      "empty": "Team members will be displayed here soon.",
+      "dept_all": "All",
+      "dept_direction": "Leadership",
+      "dept_programmes": "Programs",
+      "dept_communication": "Communications",
+      "dept_finance": "Finance",
+      "no_bio": "No biography available.",
+      "no_members_dept": "No members in this department at the moment.",
+      "view_profile": "View profile",
+      "contact": "Contact"
+    },
+    "news": {
+      "title": "News",
+      "subtitle": "Projects, press releases and partnerships — all the latest from Azaetogo.",
+      "projects_section": "Recent Projects",
+      "communiques_section": "Latest Press Releases",
+      "partners_section": "Our Partners",
+      "see_projects": "See all projects",
+      "see_communiques": "All press releases",
+      "see_partners": "All partners",
+      "no_project": "No projects available.",
+      "no_communique": "No press releases available."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "subtitle": "A question, a project, a desire to act? Our team is here to listen and will respond as soon as possible.",
+      "form_title": "Send us a message",
+      "coords_title": "Our contact details",
+      "hours_title": "Office hours",
+      "follow": "Follow us",
+      "address": "Address",
+      "address_val": "Lomé, Togo",
+      "mon_fri": "Monday – Friday",
+      "sat": "Saturday",
+      "sun": "Sunday",
+      "closed": "Closed"
+    },
+    "media": {
+      "title": "Media Library",
+      "subtitle": "Photos, videos and documents from our field actions and events."
+    },
+    "donate": {
+      "title": "Make a donation",
+      "subtitle": "Your generosity changes lives in Togo."
+    }
+  },
+  "meta": {
+    "site_name": "Azaetogo",
+    "default_title": "Azaetogo — Togolese Humanitarian NGO",
+    "default_description": "Azaetogo supports Togolese families and students in their access to education and social well-being.",
+    "og_locale": "en_US"
+  }
+}

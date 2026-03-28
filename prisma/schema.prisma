@@ -1,0 +1,490 @@
+// ============================================================
+// AZAETOGO — Schéma Prisma (PostgreSQL)
+// PRD §4.2 — Architecture des Données
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// AUTHENTIFICATION & UTILISATEURS
+// ============================================================
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  MEMBER
+  VISITOR
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING
+}
+
+model User {
+  id            String     @id @default(cuid())
+  name          String?
+  email         String     @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?    // bcrypt hashé (salt ≥ 12)
+  role          UserRole   @default(VISITOR)
+  status        UserStatus @default(PENDING)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  // NextAuth relations
+  accounts Account[]
+  sessions Session[]
+
+  // ONG relations
+  member             Member?
+  posts              Post[]             @relation("AuthorPosts")
+  donations          Donation[]
+  membershipApp      MembershipApplication?
+  auditLogs          AuditLog[]
+
+  @@index([role])
+  @@index([status])
+  @@index([createdAt])
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ============================================================
+// MEMBRES & ADHÉSIONS
+// ============================================================
+
+enum MemberStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  EXPIRED
+}
+
+enum CotisationStatus {
+  UP_TO_DATE
+  LATE
+  EXEMPTED
+}
+
+enum Civility {
+  M
+  MME
+  DR
+  PR
+}
+
+model Member {
+  id                String           @id @default(cuid())
+  userId            String           @unique
+  memberNumber      String           @unique // AZAE-XXXX
+  civility          Civility?
+  firstName         String
+  lastName          String
+  dateOfBirth       DateTime?
+  nationality       String?
+  phone             String?
+  phoneSecondary    String?
+  country           String           @default("Togo")
+  city              String?
+  neighborhood      String?
+  postalBox         String?
+  profession        String?
+  employer          String?
+  motivation        String?          @db.Text
+  photoUrl          String?
+  idDocumentUrl     String?          // CNI/Passeport
+
+  status            MemberStatus     @default(PENDING)
+  cotisationStatus  CotisationStatus @default(LATE)
+  cotisationDueDate DateTime?
+  joinedAt          DateTime?
+  suspendedAt       DateTime?
+  suspendedReason   String?
+
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cotisations       Cotisation[]
+  donations         Donation[]
+
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([cotisationStatus])
+  @@map("members")
+}
+
+model MembershipApplication {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  dossierNumber  String   @unique // DOSSIER-XXXX
+  civility       Civility?
+  firstName      String
+  lastName       String
+  email          String
+  phone          String
+  dateOfBirth    DateTime?
+  nationality    String?
+  country        String   @default("Togo")
+  city           String?
+  neighborhood   String?
+  postalBox      String?
+  profession     String?
+  employer       String?
+  motivation     String?  @db.Text
+  photoUrl       String?
+  idDocumentUrl  String?
+
+  status         String   @default("pending") // pending | approved | rejected
+  reviewedBy     String?
+  reviewedAt     DateTime?
+  rejectionReason String?
+
+  rgpdConsent    Boolean  @default(false)
+  rulesAccepted  Boolean  @default(false)
+
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("membership_applications")
+}
+
+// ============================================================
+// PUBLICATIONS (CMS)
+// ============================================================
+
+enum PostStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum PostCategory {
+  PROJET
+  COMMUNIQUE
+  PARTENAIRE
+  ACTUALITE
+}
+
+model Post {
+  id            String       @id @default(cuid())
+  title         String
+  slug          String       @unique
+  excerpt       String?      @db.Text
+  content       String       @db.Text  // HTML/MDX
+  category      PostCategory @default(ACTUALITE)
+  status        PostStatus   @default(DRAFT)
+  featuredImage String?
+  pdfUrl        String?      // Pour les communiqués
+
+  // SEO
+  seoTitle       String?
+  seoDescription String?
+  ogImage        String?
+  canonical      String?
+
+  authorId      String
+  author        User         @relation("AuthorPosts", fields: [authorId], references: [id])
+  publishedAt   DateTime?
+  scheduledAt   DateTime?
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([slug])
+  @@index([status, category])
+  @@index([publishedAt])
+  @@index([authorId])
+  @@map("posts")
+}
+
+// ============================================================
+// PARTENAIRES & ÉQUIPE
+// ============================================================
+
+enum PartnerType {
+  FINANCIER
+  INSTITUTIONNEL
+  TECHNIQUE
+}
+
+model Partner {
+  id          String      @id @default(cuid())
+  name        String
+  logoUrl     String?
+  websiteUrl  String?
+  description String?     @db.Text
+  type        PartnerType @default(INSTITUTIONNEL)
+  displayOrder Int        @default(0)
+  isActive    Boolean     @default(true)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("partners")
+}
+
+enum Department {
+  DIRECTION
+  PROGRAMMES
+  COMMUNICATION
+  FINANCE
+}
+
+model TeamMember {
+  id           String     @id @default(cuid())
+  firstName    String
+  lastName     String
+  position     String
+  department   Department @default(PROGRAMMES)
+  bio          String?    @db.Text
+  bioFull      String?    @db.Text
+  photoUrl     String?
+  email        String?
+  phone        String?
+  facebookUrl  String?
+  linkedinUrl  String?
+  twitterUrl   String?
+  displayOrder Int        @default(0)
+  isActive     Boolean    @default(true)
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("team_members")
+}
+
+// ============================================================
+// DONS & PAIEMENTS (PayDunya)
+// ============================================================
+
+enum DonationStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  CANCELLED
+}
+
+enum DonationType {
+  PONCTUEL
+  MENSUEL
+}
+
+enum DonationAffectation {
+  GENERAL
+  BOURSES_EDUCATION
+  SOUTIEN_FAMILLES
+  PROJETS_TERRAIN
+}
+
+model Donation {
+  id              String              @id @default(cuid())
+  amount          Int                 // En FCFA
+  type            DonationType        @default(PONCTUEL)
+  affectation     DonationAffectation @default(GENERAL)
+  status          DonationStatus      @default(PENDING)
+  isAnonymous     Boolean             @default(false)
+
+  // Donateur
+  donorFirstName  String?
+  donorLastName   String?
+  donorEmail      String?
+  donorPhone      String?
+
+  // Relations
+  userId          String?
+  user            User?               @relation(fields: [userId], references: [id])
+  memberId        String?
+  member          Member?             @relation(fields: [memberId], references: [id])
+
+  // PayDunya
+  paydunyaRef     String?             @unique
+  paydunyaToken   String?
+  paymentUrl      String?
+  payment         Payment?
+
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@map("donations")
+}
+
+model Cotisation {
+  id          String           @id @default(cuid())
+  memberId    String
+  member      Member           @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  amount      Int              // En FCFA
+  period      String           // "2025-Q1", "2025", "2025-01"
+  status      DonationStatus   @default(PENDING)
+  paidAt      DateTime?
+  dueDate     DateTime
+  paymentNote String?          // Pour paiements en cash
+
+  paydunyaRef String?          @unique
+  payment     Payment?
+
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@map("cotisations")
+}
+
+enum PaymentType {
+  DON
+  COTISATION
+}
+
+model Payment {
+  id             String         @id @default(cuid())
+  type           PaymentType
+  amount         Int
+  status         DonationStatus @default(PENDING)
+
+  // PayDunya
+  paydunyaRef    String         @unique
+  paydunyaToken  String?
+  paymentMethod  String?        // "flooz" | "tmoney" | "card"
+  webhookPayload Json?
+
+  // Relations
+  donationId    String?         @unique
+  donation      Donation?       @relation(fields: [donationId], references: [id])
+  cotisationId  String?         @unique
+  cotisation    Cotisation?     @relation(fields: [cotisationId], references: [id])
+
+  processedAt   DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@map("payments")
+}
+
+// ============================================================
+// MÉDIATHÈQUE
+// ============================================================
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  DOCUMENT
+}
+
+model Media {
+  id          String    @id @default(cuid())
+  name        String
+  url         String
+  type        MediaType
+  mimeType    String?
+  size        Int?      // Bytes
+  alt         String?
+  uploadedById String?
+
+  createdAt   DateTime  @default(now())
+
+  @@map("media")
+}
+
+// ============================================================
+// NEWSLETTER
+// ============================================================
+
+model NewsletterSubscriber {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  isConfirmed   Boolean   @default(false)
+  confirmToken  String?   @unique
+  confirmedAt   DateTime?
+  unsubscribedAt DateTime?
+
+  createdAt     DateTime  @default(now())
+
+  @@map("newsletter_subscribers")
+}
+
+// ============================================================
+// PARAMÈTRES GLOBAUX
+// ============================================================
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  isSecret  Boolean  @default(false) // Chiffré AES-256
+
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
+
+// ============================================================
+// AUDIT LOGS
+// ============================================================
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String   // "CREATE_POST" | "APPROVE_MEMBER" | etc.
+  module    String   // "posts" | "members" | "donations" | etc.
+  targetId  String?
+  details   Json?
+  ipAddress String?
+  userAgent String?
+
+  createdAt DateTime @default(now())
+
+  @@map("audit_logs")
+}

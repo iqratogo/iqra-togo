@@ -115,6 +115,19 @@
     }
   }
 
+  @keyframes accordion-down {
+    from { height: 0 }
+    to { height: var(--radix-accordion-content-height) }
+  }
+
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height) }
+    to { height: 0 }
+  }
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
   /* ----------------------------------------------------------
      BREAKPOINTS — standards (déjà inclus dans Tailwind v4,
      redéclarés ici pour référence explicite)
@@ -159,7 +172,8 @@
   --popover-foreground: #1a2b4a;
 
   /* Statuts sémantiques */
-  --primary: #e8591a;
+  /* §10 PRD WCAG 2.1 AA — #c44a14 donne 4.74:1 sur blanc (texte blanc sur bouton) */
+  --primary: #c44a14;
   --primary-foreground: #ffffff;
   --secondary: #1a2b4a;
   --secondary-foreground: #ffffff;
@@ -192,22 +206,24 @@ body {
   background-color: var(--background);
   color: #333333; /* §3.1 PRD — texte corps */
   font-family: var(--font-source-sans);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 1.125rem; /* 18px — plus lisible §3.2 PRD */
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-playfair);
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--azae-navy);
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-playfair);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--azae-navy);
+  }
 }
 
 /* Sélection de texte aux couleurs Azaetogo */

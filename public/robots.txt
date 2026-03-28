@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /en/auth/
+
+Sitemap: https://azaetogo.togo/sitemap.xml
