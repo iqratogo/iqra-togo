@@ -37,9 +37,9 @@ export default function HeroSection({
   useEffect(() => { setMounted(true) }, [])
 
   const STATS = [
-    { value: "1 200+", label: statLabels.families },
-    { value: "450+", label: statLabels.members },
-    { value: "15 ans", label: statLabels.projectsDone },
+    { value: "200+", label: statLabels.families },
+    { value: "150+", label: statLabels.members },
+    { value: "5 ans", label: statLabels.projectsDone },
   ]
 
   return (

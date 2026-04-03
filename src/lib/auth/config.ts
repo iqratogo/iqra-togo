@@ -4,7 +4,10 @@
 import type { NextAuthConfig } from "next-auth"
 
 export const authConfig = {
-  session: { strategy: "jwt" },
+  session: {
+    strategy: "jwt",
+    maxAge: 24 * 60 * 60, // 24 heures (default NextAuth = 30 jours, trop long)
+  },
   providers: [],   // les providers réels sont dans index.ts (Node.js uniquement)
 
   callbacks: {

@@ -17,7 +17,7 @@ const sourceSans3 = Source_Sans_3({
   weight: ["300", "400", "600", "700"],
 })
 
-const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://iqratogo.org"
+const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://iqra-togo.com"
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   description:
     "IQRA TOGO accompagne les élèves et étudiants, soutient les orphelins et renforce les capacités des bénéficiaires togolais.",
-  keywords: ["association", "Togo", "éducation", "orphelins", "orientation scolaire", "IQRA TOGO", "Lomé", "renforcement de capacités"],
+  keywords: ["association", "Togo", "éducation", "orphelins", "orientation scolaire", "IQRA TOGO", "Tchamba", "renforcement de capacités", "savoir liberté"],
   authors: [{ name: "IQRA TOGO" }],
   creator: "IQRA TOGO",
   publisher: "IQRA TOGO",

@@ -5,6 +5,7 @@ import { z } from "zod"
 import { prisma } from "@/lib/db/prisma"
 import { createInvoice } from "@/lib/paydunya"
 import { isSameOrigin, csrfForbidden } from "@/lib/csrf"
+import { isRateLimited, getClientIp } from "@/lib/rate-limit"
 
 const schema = z.object({
   amount: z.number().int().min(500, "Montant minimum : 500 FCFA"),
@@ -19,6 +20,15 @@ const schema = z.object({
 
 export async function POST(req: NextRequest) {
   if (!isSameOrigin(req)) return csrfForbidden()
+
+  /* Rate limiting : 10 dons / 10 min par IP (anti-spam) */
+  const ip = getClientIp(req)
+  if (isRateLimited(ip, "donation-initiate", 10, 10 * 60 * 1000)) {
+    return NextResponse.json(
+      { error: "Trop de tentatives. Veuillez patienter quelques minutes." },
+      { status: 429 }
+    )
+  }
 
   try {
     const body = await req.json()

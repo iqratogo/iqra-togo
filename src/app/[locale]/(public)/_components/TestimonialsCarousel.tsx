@@ -19,53 +19,43 @@ interface Testimonial {
 const TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
-    name: "Ama Kodjovi",
-    role: "Bénéficiaire — Orientation scolaire",
+    name: "OUKPEDJO Amira",
+    role: "Bénéficiaire Orientation scolaire",
     location: "Quartier Limamwa, Tchamba",
     quote:
-      "Grâce à IQRA TOGO, j'ai été bien orientée vers la filière qui correspond vraiment à mes aptitudes. Aujourd'hui je prépare un master en informatique et je sais exactement pourquoi je travaille. Le savoir m'a libérée.",
-    initials: "AK",
+      "Grâce à IQRA TOGO, j'ai été bien orientée vers la filière qui correspond vraiment à mes aptitudes. je dis merci !",
+    initials: "OA",
     color: "#22c55e",
   },
   {
     id: 2,
-    name: "Koffi Mensah",
+    name: "ADAM Samira",
     role: "Tuteur d'un orphelin soutenu",
-    location: "Kpalimé, Togo",
+    location: "Tchamba, Togo",
     quote:
-      "Mon neveu orphelin allait abandonner l'école. IQRA TOGO a pris en charge ses fournitures et ses frais de scolarité. Il vient de terminer son baccalauréat avec mention. Sans eux, cela n'aurait jamais été possible.",
-    initials: "KM",
+      "Mon neveu orphelin allait abandonner l'école. IQRA TOGO a soutenu dans les conseils. l'association a ouvert une école coranique de weekend pour accompagner nos enfant.",
+    initials: "AS",
     color: "#1A2B4A",
   },
   {
     id: 3,
-    name: "Efua Asante",
-    role: "Bénéficiaire — Renforcement de capacités",
-    location: "Sokodé, Togo",
+    name: "ABOUBAKAR Assana",
+    role: "femme veuve avec trois enfants en charge",
+    location: "Tchamba, Togo",
     quote:
-      "La formation en gestion de projet que j'ai suivie avec IQRA TOGO a transformé ma façon de travailler. J'ai pu décrocher un emploi stable trois mois après. Leur devise, je la vis maintenant : le savoir, c'est vraiment la liberté.",
+      "je suis une veuve, qui a été bénéficiaire des dons d'aliments destinés aux enfants orphelins. Aujoud'hui, en 2024 ça fait maintenant 2 ans, on reçoit les aliments pendant les moments de fête.",
     initials: "EA",
     color: "#2E7D5E",
   },
   {
     id: 4,
-    name: "Yawa Agbeko",
-    role: "Mère d'un orphelin accompagné",
-    location: "Atakpamé, Togo",
+    name: "MOUMOUNI Yassine",
+    role: "Elève du lycée",
+    location: "Tchamba, Togo",
     quote:
-      "IQRA TOGO a pris soin de mon fils après le décès de mon mari. Au-delà du soutien matériel, ils lui ont apporté un suivi scolaire régulier. Cette association incarne une solidarité vraie et généreuse.",
-    initials: "YA",
+      "IQRA TOGO m'a invité à une formation sur l'indicamétrie et ils m'ont donné des conseils de travail bien à l'école, car je sera quelqu'un demain. je dis merci !",
+    initials: "MY",
     color: "#22c55e",
-  },
-  {
-    id: 5,
-    name: "Kossi Dodzi",
-    role: "Jeune professionnel orienté",
-    location: "Tsévié, Togo",
-    quote:
-      "Sans le programme d'orientation d'IQRA TOGO, j'aurais suivi une filière qui ne me correspondait pas. Leur accompagnement m'a aidé à trouver ma voie. Aujourd'hui j'exerce un métier que j'aime vraiment.",
-    initials: "KD",
-    color: "#1A2B4A",
   },
 ]
 

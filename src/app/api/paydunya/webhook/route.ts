@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { prisma } from "@/lib/db/prisma"
 import { verifyWebhookSignature, getInvoiceStatus } from "@/lib/paydunya"
+import { sendDonationThankYou } from "@/lib/email"
 
 /* Schéma Zod strict du payload PayDunya */
 const webhookSchema = z.object({
@@ -27,7 +28,11 @@ export async function POST(req: NextRequest) {
     const rawBody = await req.text()
     const signature = req.headers.get("x-paydunya-signature") ?? ""
 
-    /* §9.4 — Vérification signature HMAC */
+    /* §9.4 — Vérification signature HMAC — bloque si secret non configuré */
+    if (!process.env.PAYDUNYA_WEBHOOK_SECRET) {
+      console.error("[PayDunya webhook] PAYDUNYA_WEBHOOK_SECRET non configuré — webhook rejeté")
+      return NextResponse.json({ error: "Configuration serveur incomplète" }, { status: 500 })
+    }
     const isValid = await verifyWebhookSignature(rawBody, signature)
     if (!isValid) {
       console.warn("[PayDunya webhook] Signature invalide")
@@ -115,8 +120,21 @@ export async function POST(req: NextRequest) {
       }),
     ])
 
-    /* TODO: brancher un service d'email (ex: nodemailer, Brevo, Mailgun)     */
-    /* pour envoyer l'email de remerciement si succès et donateur non anonyme */
+    /* Email de remerciement au donateur (si succès + non anonyme + email fourni) */
+    if (newStatus === "SUCCESS" && !donation.isAnonymous && donation.donorEmail) {
+      const AFFECTATION_LABELS: Record<string, string> = {
+        GENERAL: "Fonds général",
+        BOURSES_EDUCATION: "Bourses éducation",
+        SOUTIEN_FAMILLES: "Soutien familles",
+        PROJETS_TERRAIN: "Projets terrain",
+      }
+      sendDonationThankYou({
+        email: donation.donorEmail,
+        firstName: donation.donorFirstName ?? "Donateur",
+        amount: donation.amount,
+        affectation: AFFECTATION_LABELS[donation.affectation] ?? donation.affectation,
+      }).catch((err) => console.error("[webhook] Email remerciement:", err))
+    }
 
     return NextResponse.json({ success: true })
   } catch (err) {

@@ -1,9 +1,10 @@
-/* §5.1.9 API Newsletter — inscription + double opt-in */
+/* §5.1.9 API Newsletter — inscription + double opt-in + email Resend */
 
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { prisma } from "@/lib/db/prisma"
 import { isSameOrigin, csrfForbidden } from "@/lib/csrf"
+import { sendNewsletterConfirmation } from "@/lib/email"
 
 const schema = z.object({
   email: z.string().email("Adresse email invalide"),
@@ -14,7 +15,6 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const token = searchParams.get("token")
 
-  /* S12 — Valider le format : token hex 64 chars généré par crypto.getRandomValues */
   if (!token || !/^[0-9a-f]{64}$/.test(token)) {
     return NextResponse.json({ error: "Token invalide." }, { status: 400 })
   }
@@ -42,29 +42,26 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { email } = schema.parse(body)
 
-    /* Vérification doublon */
-    const existing = await prisma.newsletterSubscriber.findUnique({
-      where: { email },
-    })
-
+    /* Déjà inscrit : on répond OK sans erreur côté client */
+    const existing = await prisma.newsletterSubscriber.findUnique({ where: { email } })
     if (existing) {
-      /* Déjà inscrit : on répond OK sans erreur côté client */
       return NextResponse.json({ success: true, alreadySubscribed: true })
     }
 
-    /* Bug #19 — Générer un token opaque au lieu d'utiliser l'email en clair */
+    /* Générer un token opaque 64 chars hex */
     const tokenBytes = new Uint8Array(32)
     crypto.getRandomValues(tokenBytes)
-    const confirmToken = Array.from(tokenBytes).map((b) => b.toString(16).padStart(2, "0")).join("")
+    const confirmToken = Array.from(tokenBytes)
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("")
 
     /* Création en BDD — statut pending jusqu'à confirmation */
     await prisma.newsletterSubscriber.create({
       data: { email, confirmToken },
     })
 
-    /* TODO: brancher un service d'email (ex: nodemailer, Brevo, Mailgun)      */
-    /* pour envoyer le lien de confirmation double opt-in :                     */
-    /* ${process.env.NEXT_PUBLIC_APP_URL}/newsletter/confirmer?token=${confirmToken} */
+    /* Envoi de l'email de confirmation double opt-in */
+    await sendNewsletterConfirmation({ email, confirmToken })
 
     return NextResponse.json({ success: true })
   } catch (err) {

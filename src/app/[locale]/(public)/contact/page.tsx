@@ -237,20 +237,20 @@ export default async function ContactPage() {
                   className="mb-3 font-[family-name:var(--font-playfair)] text-lg font-bold"
                   style={{ color: "var(--azae-navy)" }}
                 >
-                  Horaires
+                  {t("hours_title")}
                 </h3>
                 <ul className="space-y-1 text-sm text-gray-600">
                   <li className="flex justify-between">
-                    <span>Lundi – Vendredi</span>
-                    <span className="font-medium">8h00 – 17h00</span>
+                    <span>{t("mon_fri")}</span>
+                    <span className="font-medium">{t("mon_fri_val")}</span>
                   </li>
                   <li className="flex justify-between">
-                    <span>Samedi</span>
-                    <span className="font-medium">9h00 – 13h00</span>
+                    <span>{t("sat")}</span>
+                    <span className="font-medium">{t("sat_val")}</span>
                   </li>
                   <li className="flex justify-between text-gray-400">
-                    <span>Dimanche</span>
-                    <span>Fermé</span>
+                    <span>{t("sun")}</span>
+                    <span>{t("closed")}</span>
                   </li>
                 </ul>
               </div>

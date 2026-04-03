@@ -8,6 +8,7 @@ import { prisma } from "@/lib/db/prisma"
 import { isRateLimited, getClientIp } from "@/lib/rate-limit"
 import { isSameOrigin, csrfForbidden } from "@/lib/csrf"
 import { passwordSchema } from "@/lib/password-schema"
+import { sendPasswordReset } from "@/lib/email"
 
 const requestSchema = z.object({
   email: z.string().email("Adresse email invalide"),
@@ -59,13 +60,11 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    /* TODO: brancher un service d'email pour envoyer le lien :  */
-    /* ${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password/${token} */
-    if (process.env.NODE_ENV === "development") {
-      console.info(
-        `[reset-password] Lien de réinitialisation (dev only) :`,
-        `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/auth/reset-password/${token}`
-      )
+    /* Envoi du lien par email (silencieux si erreur — sécurité par obscurcissement) */
+    try {
+      await sendPasswordReset({ email, token })
+    } catch (emailErr) {
+      console.error("[reset-password] Email send failed:", emailErr)
     }
 
     return NextResponse.json({ success: true })

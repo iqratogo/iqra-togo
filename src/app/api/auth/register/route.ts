@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db/prisma"
 import { isRateLimited, getClientIp } from "@/lib/rate-limit"
 import { isSameOrigin, csrfForbidden } from "@/lib/csrf"
 import { passwordSchema } from "@/lib/password-schema"
+import { sendWelcomeEmail, sendNewApplicationAdmin } from "@/lib/email"
 
 const schema = z.object({
   civility: z.enum(["M", "MME", "DR", "PR"]).optional(),
@@ -110,8 +111,12 @@ export async function POST(req: NextRequest) {
       return { user, application }
     })
 
-    /* TODO: brancher un service d'email (ex: nodemailer, Brevo, Mailgun) */
-    /* pour notifier le candidat et l'admin lors d'une nouvelle demande    */
+    /* Notifications email (silencieuses — ne bloquent pas la réponse) */
+    const { user, application } = result
+    Promise.all([
+      sendWelcomeEmail({ email: user.email!, firstName: data.firstName, dossierNumber }),
+      sendNewApplicationAdmin({ firstName: data.firstName, lastName: data.lastName, email: user.email!, dossierNumber }),
+    ]).catch((err) => console.error("[register] Email send failed:", err))
 
     return NextResponse.json(
       { success: true, dossierNumber },

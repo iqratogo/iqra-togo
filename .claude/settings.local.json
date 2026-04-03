@@ -5,7 +5,9 @@
       "Bash(xargs sed:*)",
       "Bash(sed:*)",
       "Bash(ls:*)",
-      "Bash(npx prisma:*)"
+      "Bash(npx prisma:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

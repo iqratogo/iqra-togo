@@ -11,6 +11,8 @@ import { fr } from "date-fns/locale"
 import { prisma } from "@/lib/db/prisma"
 import ShareButtons from "../../communiques/_components/ShareButtons"
 
+export const revalidate = 1800 // ISR 30 min
+
 const CATEGORY_MAP: Record<string, "PROJET" | "COMMUNIQUE"> = {
   projets: "PROJET",
   communiques: "COMMUNIQUE",

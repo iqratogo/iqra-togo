@@ -14,6 +14,7 @@ import {
   LogOut,
   ChevronRight,
   UserRound,
+  Mail,
 } from "lucide-react"
 import { signOut } from "next-auth/react"
 import { cn } from "@/lib/utils"
@@ -24,6 +25,7 @@ const NAV_ITEMS = [
   { href: "/dashboard/admin/equipe", label: "Équipe", icon: UserRound },
   { href: "/dashboard/admin/membres", label: "Membres", icon: Users },
   { href: "/dashboard/admin/dons", label: "Dons", icon: Heart },
+  { href: "/dashboard/admin/newsletter", label: "Newsletter", icon: Mail },
   { href: "/dashboard/admin/medias", label: "Médiathèque", icon: Image },
   { href: "/dashboard/admin/parametres", label: "Paramètres", icon: Settings },
 ]

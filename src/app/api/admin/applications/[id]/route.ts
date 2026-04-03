@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/db/prisma"
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
+import { sendApplicationApproved, sendApplicationRejected } from "@/lib/email"
 
 const ALLOWED_ROLES = ["SUPER_ADMIN", "ADMIN"]
 
@@ -96,7 +97,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       })
     })
 
-    /* TODO: brancher un service d'email pour notifier l'approbation */
+    sendApplicationApproved({
+      email: application.user.email!,
+      firstName: application.firstName,
+      memberNumber,
+    }).catch((err) => console.error("[applications] Email approbation:", err))
 
     return NextResponse.json({ success: true, action: "approved" })
   }
@@ -117,7 +122,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     })
   })
 
-  /* TODO: brancher un service d'email pour notifier le refus */
+  sendApplicationRejected({
+    email: application.user.email!,
+    firstName: application.firstName,
+    reason: parsed.data.reason,
+  }).catch((err) => console.error("[applications] Email refus:", err))
 
   return NextResponse.json({ success: true, action: "rejected" })
 }

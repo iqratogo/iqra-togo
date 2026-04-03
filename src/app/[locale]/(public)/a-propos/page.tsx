@@ -16,24 +16,35 @@ export async function generateMetadata() {
 
 const TIMELINE = [
   {
-    year: "2015",
+    year: "2021",
     title: "Fondation de l'association",
     text: "Création d'IQRA TOGO par un groupe de passionnés de l'éducation et de jeunes professionnels togolais, animés par la devise « Le savoir, la liberté ».",
   },
   {
-    year: "2017",
-    title: "Premiers programmes d'orientation",
+    year: "2022",
+    title: "Premiers conférenc d'orientation",
     text: "Lancement du programme d'orientation scolaire et académique, ayant accompagné plus de 80 élèves et étudiants dès sa première année.",
   },
   {
-    year: "2020",
-    title: "Programme soutien aux orphelins",
-    text: "Déploiement du programme d'aide matérielle et financière aux enfants orphelins et vulnérables à Tchamba et dans les régions.",
+    year: "2023",
+    title: "Démarrage du soutien aux orphelins",
+    text: "Déploiement du programme d'aide matérielle et financière aux enfants orphelins et vulnérables à Tchamba au mois des grandes fêtes musulmanes et la rentré scolaire, .",
   },
   {
-    year: "2023",
-    title: "Renforcement institutionnel",
-    text: "Reconnaissance officielle de l'association et lancement des programmes structurés de renforcement de capacités.",
+    year: "2024",
+    title: "Renforcement organisationnelle",
+    text: "Restructuration des responsabilité des membres du comités d'administration pour le meilleur impact des actions de l'association dans la communauté et initialisation des formations de renforcement des apacités.",
+  },
+  {
+    year: "2025",
+    title: "Elargi du programme d'accompagnement des élèves et étudiants",
+    text: "Nous avons admis la cible des étudiants dans notre nouvelle feuille de route d'accompagnement financier, moral et orientation académique.",
+    
+  },
+  {
+    year: "2026",
+    title: "Creation de la plateforme web",
+    text: "En debut du mois d'Avril, nous avons déploié officiellement en ligne notre site web qui sert desormain de plateforme de communication  et gestion d'activités.",
   },
 ]
 
@@ -50,21 +61,21 @@ export default async function AboutPage() {
       icon: BookOpen,
       title: "Orientation scolaire et académique",
       text: "Accompagnement personnalisé des élèves et étudiants dans leurs choix de parcours, avec des conseils d'orientation, tutorats et suivis réguliers.",
-      stat: "500+ élèves orientés",
+      stat: "230+ élèves orientés",
       color: "var(--azae-orange)",
     },
     {
       icon: Users,
       title: "Soutien aux orphelins",
       text: "Aide matérielle et financière aux enfants en situation de vulnérabilité : fournitures scolaires, frais de scolarité et accompagnement social.",
-      stat: "200+ orphelins soutenus",
+      stat: "100+ orphelins soutenus",
       color: "var(--azae-navy)",
     },
     {
       icon: Globe,
       title: "Renforcement de capacités",
       text: "Formations, ateliers pratiques et sessions de développement personnel pour doter les bénéficiaires des compétences dont ils ont besoin.",
-      stat: "30+ sessions réalisées",
+      stat: "10+ sessions réalisées",
       color: "var(--azae-green)",
     },
   ]

@@ -1,16 +1,20 @@
 /* §5.4 Hub Actualités — page principale /actualites */
 
-import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight, ArrowRight, FolderOpen, FileText, Handshake } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 import { prisma } from "@/lib/db/prisma"
 import PostCard, { type Post } from "@/components/ui/PostCard"
 import SectionHeader from "@/components/ui/SectionHeader"
 
-export const metadata: Metadata = {
-  title: "Actualités — IQRA TOGO",
-  description:
-    "Suivez les projets, communiqués officiels et partenariats de l'association IQRA TOGO au Togo.",
+export const revalidate = 300
+
+export async function generateMetadata() {
+  const t = await getTranslations("pages.news")
+  return {
+    title: `${t("title")} — IQRA TOGO`,
+    description: t("subtitle"),
+  }
 }
 
 async function getLatestByCategory(category: "PROJET" | "COMMUNIQUE", take = 3): Promise<Post[]> {
@@ -43,36 +47,44 @@ async function getLatestPartners(take = 6): Promise<PartnerItem[]> {
   } catch { return [] }
 }
 
-const SECTIONS = [
-  {
-    href: "/actualites/projets",
-    label: "Projets",
-    description: "Nos actions sur le terrain, en cours et réalisées.",
-    icon: FolderOpen,
-    color: "var(--azae-orange)",
-  },
-  {
-    href: "/actualites/communiques",
-    label: "Communiqués",
-    description: "Prises de position et annonces officielles de l'ONG.",
-    icon: FileText,
-    color: "var(--azae-navy)",
-  },
-  {
-    href: "/actualites/partenaires",
-    label: "Partenaires",
-    description: "Les organisations qui soutiennent notre mission.",
-    icon: Handshake,
-    color: "var(--azae-green)",
-  },
-]
-
 export default async function ActualitesPage() {
-  const [projects, communiques, partners] = await Promise.all([
+  const [projects, communiques, partners, t, tNav] = await Promise.all([
     getLatestByCategory("PROJET", 3),
     getLatestByCategory("COMMUNIQUE", 3),
     getLatestPartners(6),
+    getTranslations("pages.news"),
+    getTranslations("nav"),
   ])
+
+  const SECTIONS = [
+    {
+      href: "/actualites/projets",
+      label: t("section_projects_label"),
+      description: t("section_projects_desc"),
+      icon: FolderOpen,
+      color: "var(--azae-orange)",
+    },
+    {
+      href: "/actualites/communiques",
+      label: t("section_communiques_label"),
+      description: t("section_communiques_desc"),
+      icon: FileText,
+      color: "var(--azae-navy)",
+    },
+    {
+      href: "/actualites/partenaires",
+      label: t("section_partners_label"),
+      description: t("section_partners_desc"),
+      icon: Handshake,
+      color: "var(--azae-green)",
+    },
+  ]
+
+  const PARTNER_TYPE_LABELS: Record<string, string> = {
+    FINANCIER: t("partner_financial"),
+    INSTITUTIONNEL: t("partner_institutional"),
+    TECHNIQUE: t("partner_technical"),
+  }
 
   return (
     <>
@@ -86,18 +98,17 @@ export default async function ActualitesPage() {
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <nav aria-label="Fil d'Ariane" className="mb-6">
             <ol className="flex items-center gap-1.5 text-xs text-white/60">
-              <li><Link href="/" className="transition-colors hover:text-white">Accueil</Link></li>
+              <li><Link href="/" className="transition-colors hover:text-white">{tNav("home")}</Link></li>
               <li aria-hidden="true"><ChevronRight className="h-3 w-3" /></li>
-              <li className="text-white" aria-current="page">Actualités</li>
+              <li className="text-white" aria-current="page">{t("title")}</li>
             </ol>
           </nav>
           <h1 className="font-[family-name:var(--font-playfair)] text-4xl font-bold text-white lg:text-5xl">
-            Actualités
+            {t("title")}
           </h1>
           <p className="mt-4 max-w-xl text-white/80">
-            Projets, communiqués officiels et partenariats — toute l'actualité d'IQRA TOGO.
+            {t("subtitle")}
           </p>
-          {/* Navigation rapide §5.4 */}
           <div className="mt-8 flex flex-wrap gap-3">
             {SECTIONS.map(({ href, label, icon: Icon }) => (
               <Link
@@ -145,17 +156,17 @@ export default async function ActualitesPage() {
         </div>
       </section>
 
-      {/* Derniers projets §5.4.1 */}
+      {/* Derniers projets */}
       <section className="bg-[#F5F5F5] py-16">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
-            <SectionHeader eyebrow="Sur le terrain" title="Projets récents" />
+            <SectionHeader eyebrow={t("projects_eyebrow")} title={t("projects_section")} />
             <Link
               href="/actualites/projets"
               className="flex shrink-0 items-center gap-1 text-sm font-medium"
               style={{ color: "var(--azae-orange)" }}
             >
-              Voir tous les projets <ArrowRight className="h-4 w-4" />
+              {t("see_projects")} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           {projects.length > 0 ? (
@@ -163,22 +174,22 @@ export default async function ActualitesPage() {
               {projects.map((p) => <PostCard key={p.id} post={p} variant="default" />)}
             </div>
           ) : (
-            <p className="mt-10 text-center text-gray-400">Aucun projet disponible.</p>
+            <p className="mt-10 text-center text-gray-400">{t("no_project")}</p>
           )}
         </div>
       </section>
 
-      {/* Derniers communiqués §5.4.2 */}
+      {/* Derniers communiqués */}
       <section className="bg-white py-16">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
-            <SectionHeader eyebrow="Officiel" title="Derniers communiqués" />
+            <SectionHeader eyebrow={t("communiques_eyebrow")} title={t("communiques_section")} />
             <Link
               href="/actualites/communiques"
               className="flex shrink-0 items-center gap-1 text-sm font-medium"
               style={{ color: "var(--azae-orange)" }}
             >
-              Tous les communiqués <ArrowRight className="h-4 w-4" />
+              {t("see_communiques")} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           {communiques.length > 0 ? (
@@ -186,23 +197,23 @@ export default async function ActualitesPage() {
               {communiques.map((p) => <PostCard key={p.id} post={p} variant="default" />)}
             </div>
           ) : (
-            <p className="mt-10 text-center text-gray-400">Aucun communiqué disponible.</p>
+            <p className="mt-10 text-center text-gray-400">{t("no_communique")}</p>
           )}
         </div>
       </section>
 
-      {/* Derniers partenaires §5.4.3 */}
+      {/* Partenaires */}
       {partners.length > 0 && (
         <section className="bg-[#F5F5F5] py-16">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
-              <SectionHeader eyebrow="Ils nous font confiance" title="Nos partenaires" />
+              <SectionHeader eyebrow={t("partners_eyebrow")} title={t("partners_section")} />
               <Link
                 href="/actualites/partenaires"
                 className="flex shrink-0 items-center gap-1 text-sm font-medium"
                 style={{ color: "var(--azae-orange)" }}
               >
-                Tous les partenaires <ArrowRight className="h-4 w-4" />
+                {t("see_partners")} <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -232,9 +243,7 @@ export default async function ActualitesPage() {
                         {partner.name}
                       </p>
                       <span className="text-xs text-gray-400">
-                        {partner.type === "FINANCIER" ? "Financier"
-                          : partner.type === "INSTITUTIONNEL" ? "Institutionnel"
-                          : "Technique"}
+                        {PARTNER_TYPE_LABELS[partner.type] ?? partner.type}
                       </span>
                     </div>
                   </div>

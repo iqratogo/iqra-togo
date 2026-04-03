@@ -1,17 +1,31 @@
-# Azaetogo — Plateforme ONG Humanitaire
+# IQRA TOGO — Plateforme associative
 
-Application web de l'ONG Azaetogo (Togo) : gestion des membres, dons, publications et administration.
+Application web de l'association **IQRA TOGO** (Tchamba, Togo) : gestion des membres, dons, publications et administration.
 
-**Stack :** Next.js 16 · React 19 · TypeScript · Prisma 7 · PostgreSQL (Supabase) · NextAuth v5 · Tailwind CSS 4 · next-intl (FR/EN)
+**Stack :** Next.js 16 · React 19 · TypeScript · Prisma 7 · PostgreSQL · Supabase · NextAuth v5 · Tailwind CSS 4 · Resend · next-intl (FR/EN)
+
+---
+
+## Table des matières
+
+1. [Prérequis](#prérequis)
+2. [Installation locale](#installation-locale)
+3. [Déploiement Vercel + Supabase](#déploiement-vercel--supabase)
+4. [Configuration Resend (emails)](#configuration-resend-emails)
+5. [Variables d'environnement](#variables-denvironnement)
+6. [Migrations base de données](#migrations-base-de-données)
+7. [Traductions en ligne (Supabase Storage)](#traductions-en-ligne-supabase-storage)
+8. [Commandes utiles](#commandes-utiles)
 
 ---
 
 ## Prérequis
 
-- Node.js 20+
-- npm 10+
-- Compte [Supabase](https://supabase.com) (base de données + stockage fichiers)
-- Compte [Vercel](https://vercel.com) (déploiement)
+- **Node.js** 20+ et **npm** 10+
+- Compte [Supabase](https://supabase.com) (base de données PostgreSQL + stockage fichiers)
+- Compte [Vercel](https://vercel.com) (hébergement Next.js)
+- Compte [Resend](https://resend.com) (emails transactionnels)
+- Compte [PayDunya](https://paydunya.com) (paiements en ligne, optionnel en dev)
 
 ---
 
@@ -20,187 +34,329 @@ Application web de l'ONG Azaetogo (Togo) : gestion des membres, dons, publicatio
 ```bash
 # 1. Cloner le dépôt
 git clone <repo-url>
-cd azaetogo
+cd iqratogo
 
 # 2. Installer les dépendances (génère aussi le client Prisma via postinstall)
 npm install
 
-# 3. Configurer les variables d'environnement
+# 3. Configurer l'environnement local
 cp .env .env.local
 # Remplir .env.local avec vos vraies valeurs (voir section Variables d'environnement)
 
-# 4. Pousser le schéma vers la base de données
-npx prisma db push
+# 4. Créer les tables en base (développement local)
+npx prisma migrate dev
 
-# 5. (Optionnel) Peupler avec des données de test
+# 5. Peupler avec des données de test
 npm run seed
 
 # 6. Lancer le serveur de développement
 npm run dev
 ```
 
-Ouvrir [http://localhost:3000](http://localhost:3000).
+Ouvrir [http://localhost:3000](http://localhost:3000)
+
+**Comptes de test (après seed) :**
+| Email | Mot de passe | Rôle |
+|-------|-------------|------|
+| superadmin@iqratogo.org | Iqra2025! | Super Admin |
+| admin@iqratogo.org | Iqra2025! | Admin |
+
+---
+
+## Déploiement Vercel + Supabase
+
+### Étape 1 — Créer le projet Supabase
+
+1. Aller sur [supabase.com](https://supabase.com) → **New Project**
+2. Choisir une région proche (ex: `eu-west-2` London pour l'Afrique de l'Ouest)
+3. Définir un **mot de passe de base de données fort** (le sauvegarder !)
+4. Attendre ~2 minutes que le projet soit initialisé
+
+**Récupérer les identifiants** dans *Project Settings → Database* :
+
+```
+DATABASE_URL  → "Transaction pooler" (port 6543)
+              Format: postgresql://postgres.[ref]:[password]@aws-0-eu-west-2.pooler.supabase.com:6543/postgres?pgbouncer=true
+
+DIRECT_URL    → "Direct connection" (port 5432)
+              Format: postgresql://postgres.[ref]:[password]@db.[ref].supabase.co:5432/postgres
+```
+
+**Récupérer les clés API** dans *Project Settings → API* :
+```
+SUPABASE_URL              → https://[ref].supabase.co
+SUPABASE_SERVICE_ROLE_KEY → eyJhbGci... (clé privée — ne JAMAIS exposer côté client)
+```
+
+### Étape 2 — Créer les buckets Supabase Storage
+
+Dans *Storage → New bucket*, créer les deux buckets suivants :
+
+| Nom | Accès | Usage |
+|-----|-------|-------|
+| `media` | **Public** | Photos membres, images articles, logos partenaires |
+| `translations` | **Public** | Fichiers JSON de traduction (fr.json, en.json) |
+
+Pour `media` : activer *RLS* → ajouter une policy "Allow public reads" sur SELECT.
+
+### Étape 3 — Exécuter les migrations
+
+Les migrations **doivent être lancées depuis votre machine locale** avec la connexion directe (pas la poolée) :
+
+```bash
+# Dans .env.local, s'assurer que DIRECT_URL pointe vers Supabase (port 5432)
+# Lancer les migrations vers Supabase
+DIRECT_URL="postgresql://postgres.[ref]:[password]@db.[ref].supabase.co:5432/postgres" \
+npx prisma migrate deploy
+
+# Peupler les données initiales (settings, comptes admin)
+# Remplacer DATABASE_URL par DIRECT_URL pour le seed
+DATABASE_URL="postgresql://postgres.[ref]:[password]@db.[ref].supabase.co:5432/postgres" \
+npm run seed
+```
+
+### Étape 4 — Créer le projet Vercel
+
+1. Aller sur [vercel.com](https://vercel.com) → **Add New Project**
+2. Importer le dépôt GitHub/GitLab
+3. Framework : **Next.js** (détecté automatiquement)
+4. Ne pas lancer le déploiement tout de suite — configurer les variables d'abord
+
+### Étape 5 — Variables d'environnement sur Vercel
+
+Dans *Project → Settings → Environment Variables*, ajouter **toutes** les variables suivantes (sélectionner les 3 environnements : Production, Preview, Development) :
+
+| Variable | Valeur |
+|----------|--------|
+| `DATABASE_URL` | URL poolée Supabase (port **6543**, avec `?pgbouncer=true`) |
+| `DIRECT_URL` | URL directe Supabase (port **5432**) |
+| `SUPABASE_URL` | `https://[ref].supabase.co` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Clé service role Supabase |
+| `AUTH_SECRET` | Secret aléatoire 32+ chars (`openssl rand -base64 32`) |
+| `AUTH_URL` | `https://votre-domaine.vercel.app` (ou domaine custom) |
+| `NEXTAUTH_URL` | idem `AUTH_URL` |
+| `RESEND_API_KEY` | `re_xxxxxxxxxxxx` |
+| `EMAIL_FROM` | `IQRA TOGO <noreply@iqra-togo.com>` |
+| `EMAIL_ADMIN` | `contact@iqra-togo.com` |
+| `PAYDUNYA_MASTER_KEY` | Clé master PayDunya |
+| `PAYDUNYA_PRIVATE_KEY` | Clé privée PayDunya |
+| `PAYDUNYA_TOKEN` | Token PayDunya |
+| `PAYDUNYA_MODE` | `live` (production) ou `test` |
+| `PAYDUNYA_WEBHOOK_SECRET` | Secret webhook PayDunya |
+| `NEXT_PUBLIC_APP_URL` | `https://votre-domaine.vercel.app` |
+| `NEXT_PUBLIC_APP_NAME` | `IQRA TOGO` |
+
+### Étape 6 — Déployer
+
+```bash
+# Pousser sur la branche principale pour déclencher le déploiement
+git push origin master
+```
+
+Vercel exécutera automatiquement : `npm install` → `prisma generate` → `next build`
+
+### Étape 7 — Domaine personnalisé (optionnel)
+
+Dans *Project → Settings → Domains* : ajouter `iqra-togo.com` et configurer les DNS chez votre registrar :
+```
+Type  Name   Value
+A     @      76.76.21.21
+CNAME www    cname.vercel-dns.com
+```
+
+---
+
+## Configuration Resend (emails)
+
+Resend est utilisé pour tous les emails transactionnels : reset de mot de passe, inscription, contact, newsletter.
+
+### Étape 1 — Créer un compte Resend
+
+1. Aller sur [resend.com](https://resend.com) → **Sign Up** (gratuit : 3 000 emails/mois)
+2. Dans *API Keys* → **Create API Key** → copier la clé `re_xxxxx`
+
+### Étape 2 — Vérifier votre domaine
+
+Pour envoyer depuis `noreply@iqra-togo.com` (au lieu de `onboarding@resend.dev`) :
+
+1. Dans Resend → *Domains* → **Add Domain** → entrer `iqra-togo.com`
+2. Ajouter les enregistrements DNS indiqués par Resend chez votre registrar :
+
+```
+Type   Name                        Value
+TXT    resend._domainkey           v=DKIM1; k=rsa; p=MIIBIj...
+TXT    _dmarc                      v=DMARC1; p=none; rua=mailto:...
+MX     send                        feedback-smtp.us-east-1.amazonses.com
+```
+
+3. Attendre la vérification (2-15 min) → statut **Verified** ✅
+
+### Étape 3 — Test en développement local
+
+Avant d'avoir un domaine vérifié, utiliser l'adresse de test Resend :
+
+```env
+# .env.local
+RESEND_API_KEY=re_VOTRE_CLE
+EMAIL_FROM=IQRA TOGO <onboarding@resend.dev>
+EMAIL_ADMIN=votre-email-personnel@gmail.com
+```
+
+> Avec `onboarding@resend.dev`, les emails ne partent que vers l'adresse liée à votre compte Resend.
+
+### Emails envoyés par l'application
+
+| Déclencheur | Destinataire | Objet |
+|-------------|-------------|-------|
+| Inscription membre | Nouveau membre | Bienvenue + numéro de dossier |
+| Inscription membre | Admin | Nouvelle candidature |
+| Reset mot de passe | Utilisateur | Lien de réinitialisation (valide 1h) |
+| Formulaire contact | Admin | Nouveau message + infos expéditeur |
+| Formulaire contact | Expéditeur | Accusé de réception |
+| Newsletter | Abonné | Lien de confirmation double opt-in |
 
 ---
 
 ## Variables d'environnement
 
-Copier `.env` en `.env.local` et remplir chaque valeur. Le fichier `.env` sert de template documenté.
-
-| Variable | Description |
-|---|---|
-| `DATABASE_URL` | Connexion poolée Supabase (port 6543, pgBouncer) |
-| `DIRECT_URL` | Connexion directe Supabase (port 5432, pour migrations) |
-| `SUPABASE_URL` | URL du projet Supabase (`https://[ref].supabase.co`) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Clé service role Supabase (upload fichiers côté serveur) |
-| `AUTH_SECRET` | Secret NextAuth ≥ 32 caractères (`openssl rand -base64 32`) |
-| `NEXTAUTH_URL` | URL complète de l'application |
-| `PAYDUNYA_MASTER_KEY` | Clé PayDunya |
-| `PAYDUNYA_PRIVATE_KEY` | Clé privée PayDunya |
-| `PAYDUNYA_TOKEN` | Token PayDunya |
-| `PAYDUNYA_MODE` | `test` ou `live` |
-| `PAYDUNYA_WEBHOOK_SECRET` | Secret pour valider les webhooks PayDunya |
-| `NEXT_PUBLIC_APP_URL` | URL publique de l'application |
-| `NEXT_PUBLIC_APP_NAME` | Nom de l'application |
-| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Token Google Search Console (optionnel) |
-
----
-
-## Supabase — Configuration
-
-### Base de données
-
-1. Créer un projet Supabase
-2. Dans **Project Settings > Database**, récupérer :
-   - **Connection string (pooler)** → `DATABASE_URL` (port 6543, mode Transaction)
-   - **Connection string (direct)** → `DIRECT_URL` (port 5432)
-3. Appliquer le schéma : `npx prisma db push`
-
-### Stockage fichiers
-
-1. Dans Supabase, aller dans **Storage**
-2. Créer un bucket nommé `uploads` (public)
-3. Ajouter la politique RLS suivante pour permettre la lecture publique :
-
-```sql
--- Lecture publique du bucket uploads
-CREATE POLICY "Public read" ON storage.objects
-  FOR SELECT USING (bucket_id = 'uploads');
-```
-
-4. Remplir `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY` dans les variables d'environnement
-
----
-
-## Déploiement sur Vercel
-
-### Premier déploiement
-
-1. Importer le dépôt sur [vercel.com/new](https://vercel.com/new)
-2. Sélectionner le framework **Next.js** (détecté automatiquement)
-3. Dans **Environment Variables**, ajouter toutes les variables de la section ci-dessus avec les valeurs de production
-4. Déployer — Vercel exécute `prisma generate && next build` automatiquement (via `vercel.json`)
-
-### Mises à jour
+Le fichier `.env` (commité) est le template documenté. Ne jamais committer `.env.local`.
 
 ```bash
-git push origin main   # Vercel redéploie automatiquement
+cp .env .env.local   # Copier le template
+# Remplir chaque valeur dans .env.local
 ```
 
-### Variables clés à changer pour la production
+### Développement local minimal
 
-| Variable | Valeur production |
-|---|---|
-| `NEXT_PUBLIC_APP_URL` | `https://azaetogo.togo` |
-| `NEXTAUTH_URL` | `https://azaetogo.togo` |
-| `PAYDUNYA_MODE` | `live` |
-| `AUTH_SECRET` | Nouveau secret généré |
+```env
+# Base de données locale (pgAdmin)
+DATABASE_URL="postgresql://postgres:VOTRE_MOT_DE_PASSE@localhost:5432/iqradb"
+DIRECT_URL="postgresql://postgres:VOTRE_MOT_DE_PASSE@localhost:5432/iqradb"
+
+# Auth
+AUTH_SECRET="au-moins-32-caracteres-aleatoires-ici"
+AUTH_URL="http://localhost:3000"
+NEXTAUTH_URL="http://localhost:3000"
+
+# Email (test Resend)
+RESEND_API_KEY="re_VOTRE_CLE"
+EMAIL_FROM="IQRA TOGO <onboarding@resend.dev>"
+EMAIL_ADMIN="votre@email.com"
+
+# App
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+NEXT_PUBLIC_APP_NAME="IQRA TOGO"
+```
 
 ---
 
-## Google Search Console — Indexation
+## Migrations base de données
 
-1. Aller sur [search.google.com/search-console](https://search.google.com/search-console)
-2. Ajouter la propriété `https://azaetogo.togo`
-3. Choisir la méthode **Balise HTML** et copier le contenu du token
-4. Ajouter la variable `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` dans Vercel avec la valeur du token
-5. Valider dans Search Console
-6. Soumettre le sitemap : `https://azaetogo.togo/sitemap.xml`
+### Première fois (projet neuf)
 
-Le sitemap est généré dynamiquement par `src/app/sitemap.ts` et inclut toutes les pages statiques + les articles publiés (FR et EN).
+```bash
+# Crée les tables et le dossier prisma/migrations/
+npx prisma migrate dev --name init
+```
+
+### Après modification du schéma Prisma
+
+```bash
+# Développement local
+npx prisma migrate dev --name description_de_la_modification
+
+# Production (Supabase) — utilise DIRECT_URL
+npx prisma migrate deploy
+```
+
+### Autres commandes Prisma utiles
+
+```bash
+npx prisma studio          # Interface graphique pour explorer la DB
+npx prisma db push         # Synchronise schéma sans créer de fichier migration (dev rapide)
+npx prisma generate        # Regénère le client Prisma (après modification schema.prisma)
+npm run seed               # Peuple la DB avec des données initiales
+```
+
+---
+
+## Traductions en ligne (Supabase Storage)
+
+Les traductions sont chargées depuis **Supabase Storage** au lieu d'être bundlées dans l'application. Cela permet de les mettre à jour sans redéploiement.
+
+### Comment ça fonctionne
+
+1. L'app tente de charger `{locale}.json` depuis le bucket `translations` (public, CDN Supabase)
+2. Si le fichier n'existe pas, fallback sur les fichiers locaux `messages/fr.json` ou `messages/en.json`
+3. Cache 1 heure via `unstable_cache` de Next.js
+
+### Mettre à jour une traduction sans redéployer
+
+**Via Supabase Dashboard :**
+1. *Storage → translations* → uploader `fr.json` ou `en.json`
+2. Attendre max 1h que le cache expire (ou déclencher une revalidation)
+
+**Via API (script) :**
+```bash
+curl -X POST \
+  "https://[ref].supabase.co/storage/v1/object/translations/fr.json" \
+  -H "Authorization: Bearer SUPABASE_SERVICE_ROLE_KEY" \
+  -H "Content-Type: application/json" \
+  --data-binary @messages/fr.json
+```
+
+### Forcer le vidage de cache (revalidation)
+
+```bash
+# Via l'API Next.js de revalidation (à implémenter dans le dashboard admin)
+curl -X POST "https://votre-site.vercel.app/api/admin/revalidate" \
+  -H "Authorization: Bearer TOKEN" \
+  -d '{"tag":"translations"}'
+```
 
 ---
 
 ## Commandes utiles
 
 ```bash
-npm run dev           # Serveur de développement
-npm run build         # Build de production
-npm run start         # Démarrer en production
+npm run dev          # Serveur de développement (webpack)
+npm run build        # Build de production
+npm run start        # Serveur de production local
+npm run lint         # ESLint
+npm run seed         # Peupler la base de données
 
-npx prisma studio     # Interface graphique base de données
-npx prisma db push    # Synchroniser le schéma (sans migration)
-npx prisma migrate dev --name <nom>  # Créer une migration
-npm run seed          # Peupler la base avec des données de test
+npx prisma studio    # Explorer la DB en visuel
+npx prisma migrate dev    # Créer et appliquer une migration
+npx prisma migrate deploy # Appliquer les migrations en production
 ```
 
 ---
 
-## Architecture
+## Architecture des services
 
 ```
-src/
-├── app/
-│   ├── [locale]/           # Pages i18n (fr/en) — layout, pages publiques
-│   │   └── (public)/       # Pages publiques groupées
-│   ├── api/                # Routes API (admin, auth, membres, dons, newsletter)
-│   ├── dashboard/          # Tableau de bord admin & membre (protégé)
-│   ├── layout.tsx          # Layout racine (métadonnées SEO, JSON-LD)
-│   └── sitemap.ts          # Sitemap dynamique
-├── components/
-│   ├── layout/             # Navbar, Footer
-│   ├── sections/           # Sections de pages
-│   └── ui/                 # Composants shadcn/ui
-├── i18n/                   # Configuration next-intl (routing, request)
-├── lib/
-│   ├── auth/               # Configuration NextAuth v5
-│   └── db/prisma.ts        # Client Prisma (adapter pg, singleton)
-├── messages/               # Traductions JSON (fr.json, en.json)
-└── types/                  # Extensions de types TypeScript
-prisma/
-├── schema.prisma           # Schéma base de données
-└── seed.ts                 # Script de peuplement
+┌─────────────────────────────────────────────────────┐
+│                   VERCEL (Next.js 16)                │
+│  ┌──────────┐  ┌──────────┐  ┌────────────────────┐ │
+│  │  Pages   │  │   API    │  │    Middleware       │ │
+│  │  (ISR)   │  │  Routes  │  │  (Auth + Headers)  │ │
+│  └──────────┘  └──────────┘  └────────────────────┘ │
+└──────────────────────┬──────────────────────────────┘
+                       │
+        ┌──────────────┼──────────────┐
+        │              │              │
+        ▼              ▼              ▼
+┌──────────────┐ ┌──────────┐ ┌──────────────┐
+│   SUPABASE   │ │  RESEND  │ │   PAYDUNYA   │
+│ ┌──────────┐ │ │  Emails  │ │   Paiements  │
+│ │PostgreSQL│ │ │transact. │ │   (FCFA)     │
+│ ├──────────┤ │ └──────────┘ └──────────────┘
+│ │ Storage  │ │
+│ │(fichiers)│ │
+│ └──────────┘ │
+└──────────────┘
 ```
-
-### Rôles utilisateurs
-
-| Rôle | Accès |
-|---|---|
-| `SUPER_ADMIN` | Accès total, paramètres, audit |
-| `ADMIN` | Membres, publications, dons, équipe |
-| `EDITOR` | Publications uniquement |
-| `MEMBER` | Dashboard membre, cotisations, profil |
-| `VISITOR` | Pages publiques uniquement |
-
-### Internationalisation
-
-- Français (défaut) : `/`, `/a-propos`, `/actualites`, etc.
-- Anglais : `/en/`, `/en/about`, `/en/news`, etc.
-- Préfixe uniquement pour l'anglais (`localePrefix: "as-needed"`)
 
 ---
 
-## Technologies
-
-| Catégorie | Outil |
-|---|---|
-| Framework | Next.js 16 (App Router) |
-| UI | React 19, Tailwind CSS 4, shadcn/ui, Framer Motion |
-| Base de données | PostgreSQL via Supabase + Prisma 7 ORM |
-| Authentification | NextAuth v5 (credentials, JWT) |
-| Stockage fichiers | Supabase Storage |
-| Paiements | PayDunya (mobile money Togo) |
-| i18n | next-intl 4 (FR/EN) |
-| Éditeur rich text | Tiptap 3 |
-| Formulaires | React Hook Form + Zod |
-| Déploiement | Vercel |
+*IQRA TOGO — Le savoir, la liberté · contact@iqra-togo.com · Quartier Limamwa, Tchamba, Togo*

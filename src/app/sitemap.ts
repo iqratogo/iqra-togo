@@ -1,7 +1,9 @@
 import type { MetadataRoute } from "next"
 import { prisma } from "@/lib/db/prisma"
 
-const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://iqratogo.org"
+export const revalidate = 3600 // Revalide le sitemap toutes les heures
+
+const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://iqra-togo.com"
 
 const CATEGORY_SLUG: Record<string, string> = {
   PROJET: "projets",

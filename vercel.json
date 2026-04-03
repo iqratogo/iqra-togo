@@ -7,5 +7,9 @@
     "src/app/api/**": {
       "maxDuration": 30
     }
+  },
+  "env": {
+    "NEXT_PUBLIC_APP_URL": "https://iqra-togo.com",
+    "NEXT_PUBLIC_APP_NAME": "IQRA TOGO"
   }
 }

@@ -16,7 +16,7 @@ const MIME_CONFIG: Record<string, { folder: string; ext: string; magic: number[]
   "image/png":     { folder: "images",    ext: "png",  magic: [0x89, 0x50, 0x4e, 0x47] },
   "image/webp":    { folder: "images",    ext: "webp", magic: [0x52, 0x49, 0x46, 0x46] }, // RIFF
   "image/gif":     { folder: "images",    ext: "gif",  magic: [0x47, 0x49, 0x46, 0x38] }, // GIF8
-  "image/svg+xml": { folder: "images",    ext: "svg",  magic: null }, // texte XML
+  // SVG intentionally excluded — can contain <script> tags (XSS risk)
   "video/mp4":     { folder: "videos",    ext: "mp4",  magic: null }, // ftyp à offset 4, skip
   "video/webm":    { folder: "videos",    ext: "webm", magic: [0x1a, 0x45, 0xdf, 0xa3] },
   "video/ogg":     { folder: "videos",    ext: "ogv",  magic: [0x4f, 0x67, 0x67, 0x53] }, // OggS
