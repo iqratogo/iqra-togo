@@ -14,7 +14,7 @@
       "projects": "Projets",
       "projects_desc": "Nos actions sur le terrain, en cours et réalisées au Togo.",
       "communiques": "Communiqués",
-      "communiques_desc": "Prises de position officielles et annonces de l'ONG.",
+      "communiques_desc": "Prises de position officielles et annonces de l'association.",
       "partners": "Partenaires",
       "partners_desc": "Découvrez les organisations qui soutiennent notre mission.",
       "see_all": "Voir toutes les actualités →"
@@ -24,20 +24,43 @@
   },
   "home": {
     "hero": {
-      "badge": "ONG Humanitaire Togolaise",
-      "title": "Ensemble, nous changeons des vies au Togo",
-      "subtitle": "Depuis plus de 15 ans, Azaetogo soutient les familles et étudiants togolais dans leur accès à l'éducation et au bien-être social.",
+      "badge": "Association Togolaise — Le savoir, la liberté",
+      "title": "Le savoir comme chemin vers la liberté",
+      "subtitle": "IQRA TOGO accompagne les élèves et étudiants, soutient les orphelins et renforce les capacités des bénéficiaires pour un Togo plus instruit et plus libre.",
       "donate_btn": "Faire un don",
       "discover_btn": "Découvrir notre mission",
       "members": "membres actifs",
       "projects_done": "projets réalisés",
-      "families": "familles aidées"
+      "families": "bénéficiaires aidés"
+    },
+    "quote": "Parce que le savoir est la clé de toutes les libertés — nous agissons chaque jour pour que chaque enfant togolais puisse apprendre, grandir et s'épanouir.",
+    "quote_author": "Fondateurs d'IQRA TOGO",
+    "pillars": {
+      "eyebrow": "Notre Mission",
+      "title": "Ce qui nous anime",
+      "subtitle": "IQRA TOGO agit au cœur des communautés togolaises autour de trois axes porteurs de changement.",
+      "learn_more": "En savoir plus",
+      "p1_title": "Orientation scolaire et académique",
+      "p1_text": "Nous accompagnons les élèves et étudiants dans leur parcours scolaire et universitaire pour qu'ils puissent construire leur avenir avec confiance.",
+      "p2_title": "Soutien aux orphelins",
+      "p2_text": "Aide matérielle et financière aux enfants en situation de vulnérabilité pour leur garantir dignité, protection et accès à l'éducation.",
+      "p3_title": "Renforcement de capacités",
+      "p3_text": "Formations et ateliers pratiques pour développer les compétences des bénéficiaires et favoriser leur autonomie."
+    },
+    "impact": {
+      "eyebrow": "Notre Impact",
+      "title": "Des chiffres qui parlent",
+      "subtitle": "Chaque année, notre engagement se traduit en actions concrètes et résultats mesurables.",
+      "students": "Élèves orientés",
+      "orphans": "Orphelins soutenus",
+      "trainings": "Sessions de formation",
+      "partners_count": "Partenaires actifs"
     },
     "mission": {
       "eyebrow": "Notre Raison d'Être",
       "title": "Ce qui nous anime",
-      "p1": "Depuis plus de 15 ans, Azaetogo œuvre pour l'accès à l'éducation, la santé et l'intégration sociale des jeunes et familles togolais.",
-      "p2": "Chaque année, nous accompagnons des centaines de bénéficiaires à travers nos programmes de soutien, de formation et de développement communautaire.",
+      "p1": "IQRA TOGO œuvre pour que chaque enfant togolais ait accès au savoir, que chaque orphelin soit soutenu et que chaque bénéficiaire puisse développer ses capacités.",
+      "p2": "Chaque année, nous accompagnons des centaines de bénéficiaires à travers nos programmes d'orientation, de soutien et de renforcement de capacités.",
       "discover_btn": "Découvrir notre histoire"
     },
     "news": {
@@ -48,8 +71,18 @@
     "donate": {
       "eyebrow": "Agir concrètement",
       "title": "Soutenez notre mission",
-      "subtitle": "Chaque don contribue directement à l'éducation et au bien-être des familles togolaises.",
-      "donate_btn": "Faire un don maintenant"
+      "subtitle": "Chaque don contribue directement à l'éducation et au bien-être des enfants et familles togolaises.",
+      "donate_btn": "Faire un don maintenant",
+      "section_eyebrow": "Soutenir notre cause",
+      "section_title": "Votre don ouvre des portes",
+      "section_subtitle": "1 000 FCFA peuvent couvrir les fournitures scolaires d'un orphelin pour un mois. Chaque geste compte, quelle que soit sa taille.",
+      "bullet1": "Paiement 100 % sécurisé via PayDunya",
+      "bullet2": "Reçu fiscal disponible sur demande",
+      "bullet3": "Transparence totale sur l'utilisation des fonds"
+    },
+    "testimonials": {
+      "eyebrow": "Témoignages",
+      "title": "Le savoir les a libérés"
     },
     "partners": {
       "title": "Ils nous font confiance"
@@ -66,13 +99,13 @@
     }
   },
   "footer": {
-    "description": "ONG humanitaire togolaise œuvrant pour l'accès à l'éducation et le bien-être des familles et étudiants togolais.",
+    "description": "Association togolaise œuvrant pour l'orientation scolaire, le soutien aux orphelins et le renforcement des capacités. Devise : Le savoir, la liberté.",
     "nav_title": "Navigation",
     "news_title": "Actualités récentes",
     "contact_title": "Contact",
     "no_news": "Aucune actualité pour le moment.",
     "secure_payment": "Paiement sécurisé PayDunya",
-    "official_ngo": "ONG Officielle Togo",
+    "official_ngo": "Association Officielle Togo",
     "rights": "Tous droits réservés.",
     "legal": "Mentions légales",
     "privacy": "Confidentialité"
@@ -98,12 +131,34 @@
   "pages": {
     "about": {
       "title": "À Propos",
-      "breadcrumb": "À Propos"
+      "breadcrumb": "À Propos",
+      "hero_title": "Notre Histoire",
+      "origins_eyebrow": "Nos Origines",
+      "origins_title": "Un engagement qui dure",
+      "origins_subtitle": "Retour sur les grandes étapes qui ont forgé l'identité d'IQRA TOGO.",
+      "identity_eyebrow": "Notre Identité",
+      "identity_title": "Ce qui nous définit",
+      "mission_label": "Mission",
+      "mission_question": "Pourquoi existons-nous ?",
+      "mission_text": "Offrir à chaque enfant et jeune togolais les ressources et le soutien nécessaires pour accéder au savoir, exercer sa liberté et construire son avenir.",
+      "vision_label": "Vision",
+      "vision_question": "Où allons-nous ?",
+      "vision_text": "Un Togo où chaque enfant est orienté vers le bon chemin, où aucun orphelin n'est laissé pour compte, et où chaque citoyen dispose des capacités pour s'épanouir.",
+      "values_label": "Valeurs",
+      "values_question": "Ce qui nous guide",
+      "programs_eyebrow": "Nos Programmes",
+      "programs_title": "Domaines d'action",
+      "programs_subtitle": "Trois axes prioritaires portés par la devise d'IQRA TOGO : Le savoir, la liberté.",
+      "cta_title": "Rejoindre notre mission",
+      "cta_subtitle": "Que vous soyez professionnel, étudiant, citoyen engagé ou entreprise — il y a une place pour vous au sein d'IQRA TOGO.",
+      "cta_join": "Devenir membre",
+      "cta_donate": "Faire un don",
+      "accueil": "Accueil"
     },
     "team": {
       "title": "Notre Équipe",
       "breadcrumb": "Équipe",
-      "subtitle": "Des hommes et des femmes engagés, unis par la même conviction : agir concrètement pour le Togo.",
+      "subtitle": "Des hommes et des femmes engagés, unis par la même conviction : le savoir libère.",
       "join_title": "Rejoindre l'équipe",
       "join_subtitle": "Vous souhaitez contribuer à notre mission ? Nous serions ravis d'étudier votre candidature.",
       "join_btn": "Nous contacter",
@@ -116,11 +171,19 @@
       "no_bio": "Aucune biographie disponible.",
       "no_members_dept": "Aucun membre dans ce département pour le moment.",
       "view_profile": "Voir le profil",
-      "contact": "Contacter"
+      "contact": "Contacter",
+      "member": {
+        "missions_title": "Missions & Biographie",
+        "contact_label": "Contact",
+        "no_bio": "Aucune biographie disponible pour le moment.",
+        "back": "Retour à l'équipe",
+        "cta_text": "Vous souhaitez rejoindre l'équipe ou collaborer avec nous ?",
+        "cta_btn": "Nous contacter"
+      }
     },
     "news": {
       "title": "Actualités",
-      "subtitle": "Projets, communiqués officiels et partenariats — toute l'actualité d'Azaetogo.",
+      "subtitle": "Projets, communiqués officiels et partenariats — toute l'actualité d'IQRA TOGO.",
       "projects_section": "Projets récents",
       "communiques_section": "Derniers communiqués",
       "partners_section": "Nos partenaires",
@@ -138,9 +201,14 @@
       "hours_title": "Horaires",
       "follow": "Suivez-nous",
       "address": "Adresse",
-      "address_val": "Lomé, Togo",
+      "address_val": "Quartier Limamwa, Tchamba",
+      "email_label": "Email",
+      "phone_label": "Téléphone",
+      "whatsapp_label": "WhatsApp",
       "mon_fri": "Lundi – Vendredi",
+      "mon_fri_val": "8h00 – 17h00",
       "sat": "Samedi",
+      "sat_val": "9h00 – 13h00",
       "sun": "Dimanche",
       "closed": "Fermé"
     },
@@ -150,13 +218,13 @@
     },
     "donate": {
       "title": "Faire un don",
-      "subtitle": "Votre générosité change des vies au Togo."
+      "subtitle": "Votre générosité ouvre des portes au Togo."
     }
   },
   "meta": {
-    "site_name": "Azaetogo",
-    "default_title": "Azaetogo — ONG Humanitaire Togolaise",
-    "default_description": "Azaetogo soutient les familles et étudiants togolais dans leur accès à l'éducation et au bien-être social.",
+    "site_name": "IQRA TOGO",
+    "default_title": "IQRA TOGO — Le savoir, la liberté",
+    "default_description": "IQRA TOGO accompagne les élèves, soutient les orphelins et renforce les capacités des bénéficiaires togolais.",
     "og_locale": "fr_FR"
   }
 }

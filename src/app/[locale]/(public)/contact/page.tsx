@@ -1,6 +1,5 @@
 /* §5.8 Page Contact (/contact) */
 
-import type { Metadata } from "next"
 import Link from "next/link"
 import {
   MapPin,
@@ -9,16 +8,19 @@ import {
   MessageCircle,
   ChevronRight,
 } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 import { FacebookIcon, InstagramIcon, YoutubeIcon, LinkedinIcon } from "@/components/ui/SocialIcons"
 import ContactForm from "./_components/ContactForm"
 
 /* P3 — Page statique : revalidation toutes les 24h */
 export const revalidate = 86400
 
-export const metadata: Metadata = {
-  title: "Contact — Azaetogo",
-  description:
-    "Contactez l'ONG Azaetogo pour toute question, demande de partenariat, bénévolat ou information. Nous vous répondrons dans les plus brefs délais.",
+export async function generateMetadata() {
+  const t = await getTranslations("pages.contact")
+  return {
+    title: `${t("title")} — IQRA TOGO`,
+    description: t("subtitle"),
+  }
 }
 
 /* §5.8 — liens réseaux sociaux */
@@ -29,7 +31,12 @@ const SOCIAL_LINKS = [
   { icon: LinkedinIcon, href: "#", label: "LinkedIn" },
 ]
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const [t, tNav] = await Promise.all([
+    getTranslations("pages.contact"),
+    getTranslations("nav"),
+  ])
+
   return (
     <>
       {/* ── Hero banner §5.8 ── */}
@@ -46,24 +53,23 @@ export default function ContactPage() {
             <ol className="flex items-center gap-1.5 text-xs text-white/60">
               <li>
                 <Link href="/" className="transition-colors hover:text-white">
-                  Accueil
+                  {tNav("home")}
                 </Link>
               </li>
               <li aria-hidden="true">
                 <ChevronRight className="h-3 w-3" />
               </li>
               <li className="text-white" aria-current="page">
-                Contact
+                {t("title")}
               </li>
             </ol>
           </nav>
 
           <h1 className="font-[family-name:var(--font-playfair)] text-4xl font-bold text-white lg:text-5xl">
-            Contactez-nous
+            {t("title")}
           </h1>
           <p className="mt-4 max-w-xl text-base text-white/80 lg:text-lg">
-            Une question, un projet, une envie d'agir ? Notre équipe est à votre écoute
-            et vous répondra dans les meilleurs délais.
+            {t("subtitle")}
           </p>
         </div>
       </section>
@@ -79,7 +85,7 @@ export default function ContactPage() {
                 className="mb-6 font-[family-name:var(--font-playfair)] text-2xl font-bold"
                 style={{ color: "var(--azae-navy)" }}
               >
-                Envoyez-nous un message
+                {t("form_title")}
               </h2>
               <ContactForm />
             </div>
@@ -93,7 +99,7 @@ export default function ContactPage() {
                   className="mb-6 font-[family-name:var(--font-playfair)] text-2xl font-bold"
                   style={{ color: "var(--azae-navy)" }}
                 >
-                  Nos coordonnées
+                  {t("coords_title")}
                 </h2>
                 <address className="space-y-4 not-italic">
                   {/* Adresse */}
@@ -105,11 +111,9 @@ export default function ContactPage() {
                       <MapPin className="h-4 w-4 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-gray-900">Adresse</p>
+                      <p className="text-sm font-semibold text-gray-900">{t("address")}</p>
                       <p className="text-sm text-gray-600">
-                        Lomé, Togo
-                        <br />
-                        BP 12345 — Quartier Administratif
+                        {t("address_val")}
                       </p>
                     </div>
                   </div>
@@ -123,12 +127,12 @@ export default function ContactPage() {
                       <Mail className="h-4 w-4 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-gray-900">Email</p>
+                      <p className="text-sm font-semibold text-gray-900">{t("email_label")}</p>
                       <a
-                        href="mailto:contact@azaetogo.com"
+                        href="mailto:contact@iqra-togo.com"
                         className="text-sm text-gray-600 transition-colors hover:text-[var(--azae-orange)]"
                       >
-                        contact@azaetogo.com
+                        contact@iqra-togo.com
                       </a>
                     </div>
                   </div>
@@ -142,7 +146,7 @@ export default function ContactPage() {
                       <Phone className="h-4 w-4 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-gray-900">Téléphone</p>
+                      <p className="text-sm font-semibold text-gray-900">{t("phone_label")}</p>
                       <a
                         href="tel:+22890000000"
                         className="text-sm text-gray-600 transition-colors hover:text-[var(--azae-orange)]"
@@ -161,7 +165,7 @@ export default function ContactPage() {
                       <MessageCircle className="h-4 w-4 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-gray-900">WhatsApp</p>
+                      <p className="text-sm font-semibold text-gray-900">{t("whatsapp_label")}</p>
                       <a
                         href="https://wa.me/22890000000"
                         target="_blank"
@@ -177,7 +181,7 @@ export default function ContactPage() {
                 {/* Réseaux sociaux §5.8 */}
                 <div className="mt-6 border-t border-gray-100 pt-6">
                   <p className="mb-3 text-sm font-semibold text-gray-900">
-                    Suivez-nous
+                    {t("follow")}
                   </p>
                   <div className="flex gap-2">
                     {SOCIAL_LINKS.map(({ icon: Icon, href, label }) => (
@@ -216,8 +220,8 @@ export default function ContactPage() {
               {/* Carte Google Maps §5.8 — iframe embed (pas d'API key requis) */}
               <div className="overflow-hidden rounded-2xl shadow-sm">
                 <iframe
-                  title="Localisation Azaetogo — Lomé, Togo"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127453.10527348085!2d1.1359388!3d6.1724768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1023e1c113185419%3A0x3224b5422caf4b63!2sLom%C3%A9%2C%20Togo!5e0!3m2!1sfr!2sfr!4v1706000000000!5m2!1sfr!2sfr"
+                  title="Localisation IQRA TOGO — Quartier Limamwa, Tchamba"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31698.5!2d1.2133!3d9.0334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1123d96cb8b4b5d3%3A0x5a3b6b3b3b3b3b3b!2sTchamba%2C%20Togo!5e0!3m2!1sfr!2sfr!4v1706000000000!5m2!1sfr!2sfr"
                   width="100%"
                   height="280"
                   style={{ border: 0 }}

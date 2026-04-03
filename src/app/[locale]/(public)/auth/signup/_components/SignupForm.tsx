@@ -85,7 +85,7 @@ export default function SignupForm() {
           </p>
         </div>
         <p className="mt-2 text-sm text-gray-500">
-          Statut : <strong>En attente de validation</strong> par l'équipe Azaetogo.
+          Statut : <strong>En attente de validation</strong> par l'équipe IQRA TOGO.
         </p>
         <Button
           onClick={() => router.push("/")}
@@ -211,7 +211,7 @@ export default function SignupForm() {
       {/* Motivation §7.3.3 */}
       <div className="space-y-1">
         <label htmlFor="motivation" className="block text-sm font-medium text-gray-700">
-          Pourquoi souhaitez-vous rejoindre Azaetogo ?
+          Pourquoi souhaitez-vous rejoindre IQRA TOGO ?
         </label>
         <Textarea
           id="motivation"
@@ -253,7 +253,7 @@ export default function SignupForm() {
           <label htmlFor="rulesAccepted" className="text-sm text-gray-700">
             J'accepte le{" "}
             <a href="#" className="underline" style={{ color: "var(--azae-orange)" }}>
-              règlement intérieur d'Azaetogo
+              règlement intérieur d'IQRA TOGO
             </a>{" "}
             <span className="text-red-500">*</span>
           </label>

@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Azaetogo — Association d'aide au développement du Togo",
-    short_name: "Azaetogo",
+    name: "IQRA TOGO — Association d'aide au développement du Togo",
+    short_name: "IQRA TOGO",
     description:
       "ONG togolaise œuvrant pour l'éducation, le soutien social et l'espoir des communautés vulnérables.",
     start_url: "/",

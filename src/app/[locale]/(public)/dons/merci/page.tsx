@@ -6,7 +6,7 @@ import { CheckCircle, Share2, Home, ArrowRight } from "lucide-react"
 import { prisma } from "@/lib/db/prisma"
 
 export const metadata: Metadata = {
-  title: "Merci pour votre don — Azaetogo",
+  title: "Merci pour votre don — IQRA TOGO",
 }
 
 interface PageProps {
@@ -35,7 +35,7 @@ export default async function DonsMerciPage({ searchParams }: PageProps) {
     : null
 
   const shareUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/dons`
-  const shareText = "Je viens de faire un don à l'ONG Azaetogo pour soutenir les familles et étudiants togolais."
+  const shareText = "Je viens de faire un don à l'association IQRA TOGO pour soutenir les familles et étudiants togolais."
 
   return (
     <section className="min-h-[70vh] bg-[#F5F5F5] py-20">

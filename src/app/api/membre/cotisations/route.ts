@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
 
   const invoiceData = await createInvoice({
     amount: cotisation.amount,
-    description: `Cotisation Azaetogo — ${cotisation.period}`,
+    description: `Cotisation IQRA TOGO — ${cotisation.period}`,
     cancelUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/membre/cotisations`,
     returnUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/membre/cotisations?paid=1`,
     callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/paydunya/webhook`,

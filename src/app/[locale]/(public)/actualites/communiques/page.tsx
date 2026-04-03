@@ -10,9 +10,9 @@ import SectionHeader from "@/components/ui/SectionHeader"
 import ShareButtons from "./_components/ShareButtons"
 
 export const metadata: Metadata = {
-  title: "Communiqués — Azaetogo",
+  title: "Communiqués — IQRA TOGO",
   description:
-    "Consultez les communiqués officiels et prises de position de l'ONG Azaetogo.",
+    "Consultez les communiqués officiels et prises de position de l'association IQRA TOGO.",
 }
 
 const ITEMS_PER_PAGE = 10
@@ -73,7 +73,7 @@ export default async function CommuniquesPage({ searchParams }: PageProps) {
             Communiqués
           </h1>
           <p className="mt-4 max-w-xl text-white/80">
-            Prises de position, annonces officielles et déclarations de l'ONG Azaetogo.
+            Prises de position, annonces officielles et déclarations de l'association IQRA TOGO.
           </p>
         </div>
       </section>

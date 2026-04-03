@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 import { prisma } from "@/lib/db/prisma"
 
-const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://azaetogo.togo"
+const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://iqratogo.org"
 
 const CATEGORY_SLUG: Record<string, string> = {
   PROJET: "projets",

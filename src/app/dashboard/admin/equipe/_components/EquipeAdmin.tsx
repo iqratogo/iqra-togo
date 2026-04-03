@@ -414,7 +414,7 @@ export default function EquipeAdmin() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="mb-1 block text-xs font-medium text-gray-700">Email</label>
-                  <Input type="email" value={form.email ?? ""} onChange={set("email")} placeholder="jean@azaetogo.com" />
+                  <Input type="email" value={form.email ?? ""} onChange={set("email")} placeholder="jean@iqratogo.org" />
                 </div>
                 <div>
                   <label className="mb-1 block text-xs font-medium text-gray-700">Téléphone</label>

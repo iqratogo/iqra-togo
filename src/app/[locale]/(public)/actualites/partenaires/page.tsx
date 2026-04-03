@@ -7,9 +7,9 @@ import { prisma } from "@/lib/db/prisma"
 import SectionHeader from "@/components/ui/SectionHeader"
 
 export const metadata: Metadata = {
-  title: "Partenaires — Azaetogo",
+  title: "Partenaires — IQRA TOGO",
   description:
-    "Découvrez les organisations partenaires de l'ONG Azaetogo : partenaires financiers, institutionnels et techniques.",
+    "Découvrez les organisations partenaires de l'association IQRA TOGO : partenaires financiers, institutionnels et techniques.",
 }
 
 const TYPE_LABELS: Record<string, string> = {
@@ -170,7 +170,7 @@ export default async function PartenairesPage() {
         <div className="mx-auto max-w-3xl px-4 text-center lg:px-8">
           <SectionHeader
             eyebrow="Partenariat"
-            title="Devenez partenaire d'Azaetogo"
+            title="Devenez partenaire d'IQRA TOGO"
             subtitle="Vous souhaitez soutenir notre mission ? Rejoignez notre réseau de partenaires engagés et contribuez à un impact durable au Togo."
             centered
           />

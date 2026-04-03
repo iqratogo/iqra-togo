@@ -56,7 +56,7 @@ export default function ForgotPasswordPage() {
               className="font-[family-name:var(--font-playfair)] text-3xl font-bold"
               style={{ color: "var(--azae-orange)" }}
             >
-              AZAETOGO
+              IQRA TOGO
             </span>
           </Link>
           <h1

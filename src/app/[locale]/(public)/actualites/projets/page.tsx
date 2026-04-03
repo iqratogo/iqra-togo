@@ -10,9 +10,9 @@ import SectionHeader from "@/components/ui/SectionHeader"
 import ProjetsFilters from "./_components/ProjetsFilters"
 
 export const metadata: Metadata = {
-  title: "Projets — Azaetogo",
+  title: "Projets — IQRA TOGO",
   description:
-    "Découvrez tous les projets de terrain de l'ONG Azaetogo au Togo : éducation, soutien social et intégration.",
+    "Découvrez tous les projets de terrain de l'association IQRA TOGO au Togo : éducation, soutien social et intégration.",
 }
 
 const ITEMS_PER_PAGE = 9

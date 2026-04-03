@@ -101,7 +101,7 @@ export default function PostCard({ post, variant = "default" }: PostCardProps) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <span className="text-sm text-gray-300">Azaetogo</span>
+            <span className="text-sm text-gray-300">IQRA TOGO</span>
           </div>
         )}
         {/* Category badge */}

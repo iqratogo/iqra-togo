@@ -12,20 +12,20 @@ const SETTINGS_FIELDS = [
   {
     section: "Site",
     fields: [
-      { key: "site_name", label: "Nom du site", type: "text", placeholder: "Azaetogo" },
-      { key: "site_description", label: "Description", type: "textarea", placeholder: "ONG Azaetogo — Agir ensemble pour le Togo" },
-      { key: "contact_email", label: "Email de contact", type: "email", placeholder: "contact@azaetogo.org" },
+      { key: "site_name", label: "Nom du site", type: "text", placeholder: "IQRA TOGO" },
+      { key: "site_description", label: "Description", type: "textarea", placeholder: "association IQRA TOGO — Agir ensemble pour le Togo" },
+      { key: "contact_email", label: "Email de contact", type: "email", placeholder: "contact@iqra-togo.com" },
       { key: "contact_phone", label: "Téléphone", type: "text", placeholder: "+228 XX XX XX XX" },
-      { key: "contact_address", label: "Adresse", type: "text", placeholder: "Lomé, Togo" },
+      { key: "contact_address", label: "Adresse", type: "text", placeholder: "Quartier Limamwa, Tchamba" },
     ],
   },
   {
     section: "Réseaux sociaux",
     fields: [
-      { key: "social_facebook", label: "Facebook", type: "url", placeholder: "https://facebook.com/azaetogo" },
-      { key: "social_instagram", label: "Instagram", type: "url", placeholder: "https://instagram.com/azaetogo" },
-      { key: "social_twitter", label: "X / Twitter", type: "url", placeholder: "https://x.com/azaetogo" },
-      { key: "social_youtube", label: "YouTube", type: "url", placeholder: "https://youtube.com/@azaetogo" },
+      { key: "social_facebook", label: "Facebook", type: "url", placeholder: "https://facebook.com/iqratogo" },
+      { key: "social_instagram", label: "Instagram", type: "url", placeholder: "https://instagram.com/iqratogo" },
+      { key: "social_twitter", label: "X / Twitter", type: "url", placeholder: "https://x.com/iqratogo" },
+      { key: "social_youtube", label: "YouTube", type: "url", placeholder: "https://youtube.com/@iqratogo" },
       { key: "social_whatsapp", label: "WhatsApp", type: "text", placeholder: "+228XXXXXXXX" },
     ],
   },

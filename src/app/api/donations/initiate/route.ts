@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
 
     const result = await createInvoice({
       amount: data.amount,
-      description: `Don Azaetogo — ${AFFECTATION_LABELS[data.affectation] ?? "Général"}`,
+      description: `Don IQRA TOGO — ${AFFECTATION_LABELS[data.affectation] ?? "Général"}`,
       returnUrl: `${appUrl}/dons/merci?ref=${donation.id}`,
       cancelUrl: `${appUrl}/dons/echec?ref=${donation.id}`,
       callbackUrl: `${appUrl}/api/paydunya/webhook`,

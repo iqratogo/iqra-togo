@@ -10,9 +10,9 @@ import MediaGallery from "./_components/MediaGallery"
 export const revalidate = 1800
 
 export const metadata: Metadata = {
-  title: "Médiathèque — Azaetogo",
+  title: "Médiathèque — IQRA TOGO",
   description:
-    "Galerie photos, vidéos et documents de l'ONG Azaetogo : retrouvez nos archives médias et rapports annuels.",
+    "Galerie photos, vidéos et documents de l'association IQRA TOGO : retrouvez nos archives médias et rapports annuels.",
 }
 
 export default async function MediasPage() {

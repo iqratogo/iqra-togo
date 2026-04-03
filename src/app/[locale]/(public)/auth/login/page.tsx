@@ -5,8 +5,8 @@ import Link from "next/link"
 import LoginForm from "./_components/LoginForm"
 
 export const metadata: Metadata = {
-  title: "Connexion — Azaetogo",
-  description: "Connectez-vous à votre espace membre Azaetogo.",
+  title: "Connexion — IQRA TOGO",
+  description: "Connectez-vous à votre espace membre IQRA TOGO.",
 }
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -35,7 +35,7 @@ export default async function LoginPage({
               className="font-[family-name:var(--font-playfair)] text-3xl font-bold"
               style={{ color: "var(--azae-orange)" }}
             >
-              AZAETOGO
+              IQRA TOGO
             </span>
           </Link>
           <h1

@@ -205,7 +205,7 @@ export default function PublicationForm({ postId, initialData }: Props) {
                 <div className="rounded-lg bg-gray-50 p-3">
                   <p className="mb-1 text-xs text-gray-500">Aperçu Google</p>
                   <p className="text-sm font-medium text-blue-700 line-clamp-1">{seoTitle || "Titre de la page"}</p>
-                  <p className="text-xs text-green-700">azaetogo.org › actualites › …</p>
+                  <p className="text-xs text-green-700">iqratogo.org › actualites › …</p>
                   <p className="mt-0.5 text-xs text-gray-600 line-clamp-2">{seoDesc || "Description de la page…"}</p>
                 </div>
               </div>

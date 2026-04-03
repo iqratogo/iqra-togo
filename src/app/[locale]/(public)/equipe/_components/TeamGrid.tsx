@@ -2,15 +2,9 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { Mail, UserRound } from "lucide-react"
-import { FacebookIcon, LinkedinIcon, TwitterXIcon } from "@/components/ui/SocialIcons"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog"
+import { Link } from "@/i18n/navigation"
+import { UserRound, ArrowRight } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 
 /* ── Types ── */
@@ -30,28 +24,26 @@ export interface TeamMember {
   twitterUrl?: string | null
 }
 
-/* ── Constantes ── */
-
-const DEPARTMENTS: { value: TeamMember["department"] | "ALL"; label: string }[] = [
-  { value: "ALL", label: "Tous" },
-  { value: "DIRECTION", label: "Direction" },
-  { value: "PROGRAMMES", label: "Programmes" },
-  { value: "COMMUNICATION", label: "Communication" },
-  { value: "FINANCE", label: "Finance" },
-]
-
-const DEPT_LABELS: Record<TeamMember["department"], string> = {
-  DIRECTION: "Direction",
-  PROGRAMMES: "Programmes",
-  COMMUNICATION: "Communication",
-  FINANCE: "Finance",
-}
-
 /* ── Component principal ── */
 
 export default function TeamGrid({ members }: { members: TeamMember[] }) {
+  const t = useTranslations("pages.team")
   const [activeDept, setActiveDept] = useState<TeamMember["department"] | "ALL">("ALL")
-  const [selected, setSelected] = useState<TeamMember | null>(null)
+
+  const DEPARTMENTS: { value: TeamMember["department"] | "ALL"; label: string }[] = [
+    { value: "ALL", label: t("dept_all") },
+    { value: "DIRECTION", label: t("dept_direction") },
+    { value: "PROGRAMMES", label: t("dept_programmes") },
+    { value: "COMMUNICATION", label: t("dept_communication") },
+    { value: "FINANCE", label: t("dept_finance") },
+  ]
+
+  const DEPT_LABELS: Record<TeamMember["department"], string> = {
+    DIRECTION: t("dept_direction"),
+    PROGRAMMES: t("dept_programmes"),
+    COMMUNICATION: t("dept_communication"),
+    FINANCE: t("dept_finance"),
+  }
 
   const filtered =
     activeDept === "ALL" ? members : members.filter((m) => m.department === activeDept)
@@ -80,181 +72,78 @@ export default function TeamGrid({ members }: { members: TeamMember[] }) {
       {filtered.length > 0 ? (
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {filtered.map((member) => (
-            <MemberCard key={member.id} member={member} onSelect={setSelected} />
+            <MemberCard key={member.id} member={member} deptLabels={DEPT_LABELS} viewProfileLabel={t("view_profile")} />
           ))}
         </div>
       ) : (
         <p className="mt-10 text-center text-gray-400">
-          Aucun membre dans ce département pour le moment.
+          {t("no_members_dept")}
         </p>
       )}
-
-      {/* ── Dialog bio ── */}
-      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
-        {selected && (
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <div className="mb-4 flex items-center gap-4">
-                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-[var(--azae-orange)]">
-                  {selected.photoUrl ? (
-                    <Image
-                      src={selected.photoUrl}
-                      alt={`${selected.firstName} ${selected.lastName}`}
-                      fill
-                      className="object-cover"
-                      sizes="64px"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-gray-100">
-                      <UserRound className="h-8 w-8 text-gray-300" />
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <DialogTitle className="font-[family-name:var(--font-playfair)] text-lg font-bold text-[var(--azae-navy)]">
-                    {selected.firstName} {selected.lastName}
-                  </DialogTitle>
-                  <DialogDescription className="text-sm text-gray-500">
-                    {selected.position}
-                  </DialogDescription>
-                  <span
-                    className="mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-medium text-white"
-                    style={{ backgroundColor: "var(--azae-orange)" }}
-                  >
-                    {DEPT_LABELS[selected.department]}
-                  </span>
-                </div>
-              </div>
-            </DialogHeader>
-
-            {/* Bio */}
-            <div className="space-y-3 text-sm leading-relaxed text-gray-600">
-              {selected.bioFull ? (
-                <p>{selected.bioFull}</p>
-              ) : selected.bio ? (
-                <p>{selected.bio}</p>
-              ) : (
-                <p className="italic text-gray-400">Aucune biographie disponible.</p>
-              )}
-            </div>
-
-            {/* Liens */}
-            <div className="mt-4 flex items-center gap-3 border-t pt-4">
-              {selected.email && (
-                <a
-                  href={`mailto:${selected.email}`}
-                  className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:border-[var(--azae-orange)] hover:text-[var(--azae-orange)]"
-                >
-                  <Mail className="h-3.5 w-3.5" />
-                  Contacter
-                </a>
-              )}
-              {selected.facebookUrl && (
-                <SocialBtn href={selected.facebookUrl} icon={FacebookIcon} label="Facebook" />
-              )}
-              {selected.linkedinUrl && (
-                <SocialBtn href={selected.linkedinUrl} icon={LinkedinIcon} label="LinkedIn" />
-              )}
-              {selected.twitterUrl && (
-                <SocialBtn href={selected.twitterUrl} icon={TwitterXIcon} label="Twitter" />
-              )}
-            </div>
-          </DialogContent>
-        )}
-      </Dialog>
     </>
   )
 }
 
-/* ── Card membre ── */
+/* ── Card membre rectangulaire verticale ── */
 
 function MemberCard({
   member,
-  onSelect,
+  deptLabels,
+  viewProfileLabel,
 }: {
   member: TeamMember
-  onSelect: (m: TeamMember) => void
+  deptLabels: Record<TeamMember["department"], string>
+  viewProfileLabel: string
 }) {
   return (
-    <button
-      onClick={() => onSelect(member)}
-      className="group relative flex flex-col items-center rounded-xl border border-gray-100 bg-white p-6 text-center shadow-sm transition-shadow duration-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--azae-orange)]"
-    >
-      {/* Photo ronde */}
-      <div className="relative mb-4 h-24 w-24 overflow-hidden rounded-full border-2 border-[var(--azae-orange)] transition-transform duration-300 group-hover:scale-105">
+    <div className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg">
+      {/* Photo grande — ratio 4/5 */}
+      <div className="relative w-full overflow-hidden" style={{ paddingBottom: "125%" }}>
         {member.photoUrl ? (
           <Image
             src={member.photoUrl}
             alt={`${member.firstName} ${member.lastName}`}
             fill
-            className="object-cover"
-            sizes="96px"
+            className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gray-100">
-            <UserRound className="h-10 w-10 text-gray-300" />
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+            <UserRound className="h-20 w-20 text-gray-300" />
           </div>
         )}
 
-        {/* Overlay hover */}
-        <div className="absolute inset-0 flex items-center justify-center bg-[var(--azae-navy)]/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <span className="text-xs font-semibold text-white">Voir le profil</span>
-        </div>
+        {/* Badge département flottant */}
+        <span
+          className="absolute left-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-semibold text-white shadow"
+          style={{ backgroundColor: "var(--azae-navy)" }}
+        >
+          {deptLabels[member.department]}
+        </span>
       </div>
 
-      {/* Infos */}
-      <p className="font-[family-name:var(--font-playfair)] font-bold text-[var(--azae-navy)]">
-        {member.firstName} {member.lastName}
-      </p>
-      <p className="mt-0.5 text-sm text-gray-500">{member.position}</p>
-      <span
-        className="mt-2 rounded-full px-2.5 py-0.5 text-xs font-medium text-white"
-        style={{ backgroundColor: "var(--azae-orange)", opacity: 0.85 }}
-      >
-        {DEPT_LABELS[member.department]}
-      </span>
-
-      {/* Icônes réseaux */}
-      {(member.facebookUrl || member.linkedinUrl || member.twitterUrl) && (
-        <div className="mt-3 flex items-center justify-center gap-2">
-          {member.facebookUrl && <SocialDot icon={FacebookIcon} />}
-          {member.linkedinUrl && <SocialDot icon={LinkedinIcon} />}
-          {member.twitterUrl && <SocialDot icon={TwitterXIcon} />}
+      {/* Infos texte */}
+      <div className="flex flex-1 flex-col gap-3 p-5">
+        <div>
+          <p
+            className="font-[family-name:var(--font-playfair)] text-base font-bold leading-tight"
+            style={{ color: "var(--azae-navy)" }}
+          >
+            {member.firstName} {member.lastName}
+          </p>
+          <p className="mt-1 text-sm text-gray-500 leading-snug">{member.position}</p>
         </div>
-      )}
-    </button>
-  )
-}
 
-/* ── Helpers ── */
-
-function SocialBtn({
-  href,
-  icon: Icon,
-  label,
-}: {
-  href: string
-  icon: React.ElementType
-  label: string
-}) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={label}
-      onClick={(e) => e.stopPropagation()}
-      className="flex h-7 w-7 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition-colors hover:border-[var(--azae-orange)] hover:text-[var(--azae-orange)]"
-    >
-      <Icon className="h-3.5 w-3.5" />
-    </a>
-  )
-}
-
-function SocialDot({ icon: Icon }: { icon: React.ElementType }) {
-  return (
-    <span className="flex h-5 w-5 items-center justify-center text-gray-300">
-      <Icon className="h-3 w-3" />
-    </span>
+        {/* Bouton voir détails */}
+        <Link
+          href={`/equipe/${member.id}` as `/equipe/${string}`}
+          className="mt-auto inline-flex items-center justify-center gap-2 rounded-lg border border-[var(--azae-orange)] px-4 py-2 text-sm font-semibold transition-colors hover:bg-[var(--azae-orange)] hover:text-white"
+          style={{ color: "var(--azae-orange)" }}
+        >
+          {viewProfileLabel}
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </div>
   )
 }

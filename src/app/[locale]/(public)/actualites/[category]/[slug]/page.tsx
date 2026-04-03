@@ -32,11 +32,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!post) return { title: "Article introuvable" }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://azaetogo.togo"
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://iqratogo.org"
   const canonicalUrl = post.canonical ?? `${appUrl}/actualites/${category}/${slug}`
 
   return {
-    title: post.seoTitle ?? `${post.title} — Azaetogo`,
+    title: post.seoTitle ?? `${post.title} — IQRA TOGO`,
     description: post.seoDescription ?? post.excerpt ?? undefined,
     alternates: {
       canonical: canonicalUrl,

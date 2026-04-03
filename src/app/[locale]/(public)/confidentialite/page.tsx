@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Politique de confidentialité — Azaetogo",
+  title: "Politique de confidentialité — IQRA TOGO",
   description:
-    "Politique de confidentialité et protection des données personnelles de l'ONG Azaetogo.",
+    "Politique de confidentialité et protection des données personnelles de l'association IQRA TOGO.",
 }
 
 export default function ConfidentialitePage() {
@@ -34,11 +34,11 @@ export default function ConfidentialitePage() {
               title: "1. Responsable du traitement",
               content: (
                 <p className="text-sm text-gray-600">
-                  L'association <strong>Azaetogo</strong>, ONG humanitaire togolaise dont le
-                  siège est à Lomé, Togo, est responsable du traitement des données personnelles
+                  L'association <strong>IQRA TOGO</strong>, association togolaise dont le
+                  siège est à Quartier Limamwa, Tchamba, est responsable du traitement des données personnelles
                   collectées via ce site. Contact :{" "}
-                  <a href="mailto:contact@azaetogo.com" className="underline" style={{ color: "var(--azae-orange)" }}>
-                    contact@azaetogo.com
+                  <a href="mailto:contact@iqra-togo.com" className="underline" style={{ color: "var(--azae-orange)" }}>
+                    contact@iqra-togo.com
                   </a>.
                 </p>
               ),
@@ -118,8 +118,8 @@ export default function ConfidentialitePage() {
                   </ul>
                   <p className="pt-1">
                     Pour exercer ces droits, contactez-nous à{" "}
-                    <a href="mailto:contact@azaetogo.com" className="underline" style={{ color: "var(--azae-orange)" }}>
-                      contact@azaetogo.com
+                    <a href="mailto:contact@iqra-togo.com" className="underline" style={{ color: "var(--azae-orange)" }}>
+                      contact@iqra-togo.com
                     </a>.
                     Nous nous engageons à répondre dans un délai de 30 jours.
                   </p>

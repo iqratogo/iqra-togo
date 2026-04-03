@@ -40,7 +40,7 @@ export default function AdminSidebar() {
             className="font-[family-name:var(--font-playfair)] text-xl font-bold"
             style={{ color: "var(--azae-orange)" }}
           >
-            AZAETOGO
+            IQRA TOGO
           </span>
         </Link>
         <p className="mt-0.5 text-xs text-gray-400">Administration</p>

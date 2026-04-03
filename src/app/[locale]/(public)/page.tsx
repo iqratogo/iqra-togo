@@ -13,19 +13,35 @@ import LatestProjectsSection, { LatestProjectsSkeleton } from "./_components/Lat
 import LatestPostsSection, { LatestPostsSkeleton } from "./_components/LatestPostsSection"
 import PartnersSection, { PartnersSkeleton } from "./_components/PartnersSection"
 
-/* P3 — Shell statique mis en cache et revalidé toutes les 5 min */
 export const revalidate = 300
 
-/* ── Page ── */
-
 export default async function HomePage() {
-  const tHero = await getTranslations("home.hero")
+  const [tHero, tHome] = await Promise.all([
+    getTranslations("home.hero"),
+    getTranslations("home"),
+  ])
+
+  const PILLARS = [
+    {
+      icon: BookOpen,
+      title: tHome("pillars.p1_title"),
+      text: tHome("pillars.p1_text"),
+    },
+    {
+      icon: Heart,
+      title: tHome("pillars.p2_title"),
+      text: tHome("pillars.p2_text"),
+    },
+    {
+      icon: Sunrise,
+      title: tHome("pillars.p3_title"),
+      text: tHome("pillars.p3_text"),
+    },
+  ]
 
   return (
     <>
-      {/* ═══════════════════════════════════════════
-          SECTION 1 — Hero (§5.1.1)
-      ═══════════════════════════════════════════ */}
+      {/* ═══════ SECTION 1 — Hero ═══════ */}
       <HeroSection
         badge={tHero("badge")}
         title={tHero("title")}
@@ -39,55 +55,31 @@ export default async function HomePage() {
         }}
       />
 
-      {/* ═══════════════════════════════════════════
-          SECTION 2 — Mission (§5.1.2)
-          Bandeau orangé + citation fondatrice + 3 piliers
-      ═══════════════════════════════════════════ */}
-
-      {/* §5.1.2 — Bandeau orangé full-width avec citation fondatrice */}
+      {/* ═══════ SECTION 2 — Citation + 3 piliers ═══════ */}
       <div
         className="w-full py-8 text-center text-white"
-        style={{ backgroundColor: "var(--azae-orange)" }}
+        style={{ backgroundColor: "var(--azae-navy)" }}
       >
         <div className="mx-auto max-w-3xl px-4 lg:px-8">
           <p className="font-[family-name:var(--font-playfair)] text-lg font-medium italic leading-relaxed lg:text-xl">
-            &ldquo;Parce que chaque enfant mérite une chance, chaque famille mérite la dignité,
-            et chaque communauté mérite l'espoir — nous agissons.&rdquo;
+            &ldquo;{tHome("quote")}&rdquo;
           </p>
           <p className="mt-3 text-sm font-semibold uppercase tracking-widest text-white/80">
-            — Fondateurs d'Azaetogo, 2010
+            — {tHome("quote_author")}
           </p>
         </div>
       </div>
 
-      {/* §5.1.2 — 3 piliers iconographiques */}
       <section className="bg-white py-20">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
-            eyebrow="Notre Mission"
-            title="Ce qui nous anime"
-            subtitle="Depuis plus de 15 ans, Azaetogo agit au cœur des communautés togolaises pour un avenir plus juste."
+            eyebrow={tHome("pillars.eyebrow")}
+            title={tHome("pillars.title")}
+            subtitle={tHome("pillars.subtitle")}
             centered
           />
-
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {[
-              {
-                icon: BookOpen,
-                title: "Éducation",
-                text: "Nous finançons les frais scolaires et universitaires d'étudiants sans ressources pour leur permettre de construire leur avenir.",
-              },
-              {
-                icon: Heart,
-                title: "Soutien Social",
-                text: "Aide alimentaire, médicale et psychologique auprès des familles vulnérables dans toutes les régions du Togo.",
-              },
-              {
-                icon: Sunrise,
-                title: "Espoir",
-                text: "Programmes d'insertion, formations professionnelles et projets communautaires pour raviver la dignité et l'espoir.",
-              },
-            ].map(({ icon: Icon, title, text }) => (
+            {PILLARS.map(({ icon: Icon, title, text }) => (
               <div
                 key={title}
                 className="group rounded-xl border border-gray-100 p-6 shadow-sm transition-shadow duration-300 hover:shadow-md"
@@ -110,7 +102,7 @@ export default async function HomePage() {
                   className="mt-4 inline-flex items-center gap-1 text-sm font-medium transition-colors"
                   style={{ color: "var(--azae-orange)" }}
                 >
-                  En savoir plus <ArrowRight className="h-3.5 w-3.5" />
+                  {tHome("pillars.learn_more")} <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
             ))}
@@ -118,60 +110,48 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          SECTION 3 — Impact Chiffres (§5.1.3)
-          4 compteurs animés : familles, étudiants, projets, partenaires
-      ═══════════════════════════════════════════ */}
+      {/* ═══════ SECTION 3 — Impact ═══════ */}
       <section className="bg-[var(--azae-navy)] py-20">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader
-            eyebrow="Notre Impact"
-            title="Des chiffres qui parlent"
-            subtitle="Chaque année, notre engagement se traduit en actions concrètes et résultats mesurables."
+            eyebrow={tHome("impact.eyebrow")}
+            title={tHome("impact.title")}
+            subtitle={tHome("impact.subtitle")}
             centered
             dark
           />
           <div className="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">
-            <StatCounter value={1200} label="Familles aidées" suffix="+" dark />
-            <StatCounter value={450} label="Étudiants soutenus" suffix="+" dark />
-            <StatCounter value={38} label="Projets réalisés" dark />
-            <StatCounter value={24} label="Partenaires actifs" dark />
+            <StatCounter value={500} label={tHome("impact.students")} suffix="+" dark />
+            <StatCounter value={200} label={tHome("impact.orphans")} suffix="+" dark />
+            <StatCounter value={30} label={tHome("impact.trainings")} dark />
+            <StatCounter value={15} label={tHome("impact.partners_count")} dark />
           </div>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          SECTION 4 — Projets Récents (§5.1.4)
-          P1 — Suspense : la page s'affiche sans attendre la DB
-      ═══════════════════════════════════════════ */}
+      {/* ═══════ SECTION 4 — Projets ═══════ */}
       <Suspense fallback={<LatestProjectsSkeleton />}>
         <LatestProjectsSection />
       </Suspense>
 
-      {/* ═══════════════════════════════════════════
-          SECTION 5 — Témoignages (§5.1.5)
-          Carrousel autoplay 5s — dots + flèches
-      ═══════════════════════════════════════════ */}
+      {/* ═══════ SECTION 5 — Témoignages ═══════ */}
       <TestimonialsCarousel />
 
-      {/* ═══════════════════════════════════════════
-          SECTION 6 — Appel aux Dons (§5.1.6)
-      ═══════════════════════════════════════════ */}
-      <section className="bg-orange-50 py-20">
+      {/* ═══════ SECTION 6 — Dons ═══════ */}
+      <section className="bg-green-50 py-20">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-2">
-            {/* Texte + widget */}
             <div className="space-y-6">
               <SectionHeader
-                eyebrow="Soutenir notre cause"
-                title="Votre don change une vie"
-                subtitle="1 000 FCFA peuvent couvrir les fournitures scolaires d'un enfant pour un mois. Chaque geste compte, quelle que soit sa taille."
+                eyebrow={tHome("donate.section_eyebrow")}
+                title={tHome("donate.section_title")}
+                subtitle={tHome("donate.section_subtitle")}
               />
               <ul className="space-y-2 text-sm text-gray-600">
                 {[
-                  "Paiement 100 % sécurisé via PayDunya",
-                  "Reçu fiscal disponible sur demande",
-                  "Transparence totale sur l'utilisation des fonds",
+                  tHome("donate.bullet1"),
+                  tHome("donate.bullet2"),
+                  tHome("donate.bullet3"),
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-2">
                     <span
@@ -184,8 +164,6 @@ export default async function HomePage() {
               </ul>
               <DonationWidget />
             </div>
-
-            {/* Image émotionnelle §5.1.6 */}
             <div className="relative hidden h-[520px] overflow-hidden rounded-2xl lg:block">
               <Image
                 src="https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=800&q=80"
@@ -200,24 +178,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          SECTION 7 — Actualités (§5.1.7)
-          P1 — Suspense : stream indépendant des projets
-      ═══════════════════════════════════════════ */}
+      {/* ═══════ SECTION 7 — Actualités ═══════ */}
       <Suspense fallback={<LatestPostsSkeleton />}>
         <LatestPostsSection />
       </Suspense>
 
-      {/* ═══════════════════════════════════════════
-          SECTION 8 — Newsletter (§5.1.9)
-          Bandeau double opt-in avant les partenaires
-      ═══════════════════════════════════════════ */}
+      {/* ═══════ SECTION 8 — Newsletter ═══════ */}
       <NewsletterBand />
 
-      {/* ═══════════════════════════════════════════
-          SECTION 9 — Partenaires (§5.1.8)
-          P1 — Suspense : ne bloque pas le reste de la page
-      ═══════════════════════════════════════════ */}
+      {/* ═══════ SECTION 9 — Partenaires ═══════ */}
       <Suspense fallback={<PartnersSkeleton />}>
         <PartnersSection />
       </Suspense>

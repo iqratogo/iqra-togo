@@ -8,9 +8,9 @@ import PostCard, { type Post } from "@/components/ui/PostCard"
 import SectionHeader from "@/components/ui/SectionHeader"
 
 export const metadata: Metadata = {
-  title: "Actualités — Azaetogo",
+  title: "Actualités — IQRA TOGO",
   description:
-    "Suivez les projets, communiqués officiels et partenariats de l'ONG Azaetogo au Togo.",
+    "Suivez les projets, communiqués officiels et partenariats de l'association IQRA TOGO au Togo.",
 }
 
 async function getLatestByCategory(category: "PROJET" | "COMMUNIQUE", take = 3): Promise<Post[]> {
@@ -95,7 +95,7 @@ export default async function ActualitesPage() {
             Actualités
           </h1>
           <p className="mt-4 max-w-xl text-white/80">
-            Projets, communiqués officiels et partenariats — toute l'actualité d'Azaetogo.
+            Projets, communiqués officiels et partenariats — toute l'actualité d'IQRA TOGO.
           </p>
           {/* Navigation rapide §5.4 */}
           <div className="mt-8 flex flex-wrap gap-3">

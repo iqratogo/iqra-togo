@@ -5,9 +5,9 @@ import Link from "next/link"
 import SignupForm from "./_components/SignupForm"
 
 export const metadata: Metadata = {
-  title: "Demande d'adhésion — Azaetogo",
+  title: "Demande d'adhésion — IQRA TOGO",
   description:
-    "Rejoignez l'ONG Azaetogo ! Remplissez le formulaire d'adhésion pour devenir membre et participer à notre mission humanitaire au Togo.",
+    "Rejoignez l'association IQRA TOGO ! Remplissez le formulaire d'adhésion pour devenir membre et participer à notre mission humanitaire au Togo.",
 }
 
 export default function SignupPage() {
@@ -21,7 +21,7 @@ export default function SignupPage() {
               className="font-[family-name:var(--font-playfair)] text-3xl font-bold"
               style={{ color: "var(--azae-orange)" }}
             >
-              AZAETOGO
+              IQRA TOGO
             </span>
           </Link>
           <h1

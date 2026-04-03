@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Page introuvable — Azaetogo",
+  title: "Page introuvable — IQRA TOGO",
   description: "La page que vous cherchez n'existe pas ou a été déplacée.",
 }
 

@@ -10,7 +10,7 @@ import { Heart } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-export const metadata: Metadata = { title: "Mes dons — Azaetogo" }
+export const metadata: Metadata = { title: "Mes dons — IQRA TOGO" }
 
 export default async function DonsMEmbrePage() {
   const session = await auth()
@@ -56,7 +56,7 @@ export default async function DonsMEmbrePage() {
           <Heart className="mx-auto mb-3 h-10 w-10 text-gray-300" />
           <p className="text-sm text-gray-500">Vous n'avez pas encore fait de don</p>
           <Link href="/dons" className="mt-4 inline-block text-sm text-[var(--azae-orange)] hover:underline">
-            Soutenir Azaetogo →
+            Soutenir IQRA TOGO →
           </Link>
         </div>
       ) : (

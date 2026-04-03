@@ -17,7 +17,7 @@ const sourceSans3 = Source_Sans_3({
   weight: ["300", "400", "600", "700"],
 })
 
-const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://azaetogo.togo"
+const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://iqratogo.org"
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -28,15 +28,15 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(BASE),
   title: {
-    default: "Azaetogo — ONG Humanitaire Togolaise",
-    template: "%s — Azaetogo",
+    default: "IQRA TOGO — Le savoir, la liberté",
+    template: "%s — IQRA TOGO",
   },
   description:
-    "Azaetogo soutient les familles et étudiants togolais dans leur accès à l'éducation et au bien-être social.",
-  keywords: ["ONG", "Togo", "humanitaire", "éducation", "solidarité", "Azaetogo", "Lomé"],
-  authors: [{ name: "Azaetogo" }],
-  creator: "Azaetogo",
-  publisher: "Azaetogo",
+    "IQRA TOGO accompagne les élèves et étudiants, soutient les orphelins et renforce les capacités des bénéficiaires togolais.",
+  keywords: ["association", "Togo", "éducation", "orphelins", "orientation scolaire", "IQRA TOGO", "Lomé", "renforcement de capacités"],
+  authors: [{ name: "IQRA TOGO" }],
+  creator: "IQRA TOGO",
+  publisher: "IQRA TOGO",
   robots: {
     index: true,
     follow: true,
@@ -52,25 +52,25 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     alternateLocale: "en_US",
-    siteName: "Azaetogo",
-    title: "Azaetogo — ONG Humanitaire Togolaise",
+    siteName: "IQRA TOGO",
+    title: "IQRA TOGO — Le savoir, la liberté",
     description:
-      "Azaetogo soutient les familles et étudiants togolais dans leur accès à l'éducation et au bien-être social.",
+      "IQRA TOGO accompagne les élèves et étudiants, soutient les orphelins et renforce les capacités des bénéficiaires togolais.",
     url: BASE,
     images: [
       {
         url: `${BASE}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "Azaetogo — ONG Humanitaire Togolaise",
+        alt: "IQRA TOGO — Le savoir, la liberté",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Azaetogo — ONG Humanitaire Togolaise",
+    title: "IQRA TOGO — Le savoir, la liberté",
     description:
-      "Azaetogo soutient les familles et étudiants togolais dans leur accès à l'éducation et au bien-être social.",
+      "IQRA TOGO accompagne les élèves et étudiants, soutient les orphelins et renforce les capacités des bénéficiaires togolais.",
     images: [`${BASE}/og-image.png`],
   },
   icons: {
@@ -91,24 +91,25 @@ export const metadata: Metadata = {
   },
 }
 
-/* JSON-LD Organisation (NGO) */
+/* JSON-LD Organisation */
 const orgJsonLd = {
   "@context": "https://schema.org",
   "@type": "NGO",
-  name: "Azaetogo",
-  alternateName: "AZAE Togo",
+  name: "IQRA TOGO",
+  alternateName: "IQRA Togo",
   url: BASE,
   logo: `${BASE}/og-image.png`,
   description:
-    "ONG humanitaire togolaise œuvrant pour l'accès à l'éducation et le bien-être des familles et étudiants togolais.",
+    "Association togolaise œuvrant pour l'orientation scolaire, le soutien aux orphelins et le renforcement des capacités. Devise : Le savoir, la liberté.",
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Lomé",
+    streetAddress: "Quartier Limamwa",
+    addressLocality: "Tchamba",
     addressCountry: "TG",
   },
   contactPoint: {
     "@type": "ContactPoint",
-    email: "contact@azaetogo.com",
+    email: "contact@iqra-togo.com",
     contactType: "customer service",
     availableLanguage: ["French", "English"],
   },

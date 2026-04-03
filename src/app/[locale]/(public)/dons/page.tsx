@@ -7,9 +7,9 @@ import { prisma } from "@/lib/db/prisma"
 import DonationWidget from "@/components/ui/DonationWidget"
 
 export const metadata: Metadata = {
-  title: "Faire un don — Azaetogo",
+  title: "Faire un don — IQRA TOGO",
   description:
-    "Soutenez l'ONG Azaetogo avec un don en ligne via PayDunya. Votre générosité finance l'éducation et le soutien social des familles togolaises.",
+    "Soutenez l'association IQRA TOGO avec un don en ligne via PayDunya. Votre générosité finance l'éducation et le soutien social des familles togolaises.",
 }
 
 type DonorMin = { donorFirstName: string | null; amount: number; affectation: string | null; createdAt: Date }

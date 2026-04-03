@@ -40,9 +40,9 @@ export async function createInvoice(
       description: payload.description,
     },
     store: {
-      name: process.env.NEXT_PUBLIC_APP_NAME ?? "Azaetogo",
-      tagline: "ONG Humanitaire Togolaise",
-      postal_address: "Lomé, Togo",
+      name: process.env.NEXT_PUBLIC_APP_NAME ?? "IQRA TOGO",
+      tagline: "Le savoir, la liberté",
+      postal_address: "Quartier Limamwa, Tchamba",
       website_url: appUrl,
       logo_url: `${appUrl}/logo.png`,
     },

@@ -8,7 +8,7 @@ import {
   Users, Heart, FileText, TrendingUp, Clock,
 } from "lucide-react"
 
-export const metadata: Metadata = { title: "Tableau de bord — Admin Azaetogo" }
+export const metadata: Metadata = { title: "Tableau de bord — Admin IQRA TOGO" }
 
 async function getDashboardData() {
   const now = new Date()
@@ -82,7 +82,7 @@ export default async function AdminDashboardPage() {
           Tableau de bord
         </h1>
         <p className="mt-1 text-sm text-gray-500">
-          Vue d'ensemble de l'activité Azaetogo —{" "}
+          Vue d'ensemble de l'activité IQRA TOGO —{" "}
           {format(new Date(), "d MMMM yyyy", { locale: fr })}
         </p>
       </div>

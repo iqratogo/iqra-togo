@@ -14,7 +14,7 @@
       "projects": "Projects",
       "projects_desc": "Our field actions, ongoing and completed in Togo.",
       "communiques": "Press Releases",
-      "communiques_desc": "Official positions and announcements from the NGO.",
+      "communiques_desc": "Official positions and announcements from the association.",
       "partners": "Partners",
       "partners_desc": "Discover the organizations that support our mission.",
       "see_all": "See all news →"
@@ -24,20 +24,43 @@
   },
   "home": {
     "hero": {
-      "badge": "Togolese Humanitarian NGO",
-      "title": "Together, we change lives in Togo",
-      "subtitle": "For over 15 years, Azaetogo has been supporting Togolese families and students in their access to education and social well-being.",
+      "badge": "Togolese Association — Knowledge is Freedom",
+      "title": "Knowledge as a path to freedom",
+      "subtitle": "IQRA TOGO guides students, supports orphans and builds the capacity of beneficiaries for a more educated and liberated Togo.",
       "donate_btn": "Donate",
       "discover_btn": "Discover our mission",
       "members": "active members",
       "projects_done": "completed projects",
-      "families": "families supported"
+      "families": "beneficiaries supported"
+    },
+    "quote": "Because knowledge is the key to all freedoms — we act every day so that every Togolese child can learn, grow and flourish.",
+    "quote_author": "Founders of IQRA TOGO",
+    "pillars": {
+      "eyebrow": "Our Mission",
+      "title": "What drives us",
+      "subtitle": "IQRA TOGO acts at the heart of Togolese communities around three pillars of change.",
+      "learn_more": "Learn more",
+      "p1_title": "Academic Guidance",
+      "p1_text": "We accompany students in their academic journey so they can build their future with confidence.",
+      "p2_title": "Support for Orphans",
+      "p2_text": "Material and financial aid for vulnerable children to ensure their dignity, protection and access to education.",
+      "p3_title": "Capacity Building",
+      "p3_text": "Practical training and workshops to develop the skills of beneficiaries and foster their independence."
+    },
+    "impact": {
+      "eyebrow": "Our Impact",
+      "title": "Numbers that speak",
+      "subtitle": "Every year, our commitment translates into concrete actions and measurable results.",
+      "students": "Students guided",
+      "orphans": "Orphans supported",
+      "trainings": "Training sessions",
+      "partners_count": "Active partners"
     },
     "mission": {
       "eyebrow": "Our Purpose",
       "title": "What drives us",
-      "p1": "For over 15 years, Azaetogo has worked to improve access to education, healthcare, and social integration for young people and families in Togo.",
-      "p2": "Every year, we support hundreds of beneficiaries through our assistance, training, and community development programs.",
+      "p1": "IQRA TOGO works to ensure that every Togolese child has access to knowledge, every orphan is supported, and every beneficiary can develop their capacities.",
+      "p2": "Every year, we support hundreds of beneficiaries through our guidance, support and capacity-building programs.",
       "discover_btn": "Discover our story"
     },
     "news": {
@@ -48,8 +71,18 @@
     "donate": {
       "eyebrow": "Take action",
       "title": "Support our mission",
-      "subtitle": "Every donation directly contributes to education and well-being for Togolese families.",
-      "donate_btn": "Donate now"
+      "subtitle": "Every donation directly contributes to education and well-being for Togolese children and families.",
+      "donate_btn": "Donate now",
+      "section_eyebrow": "Support our cause",
+      "section_title": "Your donation opens doors",
+      "section_subtitle": "1,000 FCFA can cover school supplies for an orphan for one month. Every gesture counts, no matter its size.",
+      "bullet1": "100% secure payment via PayDunya",
+      "bullet2": "Tax receipt available on request",
+      "bullet3": "Full transparency on how funds are used"
+    },
+    "testimonials": {
+      "eyebrow": "Testimonials",
+      "title": "Knowledge set them free"
     },
     "partners": {
       "title": "They trust us"
@@ -66,13 +99,13 @@
     }
   },
   "footer": {
-    "description": "Togolese humanitarian NGO working for access to education and well-being for Togolese families and students.",
+    "description": "Togolese association working for academic guidance, support for orphans and capacity building. Motto: Knowledge is Freedom.",
     "nav_title": "Navigation",
     "news_title": "Recent News",
     "contact_title": "Contact",
     "no_news": "No news at the moment.",
     "secure_payment": "Secure payment via PayDunya",
-    "official_ngo": "Official NGO Togo",
+    "official_ngo": "Official Association Togo",
     "rights": "All rights reserved.",
     "legal": "Legal Notice",
     "privacy": "Privacy Policy"
@@ -98,12 +131,34 @@
   "pages": {
     "about": {
       "title": "About Us",
-      "breadcrumb": "About"
+      "breadcrumb": "About",
+      "hero_title": "Our Story",
+      "origins_eyebrow": "Our Origins",
+      "origins_title": "A lasting commitment",
+      "origins_subtitle": "A look back at the key milestones that shaped the identity of IQRA TOGO.",
+      "identity_eyebrow": "Our Identity",
+      "identity_title": "What defines us",
+      "mission_label": "Mission",
+      "mission_question": "Why do we exist?",
+      "mission_text": "To give every Togolese child and young person the resources and support needed to access knowledge, exercise their freedom and build their future.",
+      "vision_label": "Vision",
+      "vision_question": "Where are we going?",
+      "vision_text": "A Togo where every child is guided on the right path, no orphan is left behind, and every citizen has the capacity to flourish.",
+      "values_label": "Values",
+      "values_question": "What guides us",
+      "programs_eyebrow": "Our Programs",
+      "programs_title": "Areas of action",
+      "programs_subtitle": "Three priority pillars driven by IQRA TOGO's motto: Knowledge is Freedom.",
+      "cta_title": "Join our mission",
+      "cta_subtitle": "Whether you are a professional, student, engaged citizen or company — there is a place for you in IQRA TOGO.",
+      "cta_join": "Become a member",
+      "cta_donate": "Donate",
+      "accueil": "Home"
     },
     "team": {
       "title": "Our Team",
       "breadcrumb": "Team",
-      "subtitle": "Men and women committed to the same conviction: taking concrete action for Togo.",
+      "subtitle": "Men and women committed to the same conviction: knowledge sets you free.",
       "join_title": "Join the team",
       "join_subtitle": "Would you like to contribute to our mission? We would be delighted to consider your application.",
       "join_btn": "Contact us",
@@ -116,11 +171,19 @@
       "no_bio": "No biography available.",
       "no_members_dept": "No members in this department at the moment.",
       "view_profile": "View profile",
-      "contact": "Contact"
+      "contact": "Contact",
+      "member": {
+        "missions_title": "Missions & Biography",
+        "contact_label": "Contact",
+        "no_bio": "No biography available at the moment.",
+        "back": "Back to team",
+        "cta_text": "Would you like to join the team or collaborate with us?",
+        "cta_btn": "Contact us"
+      }
     },
     "news": {
       "title": "News",
-      "subtitle": "Projects, press releases and partnerships — all the latest from Azaetogo.",
+      "subtitle": "Projects, press releases and partnerships — all the latest from IQRA TOGO.",
       "projects_section": "Recent Projects",
       "communiques_section": "Latest Press Releases",
       "partners_section": "Our Partners",
@@ -138,9 +201,14 @@
       "hours_title": "Office hours",
       "follow": "Follow us",
       "address": "Address",
-      "address_val": "Lomé, Togo",
+      "address_val": "Quartier Limamwa, Tchamba",
+      "email_label": "Email",
+      "phone_label": "Phone",
+      "whatsapp_label": "WhatsApp",
       "mon_fri": "Monday – Friday",
+      "mon_fri_val": "8:00 – 17:00",
       "sat": "Saturday",
+      "sat_val": "9:00 – 13:00",
       "sun": "Sunday",
       "closed": "Closed"
     },
@@ -150,13 +218,13 @@
     },
     "donate": {
       "title": "Make a donation",
-      "subtitle": "Your generosity changes lives in Togo."
+      "subtitle": "Your generosity opens doors in Togo."
     }
   },
   "meta": {
-    "site_name": "Azaetogo",
-    "default_title": "Azaetogo — Togolese Humanitarian NGO",
-    "default_description": "Azaetogo supports Togolese families and students in their access to education and social well-being.",
+    "site_name": "IQRA TOGO",
+    "default_title": "IQRA TOGO — Knowledge is Freedom",
+    "default_description": "IQRA TOGO guides students, supports orphans and builds the capacity of beneficiaries in Togo.",
     "og_locale": "en_US"
   }
 }

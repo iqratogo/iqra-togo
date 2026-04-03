@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Link } from "@/i18n/navigation"
 import { getTranslations, getLocale } from "next-intl/server"
 import { InstagramIcon, YoutubeIcon } from "@/components/ui/SocialIcons"
@@ -73,12 +74,13 @@ export default async function Footer() {
           {/* ── Col 1 : Logo + description + réseaux ── */}
           <div className="space-y-4">
             <Link href="/">
-              <span
-                className="font-[family-name:var(--font-playfair)] text-2xl font-bold"
-                style={{ color: "var(--azae-orange)" }}
-              >
-                AZAE TOGO
-              </span>
+              <Image
+                src="/logo-iqra.jpg"
+                alt="IQRA TOGO"
+                width={130}
+                height={44}
+                className="h-11 w-auto brightness-0 invert"
+              />
             </Link>
             <p className="text-sm leading-relaxed text-gray-300">
               {t("description")}
@@ -166,12 +168,12 @@ export default async function Footer() {
               {t("contact_title")}
             </h3>
             <address className="space-y-2 not-italic">
-              <p className="text-sm text-gray-300">Lomé, Togo</p>
+              <p className="text-sm text-gray-300">Quartier Limamwa, Tchamba</p>
               <a
-                href="mailto:contact@azaetogo.com"
+                href="mailto:contact@iqra-togo.com"
                 className="block text-sm text-gray-300 transition-colors hover:text-[var(--azae-orange)]"
               >
-                contact@azaetogo.com
+                contact@iqra-togo.com
               </a>
               <a
                 href="tel:+22890000000"
@@ -199,7 +201,7 @@ export default async function Footer() {
       {/* ── Barre bas ── */}
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-4 text-xs text-gray-400 sm:flex-row lg:px-8">
-          <p>© {new Date().getFullYear()} Azaetogo. {t("rights")}</p>
+          <p>© {new Date().getFullYear()} IQRA TOGO. {t("rights")}</p>
           <div className="flex gap-4">
             <Link href="/mentions-legales" className="transition-colors hover:text-[var(--azae-orange)]">
               {t("legal")}

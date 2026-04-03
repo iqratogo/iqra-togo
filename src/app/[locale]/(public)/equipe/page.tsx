@@ -1,16 +1,18 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Users } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 import { prisma } from "@/lib/db/prisma"
 import TeamGrid from "./_components/TeamGrid"
 
-/* P3 — Données équipe : revalidation toutes les heures */
 export const revalidate = 3600
 
-export const metadata = {
-  title: "Notre Équipe — Azaetogo",
-  description:
-    "Découvrez les membres dévoués de l'équipe Azaetogo qui œuvrent chaque jour pour les familles et étudiants togolais.",
+export async function generateMetadata() {
+  const t = await getTranslations("pages.team")
+  return {
+    title: `${t("title")} — IQRA TOGO`,
+    description: t("subtitle"),
+  }
 }
 
 async function getTeamMembers() {
@@ -39,7 +41,11 @@ async function getTeamMembers() {
 }
 
 export default async function TeamPage() {
-  const members = await getTeamMembers()
+  const [members, t, tNav] = await Promise.all([
+    getTeamMembers(),
+    getTranslations("pages.team"),
+    getTranslations("nav"),
+  ])
 
   return (
     <>
@@ -48,11 +54,11 @@ export default async function TeamPage() {
       ══════════════════════════ */}
       <section className="relative h-64 overflow-hidden lg:h-80">
         <Image
-          src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600&q=80"
-          alt="Équipe Azaetogo"
+          src="https://images.unsplash.com/photo-1509099955921-f0b4ed0c175c?w=1600&q=80"
+          alt="Équipe IQRA TOGO"
           fill
           priority
-          className="object-cover"
+          className="object-cover object-center"
           sizes="100vw"
         />
         <div
@@ -67,20 +73,17 @@ export default async function TeamPage() {
             <ol className="flex items-center gap-1.5">
               <li>
                 <Link href="/" className="hover:text-white">
-                  Accueil
+                  {tNav("home")}
                 </Link>
               </li>
               <li aria-hidden="true">/</li>
-              <li className="text-white">Équipe</li>
+              <li className="text-white">{t("breadcrumb")}</li>
             </ol>
           </nav>
           <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-white lg:text-5xl">
-            Notre Équipe
+            {t("title")}
           </h1>
-          <p className="max-w-xl text-sm text-white/75">
-            Des hommes et des femmes engagés, unis par la même conviction : agir concrètement
-            pour le Togo.
-          </p>
+          <p className="max-w-xl text-sm text-white/75">{t("subtitle")}</p>
         </div>
       </section>
 
@@ -89,21 +92,17 @@ export default async function TeamPage() {
       ══════════════════════════ */}
       <section className="bg-[#F5F5F5] py-16">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-
           {members.length > 0 ? (
             <TeamGrid members={members} />
           ) : (
-            /* État vide */
             <div className="flex flex-col items-center gap-4 py-20 text-center">
               <div
                 className="flex h-16 w-16 items-center justify-center rounded-full"
-                style={{ backgroundColor: "rgba(232,89,26,0.1)" }}
+                style={{ backgroundColor: "rgba(34,197,94,0.1)" }}
               >
                 <Users className="h-8 w-8" style={{ color: "var(--azae-orange)" }} />
               </div>
-              <p className="text-gray-400">
-                Les membres de l'équipe seront affichés ici prochainement.
-              </p>
+              <p className="text-gray-400">{t("empty")}</p>
             </div>
           )}
         </div>
@@ -116,7 +115,7 @@ export default async function TeamPage() {
         <div className="mx-auto max-w-3xl px-4 text-center lg:px-8">
           <div
             className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full"
-            style={{ backgroundColor: "rgba(232,89,26,0.1)" }}
+            style={{ backgroundColor: "rgba(34,197,94,0.1)" }}
           >
             <Users className="h-6 w-6" style={{ color: "var(--azae-orange)" }} />
           </div>
@@ -124,18 +123,15 @@ export default async function TeamPage() {
             className="font-[family-name:var(--font-playfair)] text-2xl font-bold lg:text-3xl"
             style={{ color: "var(--azae-navy)" }}
           >
-            Rejoindre l'équipe
+            {t("join_title")}
           </h2>
-          <p className="mt-3 text-gray-500">
-            Vous souhaitez contribuer à notre mission en tant que bénévole, expert ou
-            partenaire ? Nous serions ravis d'étudier votre candidature.
-          </p>
+          <p className="mt-3 text-gray-500">{t("join_subtitle")}</p>
           <Link
             href="/contact?sujet=benevolat"
             className="mt-6 inline-flex items-center rounded-lg px-6 py-3 text-sm font-semibold text-white transition-colors hover:opacity-90"
             style={{ backgroundColor: "var(--azae-orange)" }}
           >
-            Nous contacter
+            {t("join_btn")}
           </Link>
         </div>
       </section>

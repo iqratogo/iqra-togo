@@ -48,7 +48,7 @@ function ConfirmerContent() {
               className="font-[family-name:var(--font-playfair)] text-3xl font-bold"
               style={{ color: "var(--azae-orange)" }}
             >
-              AZAETOGO
+              IQRA TOGO
             </span>
           </Link>
         </div>
@@ -74,7 +74,7 @@ function ConfirmerContent() {
                 Inscription confirmée !
               </h1>
               <p className="text-gray-600">
-                Merci ! Vous recevrez désormais les actualités d'Azaetogo dans votre boîte mail.
+                Merci ! Vous recevrez désormais les actualités d'IQRA TOGO dans votre boîte mail.
               </p>
               <Button
                 asChild

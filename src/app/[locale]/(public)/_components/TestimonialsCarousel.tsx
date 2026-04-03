@@ -20,50 +20,50 @@ const TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
     name: "Ama Kodjovi",
-    role: "Bénéficiaire — Bourse éducation",
-    location: "Lomé, Togo",
+    role: "Bénéficiaire — Orientation scolaire",
+    location: "Quartier Limamwa, Tchamba",
     quote:
-      "Grâce à Azaetogo, j'ai pu financer mes études de droit à l'université de Lomé. Sans leur soutien, ma famille n'en aurait jamais eu les moyens. Aujourd'hui, je suis avocate et je veux à mon tour aider les autres.",
+      "Grâce à IQRA TOGO, j'ai été bien orientée vers la filière qui correspond vraiment à mes aptitudes. Aujourd'hui je prépare un master en informatique et je sais exactement pourquoi je travaille. Le savoir m'a libérée.",
     initials: "AK",
-    color: "#E8591A",
+    color: "#22c55e",
   },
   {
     id: 2,
     name: "Koffi Mensah",
-    role: "Parent bénéficiaire",
+    role: "Tuteur d'un orphelin soutenu",
     location: "Kpalimé, Togo",
     quote:
-      "Mon fils avait abandonné l'école faute de moyens. L'association nous a contactés et a pris en charge tous ses frais de scolarité. Il vient de terminer son baccalauréat avec mention. C'est un miracle pour notre famille.",
+      "Mon neveu orphelin allait abandonner l'école. IQRA TOGO a pris en charge ses fournitures et ses frais de scolarité. Il vient de terminer son baccalauréat avec mention. Sans eux, cela n'aurait jamais été possible.",
     initials: "KM",
     color: "#1A2B4A",
   },
   {
     id: 3,
     name: "Efua Asante",
-    role: "Étudiante en médecine",
+    role: "Bénéficiaire — Renforcement de capacités",
     location: "Sokodé, Togo",
     quote:
-      "Le programme de soutien d'Azaetogo m'a permis de suivre mes études de médecine sans interruption. Leur accompagnement va bien au-delà du financier : ils croient en nous et cela fait toute la différence.",
+      "La formation en gestion de projet que j'ai suivie avec IQRA TOGO a transformé ma façon de travailler. J'ai pu décrocher un emploi stable trois mois après. Leur devise, je la vis maintenant : le savoir, c'est vraiment la liberté.",
     initials: "EA",
     color: "#2E7D5E",
   },
   {
     id: 4,
     name: "Yawa Agbeko",
-    role: "Mère de famille",
+    role: "Mère d'un orphelin accompagné",
     location: "Atakpamé, Togo",
     quote:
-      "L'aide alimentaire et le soutien médical d'Azaetogo nous ont sauvé la vie lors d'une période très difficile. Cette organisation incarne la solidarité vraie, celle qui ne demande rien en retour.",
+      "IQRA TOGO a pris soin de mon fils après le décès de mon mari. Au-delà du soutien matériel, ils lui ont apporté un suivi scolaire régulier. Cette association incarne une solidarité vraie et généreuse.",
     initials: "YA",
-    color: "#E8591A",
+    color: "#22c55e",
   },
   {
     id: 5,
     name: "Kossi Dodzi",
-    role: "Jeune entrepreneur",
+    role: "Jeune professionnel orienté",
     location: "Tsévié, Togo",
     quote:
-      "La formation professionnelle que j'ai suivie grâce à Azaetogo m'a permis de lancer ma propre activité. Trois ans après, j'emploie quatre personnes de mon quartier. L'espoir, ça se transmet.",
+      "Sans le programme d'orientation d'IQRA TOGO, j'aurais suivi une filière qui ne me correspondait pas. Leur accompagnement m'a aidé à trouver ma voie. Aujourd'hui j'exerce un métier que j'aime vraiment.",
     initials: "KD",
     color: "#1A2B4A",
   },
@@ -105,7 +105,7 @@ export default function TestimonialsCarousel() {
             className="font-[family-name:var(--font-playfair)] text-3xl font-bold lg:text-4xl"
             style={{ color: "var(--azae-navy)" }}
           >
-            Ils ont changé grâce à vous
+            Le savoir les a libérés
           </h2>
         </div>
 

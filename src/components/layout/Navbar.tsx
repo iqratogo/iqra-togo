@@ -2,6 +2,7 @@
 
 /* §6.1 Navigation principale — Navbar desktop mega-menu + drawer mobile */
 
+import Image from "next/image"
 import { usePathname, Link } from "@/i18n/navigation"
 import { useState, useEffect, useRef, Fragment } from "react"
 import { useLocale, useTranslations } from "next-intl"
@@ -135,12 +136,14 @@ export default function Navbar() {
 
         {/* ── Logo ── */}
         <Link href="/" className="flex-shrink-0">
-          <span
-            className="font-[family-name:var(--font-playfair)] text-2xl font-bold tracking-wide"
-            style={{ color: "var(--azae-orange)" }}
-          >
-            AZAETOGO
-          </span>
+          <Image
+            src="/logo-iqra.jpg"
+            alt="IQRA TOGO"
+            width={140}
+            height={48}
+            className="h-12 w-auto"
+            priority
+          />
         </Link>
 
         {/* ── Desktop navigation ── */}
@@ -208,8 +211,8 @@ export default function Navbar() {
                             href={href}
                             onClick={() => setMegaOpen(false)}
                             className={cn(
-                              "group flex flex-col gap-2 rounded-lg p-4 transition-colors hover:bg-orange-50",
-                              isActive && "bg-orange-50"
+                              "group flex flex-col gap-2 rounded-lg p-4 transition-colors hover:bg-green-50",
+                              isActive && "bg-green-50"
                             )}
                           >
                             <div
@@ -311,12 +314,13 @@ export default function Navbar() {
 
           <SheetContent side="right" className="flex w-80 flex-col p-0">
             <div className="flex items-center justify-between border-b px-4 py-3">
-              <span
-                className="font-[family-name:var(--font-playfair)] text-xl font-bold"
-                style={{ color: "var(--azae-orange)" }}
-              >
-                AZAETOGO
-              </span>
+              <Image
+                src="/logo-iqra.jpg"
+                alt="IQRA TOGO"
+                width={100}
+                height={36}
+                className="h-9 w-auto"
+              />
               <div className="flex items-center gap-2">
                 <LanguageSwitcher />
                 <button

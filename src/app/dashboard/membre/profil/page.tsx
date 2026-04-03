@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db/prisma"
 import { redirect } from "next/navigation"
 import ProfilForm from "./_components/ProfilForm"
 
-export const metadata: Metadata = { title: "Mon profil — Azaetogo" }
+export const metadata: Metadata = { title: "Mon profil — IQRA TOGO" }
 
 export default async function ProfilPage() {
   const session = await auth()

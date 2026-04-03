@@ -68,7 +68,7 @@ export default function HeroSection({
         <div className="max-w-3xl">
           <motion.p
             {...fadeUp(0, mounted)}
-            className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-orange-300"
+            className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-green-300"
           >
             {badge}
           </motion.p>

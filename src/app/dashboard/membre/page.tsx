@@ -9,7 +9,7 @@ import { fr } from "date-fns/locale"
 import { User, CreditCard, Heart, CheckCircle, Clock } from "lucide-react"
 import Link from "next/link"
 
-export const metadata: Metadata = { title: "Mon espace — Azaetogo" }
+export const metadata: Metadata = { title: "Mon espace — IQRA TOGO" }
 
 export default async function MembreDashboardPage() {
   const session = await auth()
@@ -39,7 +39,7 @@ export default async function MembreDashboardPage() {
           Bonjour, {(session.user as { name?: string })?.name?.split(" ")[0] ?? "Membre"} 👋
         </h1>
         <p className="mt-1 text-sm text-gray-500">
-          Bienvenue dans votre espace personnel Azaetogo —{" "}
+          Bienvenue dans votre espace personnel IQRA TOGO —{" "}
           {format(new Date(), "d MMMM yyyy", { locale: fr })}
         </p>
       </div>

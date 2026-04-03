@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Mentions légales — Azaetogo",
-  description: "Mentions légales de l'ONG Azaetogo, organisation humanitaire togolaise.",
+  title: "Mentions légales — IQRA TOGO",
+  description: "Mentions légales de l'association IQRA TOGO — Le savoir, la liberté.",
 }
 
 export default function MentionsLegalesPage() {
@@ -34,12 +34,12 @@ export default function MentionsLegalesPage() {
               title: "1. Identification de l'organisation",
               content: (
                 <ul className="space-y-1 text-sm text-gray-600">
-                  <li><strong>Dénomination :</strong> Association Azaetogo</li>
-                  <li><strong>Statut :</strong> Organisation Non Gouvernementale (ONG) à but non lucratif</li>
-                  <li><strong>Siège social :</strong> Lomé, République Togolaise</li>
+                  <li><strong>Dénomination :</strong> Association IQRA TOGO</li>
+                  <li><strong>Statut :</strong> Association à but non lucratif</li>
+                  <li><strong>Siège social :</strong> Quartier Limamwa, Tchamba, République Togolaise</li>
                   <li><strong>Email :</strong>{" "}
-                    <a href="mailto:contact@azaetogo.com" className="underline" style={{ color: "var(--azae-orange)" }}>
-                      contact@azaetogo.com
+                    <a href="mailto:contact@iqra-togo.com" className="underline" style={{ color: "var(--azae-orange)" }}>
+                      contact@iqra-togo.com
                     </a>
                   </li>
                   <li><strong>Téléphone :</strong> +228 90 00 00 00</li>
@@ -47,13 +47,14 @@ export default function MentionsLegalesPage() {
               ),
             },
             {
-              title: "2. Directeur de la publication",
+              title: "2. Directrice de la publication",
               content: (
                 <p className="text-sm text-gray-600">
-                  Le directeur de la publication est le représentant légal de l'association Azaetogo.
+                  La directrice de la publication est <strong>Mme OUKPEDJO Radiatou</strong>,
+                  présidente de l'association IQRA TOGO.
                   Pour toute demande, merci de contacter{" "}
-                  <a href="mailto:contact@azaetogo.com" className="underline" style={{ color: "var(--azae-orange)" }}>
-                    contact@azaetogo.com
+                  <a href="mailto:contact@iqra-togo.com" className="underline" style={{ color: "var(--azae-orange)" }}>
+                    contact@iqra-togo.com
                   </a>.
                 </p>
               ),
@@ -73,7 +74,7 @@ export default function MentionsLegalesPage() {
               content: (
                 <p className="text-sm text-gray-600">
                   L'ensemble des contenus présents sur ce site (textes, images, vidéos, logos,
-                  icônes, etc.) sont la propriété exclusive de l'association Azaetogo ou de leurs
+                  icônes, etc.) sont la propriété exclusive de l'association IQRA TOGO ou de leurs
                   auteurs respectifs. Toute reproduction, représentation, modification ou
                   exploitation de tout ou partie des contenus sans autorisation préalable et
                   écrite est strictement interdite.
@@ -84,7 +85,7 @@ export default function MentionsLegalesPage() {
               title: "5. Responsabilité",
               content: (
                 <p className="text-sm text-gray-600">
-                  L'association Azaetogo s'efforce d'assurer l'exactitude et la mise à jour des
+                  L'association IQRA TOGO s'efforce d'assurer l'exactitude et la mise à jour des
                   informations diffusées sur ce site. Elle ne saurait être tenue responsable
                   des erreurs, omissions ou d'une absence de disponibilité des informations.
                   L'association se réserve le droit de modifier les contenus à tout moment et
@@ -96,7 +97,7 @@ export default function MentionsLegalesPage() {
               title: "6. Liens hypertextes",
               content: (
                 <p className="text-sm text-gray-600">
-                  Le site peut contenir des liens vers des sites externes. L'association Azaetogo
+                  Le site peut contenir des liens vers des sites externes. L'association IQRA TOGO
                   ne contrôle pas ces sites et décline toute responsabilité quant à leur contenu.
                   La mise en place d'un lien vers ce site nécessite l'autorisation préalable de
                   l'association.
@@ -108,8 +109,8 @@ export default function MentionsLegalesPage() {
               content: (
                 <p className="text-sm text-gray-600">
                   Les présentes mentions légales sont régies par le droit togolais. Tout litige
-                  relatif à l'utilisation de ce site sera soumis à la juridiction compétente de
-                  Lomé, Togo.
+                  relatif à l'utilisation de ce site sera soumis à la juridiction compétente
+                  de Tchamba, Togo.
                 </p>
               ),
             },

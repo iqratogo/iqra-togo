@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================================
-   AZAETOGO — Design System (Tailwind CSS v4)
+   IQRA TOGO — Design System (Tailwind CSS v4)
    ============================================================ */
 
 @theme {
@@ -9,20 +9,20 @@
      COULEURS PRIMAIRES
      ---------------------------------------------------------- */
 
-  /* Orangé — couleur principale */
-  --color-orange-50: #fef0ea;
-  --color-orange-100: #fcd9c7;
-  --color-orange-200: #f9b593;
-  --color-orange-300: #f5905f;
-  --color-orange-400: #f07a45;
-  --color-orange-500: #e8591a;
-  --color-orange-600: #c44a14;
-  --color-orange-700: #a03c10;
-  --color-orange-800: #7c2e0c;
-  --color-orange-900: #581f08;
-  --color-orange-primary: #e8591a;
-  --color-orange-light: #f07a45;
-  --color-orange-dark: #c44a14;
+  /* Vert vif — couleur principale */
+  --color-orange-50: #f0fdf4;
+  --color-orange-100: #dcfce7;
+  --color-orange-200: #bbf7d0;
+  --color-orange-300: #86efac;
+  --color-orange-400: #4ade80;
+  --color-orange-500: #22c55e;
+  --color-orange-600: #16a34a;
+  --color-orange-700: #15803d;
+  --color-orange-800: #166534;
+  --color-orange-900: #14532d;
+  --color-orange-primary: #22c55e;
+  --color-orange-light: #4ade80;
+  --color-orange-dark: #16a34a;
 
   /* Navy — couleur secondaire */
   --color-navy-50: #e8ebf0;
@@ -140,13 +140,13 @@
 }
 
 /* ============================================================
-   VARIABLES CSS GLOBALES — Design Tokens Azaetogo
+   VARIABLES CSS GLOBALES — Design Tokens IQRA TOGO
    ============================================================ */
 :root {
   /* Palette principale */
-  --azae-orange: #e8591a;
-  --azae-orange-light: #f07a45;
-  --azae-orange-dark: #c44a14;
+  --azae-orange: #22c55e;
+  --azae-orange-light: #4ade80;
+  --azae-orange-dark: #16a34a;
 
   --azae-navy: #1a2b4a;
   --azae-navy-light: #2c4070;
@@ -163,7 +163,7 @@
   --muted-foreground: #6b7280;
   --border: #e5e7eb;
   --input: #ffffff;
-  --ring: #e8591a;
+  --ring: #22c55e;
 
   /* Carte / Popover */
   --card: #ffffff;
@@ -172,8 +172,8 @@
   --popover-foreground: #1a2b4a;
 
   /* Statuts sémantiques */
-  /* §10 PRD WCAG 2.1 AA — #c44a14 donne 4.74:1 sur blanc (texte blanc sur bouton) */
-  --primary: #c44a14;
+  /* §10 PRD WCAG 2.1 AA — #16a34a donne un bon contraste sur blanc (texte blanc sur bouton) */
+  --primary: #16a34a;
   --primary-foreground: #ffffff;
   --secondary: #1a2b4a;
   --secondary-foreground: #ffffff;
@@ -226,9 +226,9 @@ body {
   }
 }
 
-/* Sélection de texte aux couleurs Azaetogo */
+/* Sélection de texte aux couleurs IQRA TOGO */
 ::selection {
-  background-color: var(--azae-orange);
+  background-color: var(--azae-navy);
   color: #ffffff;
 }
 

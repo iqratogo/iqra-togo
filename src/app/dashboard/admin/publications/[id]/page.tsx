@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db/prisma"
 import { notFound } from "next/navigation"
 import PublicationForm from "../_components/PublicationForm"
 
-export const metadata: Metadata = { title: "Modifier publication — Admin Azaetogo" }
+export const metadata: Metadata = { title: "Modifier publication — Admin IQRA TOGO" }
 
 export default async function EditPublicationPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

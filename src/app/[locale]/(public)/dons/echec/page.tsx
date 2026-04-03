@@ -5,7 +5,7 @@ import Link from "next/link"
 import { XCircle, RefreshCw, Home } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Paiement non abouti — Azaetogo",
+  title: "Paiement non abouti — IQRA TOGO",
 }
 
 export default function DonsEchecPage() {
@@ -33,8 +33,8 @@ export default function DonsEchecPage() {
         <div className="mt-8 rounded-xl border border-orange-200 bg-orange-50 p-4 text-sm text-orange-800">
           Vous pouvez réessayer à tout moment. Si le problème persiste,
           contactez-nous à{" "}
-          <a href="mailto:contact@azaetogo.com" className="font-medium underline">
-            contact@azaetogo.com
+          <a href="mailto:contact@iqra-togo.com" className="font-medium underline">
+            contact@iqra-togo.com
           </a>
         </div>
 
