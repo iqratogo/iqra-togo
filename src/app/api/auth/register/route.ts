@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
     const dossierNumber = `DOSSIER-${String(count + 1).padStart(4, "0")}`
 
     /* Création user + demande d'adhésion dans une transaction */
-    await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
         data: {
           name: `${data.firstName} ${data.lastName}`,

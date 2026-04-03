@@ -442,16 +442,31 @@ model Media {
 // ============================================================
 
 model NewsletterSubscriber {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  isConfirmed   Boolean   @default(false)
-  confirmToken  String?   @unique
-  confirmedAt   DateTime?
+  id             String    @id @default(cuid())
+  email          String    @unique
+  isConfirmed    Boolean   @default(false)
+  confirmToken   String?   @unique
+  confirmedAt    DateTime?
   unsubscribedAt DateTime?
+  tags           String[]  @default([])
 
-  createdAt     DateTime  @default(now())
+  createdAt      DateTime  @default(now())
 
   @@map("newsletter_subscribers")
+}
+
+model NewsletterCampaign {
+  id          String   @id @default(cuid())
+  subject     String
+  previewText String?
+  htmlContent String   @db.Text
+  recipients  Int      @default(0)
+  status      String   @default("sent") // "sent" | "test"
+  segment     String?  // tag ciblé, null = tous les confirmés
+
+  sentAt      DateTime @default(now())
+
+  @@map("newsletter_campaigns")
 }
 
 // ============================================================

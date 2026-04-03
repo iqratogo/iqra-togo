@@ -6,9 +6,7 @@ import {
   Phone,
   ChevronLeft,
   UserRound,
-  Facebook,
-  Linkedin,
-  Twitter,
+  ExternalLink,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { prisma } from "@/lib/db/prisma"
@@ -156,15 +154,15 @@ export default async function TeamMemberPage({
 
               {/* Réseaux sociaux */}
               {(member.facebookUrl || member.linkedinUrl || member.twitterUrl) && (
-                <div className="flex gap-2 pt-1">
+                <div className="flex flex-wrap gap-2 pt-1">
                   {member.facebookUrl && (
-                    <SocialLink href={member.facebookUrl} icon={Facebook} label="Facebook" />
+                    <SocialLink href={member.facebookUrl} label="Facebook" />
                   )}
                   {member.linkedinUrl && (
-                    <SocialLink href={member.linkedinUrl} icon={Linkedin} label="LinkedIn" />
+                    <SocialLink href={member.linkedinUrl} label="LinkedIn" />
                   )}
                   {member.twitterUrl && (
-                    <SocialLink href={member.twitterUrl} icon={Twitter} label="Twitter" />
+                    <SocialLink href={member.twitterUrl} label="Twitter/X" />
                   )}
                 </div>
               )}
@@ -239,24 +237,16 @@ export default async function TeamMemberPage({
 
 /* ── Helper ── */
 
-function SocialLink({
-  href,
-  icon: Icon,
-  label,
-}: {
-  href: string
-  icon: React.ElementType
-  label: string
-}) {
+function SocialLink({ href, label }: { href: string; label: string }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={label}
-      className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition-colors hover:border-[var(--azae-orange)] hover:text-[var(--azae-orange)]"
+      className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-500 transition-colors hover:border-[var(--azae-orange)] hover:text-[var(--azae-orange)]"
     >
-      <Icon className="h-4 w-4" />
+      <ExternalLink className="h-3 w-3" />
+      {label}
     </a>
   )
 }

@@ -1,11 +1,9 @@
 import { Suspense } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { BookOpen, Heart, Sunrise, ArrowRight } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import SectionHeader from "@/components/ui/SectionHeader"
 import StatCounter from "@/components/ui/StatCounter"
-import DonationWidget from "@/components/ui/DonationWidget"
 import HeroSection from "./_components/HeroSection"
 import TestimonialsCarousel from "./_components/TestimonialsCarousel"
 import NewsletterBand from "./_components/NewsletterBand"
@@ -136,47 +134,6 @@ export default async function HomePage() {
 
       {/* ═══════ SECTION 5 — Témoignages ═══════ */}
       <TestimonialsCarousel />
-
-      {/* ═══════ SECTION 6 — Dons ═══════ */}
-      <section className="bg-green-50 py-20">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            <div className="space-y-6">
-              <SectionHeader
-                eyebrow={tHome("donate.section_eyebrow")}
-                title={tHome("donate.section_title")}
-                subtitle={tHome("donate.section_subtitle")}
-              />
-              <ul className="space-y-2 text-sm text-gray-600">
-                {[
-                  tHome("donate.bullet1"),
-                  tHome("donate.bullet2"),
-                  tHome("donate.bullet3"),
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-2">
-                    <span
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{ backgroundColor: "var(--azae-orange)" }}
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <DonationWidget />
-            </div>
-            <div className="relative hidden h-[520px] overflow-hidden rounded-2xl lg:block">
-              <Image
-                src="https://images.unsplash.com/photo-1544717302-de2939b7ef71?w=800&q=80"
-                alt="Enfant qui étudie au Togo"
-                fill
-                className="object-cover"
-                sizes="(min-width: 1024px) 50vw, 0px"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--azae-navy)]/30 to-transparent" />
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ═══════ SECTION 7 — Actualités ═══════ */}
       <Suspense fallback={<LatestPostsSkeleton />}>

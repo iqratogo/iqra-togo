@@ -182,6 +182,7 @@ export async function sendNewsletterCampaign(data: {
   emails: string[]
   subject: string
   htmlContent: string
+  previewText?: string
 }) {
   if (data.emails.length === 0) return { success: true, sent: 0 }
 

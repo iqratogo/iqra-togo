@@ -25,15 +25,14 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(100, parseInt(searchParams.get("limit") ?? "50"))
   const status = searchParams.get("status") // "confirmed" | "pending" | "unsubscribed"
   const q = searchParams.get("q")?.trim()
+  const tag = searchParams.get("tag")?.trim()
 
   const where: Record<string, unknown> = {}
-  if (status === "confirmed") where.isConfirmed = true
-  if (status === "pending") {
-    where.isConfirmed = false
-    where.unsubscribedAt = null
-  }
+  if (status === "confirmed") { where.isConfirmed = true; where.unsubscribedAt = null }
+  if (status === "pending") { where.isConfirmed = false; where.unsubscribedAt = null }
   if (status === "unsubscribed") where.unsubscribedAt = { not: null }
   if (q) where.email = { contains: q, mode: "insensitive" }
+  if (tag) where.tags = { has: tag }
 
   const [subscribers, total, stats] = await Promise.all([
     prisma.newsletterSubscriber.findMany({
@@ -47,6 +46,7 @@ export async function GET(req: NextRequest) {
         isConfirmed: true,
         confirmedAt: true,
         unsubscribedAt: true,
+        tags: true,
         createdAt: true,
       },
     }),
@@ -76,9 +76,11 @@ export async function GET(req: NextRequest) {
 /* POST /api/admin/newsletter — envoyer une campagne email */
 const campaignSchema = z.object({
   subject: z.string().min(3, "Objet requis (min 3 caractères)"),
+  previewText: z.string().optional(),
   htmlContent: z.string().min(10, "Contenu requis (min 10 caractères)"),
-  targetAll: z.boolean().default(true), // false = envoyer uniquement test
+  targetAll: z.boolean().default(true),
   testEmail: z.string().email().optional(),
+  segment: z.string().optional(), // tag name ou undefined = tous
 })
 
 export async function POST(req: NextRequest) {
@@ -89,24 +91,40 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const data = campaignSchema.parse(body)
 
-    /* Mode test : envoyer uniquement à l'adresse fournie */
+    /* Mode test */
     if (!data.targetAll && data.testEmail) {
       await sendNewsletterCampaign({
         emails: [data.testEmail],
         subject: `[TEST] ${data.subject}`,
         htmlContent: data.htmlContent,
+        previewText: data.previewText,
       })
+
+      await prisma.newsletterCampaign.create({
+        data: {
+          subject: data.subject,
+          previewText: data.previewText,
+          htmlContent: data.htmlContent,
+          recipients: 1,
+          status: "test",
+          segment: data.segment ?? null,
+        },
+      })
+
       return NextResponse.json({ success: true, sent: 1, mode: "test" })
     }
 
-    /* Envoi à tous les abonnés confirmés et non désabonnés */
+    /* Envoi réel — abonnés confirmés non désabonnés, filtrés par segment si précisé */
+    const where: Record<string, unknown> = { isConfirmed: true, unsubscribedAt: null }
+    if (data.segment) where.tags = { has: data.segment }
+
     const subscribers = await prisma.newsletterSubscriber.findMany({
-      where: { isConfirmed: true, unsubscribedAt: null },
+      where,
       select: { email: true },
     })
 
     if (subscribers.length === 0) {
-      return NextResponse.json({ error: "Aucun abonné confirmé." }, { status: 400 })
+      return NextResponse.json({ error: "Aucun abonné confirmé dans ce segment." }, { status: 400 })
     }
 
     const emails = subscribers.map((s) => s.email)
@@ -114,17 +132,29 @@ export async function POST(req: NextRequest) {
       emails,
       subject: data.subject,
       htmlContent: data.htmlContent,
+      previewText: data.previewText,
     })
 
-    /* Audit log */
-    await prisma.auditLog.create({
-      data: {
-        action: "NEWSLETTER_CAMPAIGN_SENT",
-        module: "newsletter",
-        userId: (session.user as { id?: string })?.id,
-        details: { subject: data.subject, recipients: emails.length },
-      },
-    })
+    await Promise.all([
+      prisma.newsletterCampaign.create({
+        data: {
+          subject: data.subject,
+          previewText: data.previewText,
+          htmlContent: data.htmlContent,
+          recipients: emails.length,
+          status: "sent",
+          segment: data.segment ?? null,
+        },
+      }),
+      prisma.auditLog.create({
+        data: {
+          action: "NEWSLETTER_CAMPAIGN_SENT",
+          module: "newsletter",
+          userId: (session.user as { id?: string })?.id,
+          details: { subject: data.subject, recipients: emails.length, segment: data.segment ?? "all" },
+        },
+      }),
+    ])
 
     return NextResponse.json({ success: true, sent: result.sent })
   } catch (err) {

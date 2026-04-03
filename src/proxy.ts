@@ -21,15 +21,17 @@ const SECURITY_HEADERS: Record<string, string> = {
   /* S7 — 'unsafe-eval' requis par Next.js dev (React Refresh/HMR) ; supprimé en prod */
   "Content-Security-Policy": [
     "default-src 'self'",
-    "img-src 'self' data: blob: https:",
-    `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+    "img-src 'self' data: blob: https://images.unsplash.com https://*.supabase.co https://randomuser.me https:",
+    `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' data: https://fonts.gstatic.com",
-    "connect-src 'self'",
-    "frame-src https://www.google.com/maps/ https://maps.google.com/",
-    "media-src 'self' blob:",
+    "connect-src 'self' https://*.supabase.co https://api.resend.com https://app.paydunya.com",
+    "frame-src https://www.google.com/maps/ https://maps.google.com/ https://www.google.com",
+    "media-src 'self' blob: https://*.supabase.co",
     "object-src 'none'",
     "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
   ].join("; "),
 }
 
