@@ -221,7 +221,7 @@ export default async function ContactPage() {
               <div className="overflow-hidden rounded-2xl shadow-sm">
                 <iframe
                   title="Localisation IQRA TOGO — Quartier Limamwa, Tchamba"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31698.5!2d1.2133!3d9.0334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1123d96cb8b4b5d3%3A0x5a3b6b3b3b3b3b3b!2sTchamba%2C%20Togo!5e0!3m2!1sfr!2sfr!4v1706000000000!5m2!1sfr!2sfr"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d98!2d1.4139536!3d9.0255939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x102ea4ce6147ea05%3A0x2b57a86767814325!2sTchamba%2C%20Togo!5e1!3m2!1sfr!2sfr!4v1706000000000!5m2!1sfr!2sfr"
                   width="100%"
                   height="280"
                   style={{ border: 0 }}
