@@ -80,7 +80,7 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    google: "zBDvwxvkcqkyEdQd8zC-3-W4HScFP0fvdB37xKZjqbA",
   },
   alternates: {
     canonical: BASE,
