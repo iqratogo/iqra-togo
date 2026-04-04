@@ -46,14 +46,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]
   )
 
-  /* Articles publiés */
+  /* Articles publiés — DB optionnelle, sitemap statique si indisponible */
   let postEntries: MetadataRoute.Sitemap = []
   try {
-    const posts = await prisma.post.findMany({
-      where: { status: "PUBLISHED", category: { in: ["PROJET", "COMMUNIQUE", "PARTENAIRE"] } },
-      select: { slug: true, category: true, updatedAt: true },
-      orderBy: { publishedAt: "desc" },
-    })
+    const posts = await Promise.race([
+      prisma.post.findMany({
+        where: { status: "PUBLISHED", category: { in: ["PROJET", "COMMUNIQUE", "PARTENAIRE"] } },
+        select: { slug: true, category: true, updatedAt: true },
+        orderBy: { publishedAt: "desc" },
+      }),
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("DB timeout")), 5000)
+      ),
+    ])
 
     postEntries = posts.map((post) => {
       const catSlug = CATEGORY_SLUG[post.category] ?? "actualites"
@@ -72,7 +77,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }
     })
   } catch {
-    // DB non disponible : sitemap partiel acceptable
+    // DB non disponible ou timeout : sitemap statique uniquement
   }
 
   return [...staticEntries, ...postEntries]
