@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
     /* Mode test */
     if (!data.targetAll && data.testEmail) {
       await sendNewsletterCampaign({
-        emails: [data.testEmail],
+        recipients: [{ email: data.testEmail, id: "test" }],
         subject: `[TEST] ${data.subject}`,
         htmlContent: data.htmlContent,
         previewText: data.previewText,
@@ -120,16 +120,15 @@ export async function POST(req: NextRequest) {
 
     const subscribers = await prisma.newsletterSubscriber.findMany({
       where,
-      select: { email: true },
+      select: { id: true, email: true },
     })
 
     if (subscribers.length === 0) {
       return NextResponse.json({ error: "Aucun abonné confirmé dans ce segment." }, { status: 400 })
     }
 
-    const emails = subscribers.map((s) => s.email)
     const result = await sendNewsletterCampaign({
-      emails,
+      recipients: subscribers,
       subject: data.subject,
       htmlContent: data.htmlContent,
       previewText: data.previewText,
@@ -141,7 +140,7 @@ export async function POST(req: NextRequest) {
           subject: data.subject,
           previewText: data.previewText,
           htmlContent: data.htmlContent,
-          recipients: emails.length,
+          recipients: subscribers.length,
           status: "sent",
           segment: data.segment ?? null,
         },
@@ -151,7 +150,7 @@ export async function POST(req: NextRequest) {
           action: "NEWSLETTER_CAMPAIGN_SENT",
           module: "newsletter",
           userId: (session.user as { id?: string })?.id,
-          details: { subject: data.subject, recipients: emails.length, segment: data.segment ?? "all" },
+          details: { subject: data.subject, recipients: subscribers.length, segment: data.segment ?? "all" },
         },
       }),
     ])
