@@ -6,6 +6,7 @@ import { XCircle, RefreshCw, Home } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Paiement non abouti — IQRA TOGO",
+  robots: { index: false, follow: false },
 }
 
 export default function DonsEchecPage() {

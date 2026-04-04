@@ -11,6 +11,16 @@ const FROM = process.env.EMAIL_FROM ?? "IQRA TOGO <noreply@iqra-togo.com>"
 const ADMIN = process.env.EMAIL_ADMIN ?? "contact@iqra-togo.com"
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://iqra-togo.com"
 
+/** Échappe les caractères HTML dangereux dans les données utilisateur */
+function esc(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+}
+
 /* ─── Types email ────────────────────────────────────────────── */
 
 type EmailType =
@@ -191,10 +201,10 @@ export async function sendWelcomeEmail(data: {
   dossierNumber: string
 }) {
   const content = `
-    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Bienvenue, ${data.firstName} !</h2>
+    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Bienvenue, ${esc(data.firstName)} !</h2>
     <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
       Votre demande d'adhésion à <strong>IQRA TOGO</strong> a bien été reçue.<br/>
-      Votre numéro de dossier est : <strong style="color:#22c55e;">${data.dossierNumber}</strong>
+      Votre numéro de dossier est : <strong style="color:#22c55e;">${esc(data.dossierNumber)}</strong>
     </p>
     <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
       Notre équipe va examiner votre dossier et vous contactera dans les meilleurs délais (5 à 10 jours ouvrés).
@@ -222,15 +232,15 @@ export async function sendNewApplicationAdmin(data: {
     <table style="width:100%;border-collapse:collapse;">
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:13px;width:160px;">Dossier</td>
-        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#22c55e;font-size:14px;font-weight:700;">${data.dossierNumber}</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#22c55e;font-size:14px;font-weight:700;">${esc(data.dossierNumber)}</td>
       </tr>
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:13px;">Nom</td>
-        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;font-weight:600;">${data.firstName} ${data.lastName}</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;font-weight:600;">${esc(data.firstName)} ${esc(data.lastName)}</td>
       </tr>
       <tr>
         <td style="padding:10px 0;color:#6b7280;font-size:13px;">Email</td>
-        <td style="padding:10px 0;color:#111827;font-size:14px;"><a href="mailto:${data.email}" style="color:#22c55e;">${data.email}</a></td>
+        <td style="padding:10px 0;color:#111827;font-size:14px;"><a href="mailto:${esc(data.email)}" style="color:#22c55e;">${esc(data.email)}</a></td>
       </tr>
     </table>
     <p style="margin:24px 0 0;">
@@ -256,10 +266,10 @@ export async function sendDonationThankYou(data: {
   affectation: string
 }) {
   const content = `
-    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Merci pour votre générosité, ${data.firstName} !</h2>
+    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Merci pour votre générosité, ${esc(data.firstName)} !</h2>
     <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
       Votre don de <strong style="color:#22c55e;">${data.amount.toLocaleString("fr-FR")} FCFA</strong>
-      destiné à <strong>${data.affectation}</strong> a bien été reçu.<br/>
+      destiné à <strong>${esc(data.affectation)}</strong> a bien été reçu.<br/>
       Grâce à vous, IQRA TOGO peut continuer à accompagner les enfants et familles togolaises.
     </p>
     <p style="margin:0 0 24px;color:#4b5563;font-size:15px;line-height:1.6;">
@@ -321,24 +331,24 @@ export async function sendContactNotification(data: {
     <table style="width:100%;border-collapse:collapse;">
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:13px;width:120px;">Nom</td>
-        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;font-weight:600;">${data.name}</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;font-weight:600;">${esc(data.name)}</td>
       </tr>
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:13px;">Email</td>
         <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;">
-          <a href="mailto:${data.email}" style="color:#22c55e;">${data.email}</a>
+          <a href="mailto:${esc(data.email)}" style="color:#22c55e;">${esc(data.email)}</a>
         </td>
       </tr>
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:13px;">Sujet</td>
-        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;">${data.subject}</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;">${esc(data.subject)}</td>
       </tr>
     </table>
     <h3 style="margin:24px 0 10px;color:#1a2b4a;font-size:15px;">Message</h3>
-    <div style="background:#f9fafb;border-radius:8px;padding:16px;color:#374151;font-size:14px;line-height:1.6;white-space:pre-wrap;">${data.message}</div>
+    <div style="background:#f9fafb;border-radius:8px;padding:16px;color:#374151;font-size:14px;line-height:1.6;white-space:pre-wrap;">${esc(data.message)}</div>
     <p style="margin:24px 0 0;">
-      <a href="mailto:${data.email}" style="background:#22c55e;color:#fff;text-decoration:none;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;display:inline-block;">
-        Répondre à ${data.name}
+      <a href="mailto:${esc(data.email)}" style="background:#22c55e;color:#fff;text-decoration:none;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;display:inline-block;">
+        Répondre à ${esc(data.name)}
       </a>
     </p>
   `
@@ -359,9 +369,9 @@ export async function sendContactConfirmation(data: {
   subject: string
 }) {
   const content = `
-    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Message bien reçu, ${data.name} !</h2>
+    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Message bien reçu, ${esc(data.name)} !</h2>
     <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
-      Merci pour votre message concernant <strong>${data.subject}</strong>.<br/>
+      Merci pour votre message concernant <strong>${esc(data.subject)}</strong>.<br/>
       Notre équipe vous répondra dans les meilleurs délais (généralement sous 48h ouvrées).
     </p>
     <p style="margin:0 0 24px;color:#4b5563;font-size:15px;line-height:1.6;">
@@ -387,13 +397,13 @@ export async function sendApplicationApproved(data: {
   memberNumber: string
 }) {
   const content = `
-    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Félicitations, ${data.firstName} !</h2>
+    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Félicitations, ${esc(data.firstName)} !</h2>
     <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
       Votre demande d'adhésion à <strong>IQRA TOGO</strong> a été <strong style="color:#22c55e;">approuvée</strong>.<br/>
       Vous êtes désormais membre de notre association.
     </p>
     <p style="margin:0 0 24px;color:#4b5563;font-size:15px;line-height:1.6;">
-      Votre numéro de membre : <strong style="color:#22c55e;font-size:18px;">${data.memberNumber}</strong>
+      Votre numéro de membre : <strong style="color:#22c55e;font-size:18px;">${esc(data.memberNumber)}</strong>
     </p>
     <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
       Vous pouvez dès maintenant accéder à votre espace membre et consulter vos informations.
@@ -417,11 +427,11 @@ export async function sendApplicationRejected(data: {
 }) {
   const reasonBlock = data.reason
     ? `<p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
-        Motif : <em>${data.reason}</em>
+        Motif : <em>${esc(data.reason)}</em>
        </p>`
     : ""
   const content = `
-    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Chère/Cher ${data.firstName},</h2>
+    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Chère/Cher ${esc(data.firstName)},</h2>
     <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
       Après examen attentif de votre dossier, nous sommes au regret de vous informer que votre demande
       d'adhésion à <strong>IQRA TOGO</strong> n'a pas pu être retenue à ce stade.

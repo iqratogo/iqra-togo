@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db/prisma"
 
 export const metadata: Metadata = {
   title: "Merci pour votre don — IQRA TOGO",
+  robots: { index: false, follow: false },
 }
 
 interface PageProps {
