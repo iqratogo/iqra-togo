@@ -168,7 +168,7 @@ export default function CotisationsAdmin() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
                   <XAxis dataKey="period" tick={{ fontSize: 11 }} />
                   <YAxis tick={{ fontSize: 11 }} tickFormatter={v => `${(v / 1000).toFixed(0)}k`} />
-                  <Tooltip formatter={(v: number) => [`${v.toLocaleString("fr-FR")} FCFA`, "Montant"]} />
+                  <Tooltip formatter={(v: number | string | undefined) => [`${Number(v ?? 0).toLocaleString("fr-FR")} FCFA`, "Montant"]} />
                   <Bar dataKey="montant" fill="#22c55e" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
