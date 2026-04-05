@@ -18,7 +18,7 @@ function generateMemberNumber() {
   const arr = new Uint32Array(1)
   crypto.getRandomValues(arr)
   const num = 1000 + (arr[0] % 9000)
-  return `AZAE-${String(num).padStart(4, "0")}`
+  return `IQRA-${String(num).padStart(4, "0")}`
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

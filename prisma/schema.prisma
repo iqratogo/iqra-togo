@@ -371,7 +371,9 @@ model Cotisation {
   status      DonationStatus   @default(PENDING)
   paidAt      DateTime?
   dueDate     DateTime
-  paymentNote String?          // Pour paiements en cash
+  paymentMethod String?         // "cash" | "mobile_money" | "paydunya"
+  paymentNote String?          // Note pour paiement en cash / référence mobile money
+  recordedById  String?        // Admin qui a enregistré (cash)
 
   paydunyaRef String?          @unique
   payment     Payment?
