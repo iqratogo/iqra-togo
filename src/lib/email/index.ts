@@ -452,6 +452,81 @@ export async function sendApplicationRejected(data: {
   })
 }
 
+/* ─── Cotisation : confirmation paiement ─────────────────────── */
+
+export async function sendCotisationConfirmation(data: {
+  email: string
+  firstName: string
+  period: string
+  amount: number
+  paymentMethod: string
+  memberNumber: string
+}) {
+  const methodLabel = data.paymentMethod === "cash" ? "Espèces" : "Mobile Money"
+  const content = `
+    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Cotisation enregistrée, ${esc(data.firstName)} !</h2>
+    <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
+      Votre cotisation pour la période <strong>${esc(data.period)}</strong> a bien été enregistrée.
+    </p>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+      <tr>
+        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:13px;width:160px;">N° membre</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#22c55e;font-size:14px;font-weight:700;">${esc(data.memberNumber)}</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:13px;">Période</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;font-weight:600;">${esc(data.period)}</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#6b7280;font-size:13px;">Montant</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;color:#111827;font-size:14px;font-weight:600;">${data.amount.toLocaleString("fr-FR")} FCFA</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 0;color:#6b7280;font-size:13px;">Méthode</td>
+        <td style="padding:10px 0;color:#111827;font-size:14px;">${esc(methodLabel)}</td>
+      </tr>
+    </table>
+    <a href="${APP_URL}/dashboard/membre/cotisations" style="background:#22c55e;color:#fff;text-decoration:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;display:inline-block;">
+      Voir mes cotisations
+    </a>
+  `
+  return resend.emails.send({
+    from: FROM,
+    to: data.email,
+    subject: `Cotisation ${data.period} enregistrée — IQRA TOGO`,
+    html: baseTemplate(content, `Votre cotisation ${data.period} de ${data.amount.toLocaleString("fr-FR")} FCFA est confirmée.`, "approved"),
+  })
+}
+
+/* ─── Don : échec paiement ────────────────────────────────────── */
+
+export async function sendDonationFailed(data: {
+  email: string
+  firstName: string
+  amount: number
+}) {
+  const content = `
+    <h2 style="margin:0 0 12px;color:#1a2b4a;font-size:20px;">Paiement non abouti</h2>
+    <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.6;">
+      Bonjour ${esc(data.firstName)},<br/>
+      Votre tentative de don de <strong>${data.amount.toLocaleString("fr-FR")} FCFA</strong>
+      n'a pas abouti. Aucun montant n'a été débité.
+    </p>
+    <p style="margin:0 0 24px;color:#4b5563;font-size:15px;line-height:1.6;">
+      Vous pouvez réessayer à tout moment depuis notre page de dons.
+    </p>
+    <a href="${APP_URL}/dons" style="background:#1a2b4a;color:#fff;text-decoration:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;display:inline-block;">
+      Réessayer
+    </a>
+  `
+  return resend.emails.send({
+    from: FROM,
+    to: data.email,
+    subject: "Votre tentative de don n'a pas abouti — IQRA TOGO",
+    html: baseTemplate(content, "Votre paiement n'a pas abouti. Aucun montant débité.", "alert"),
+  })
+}
+
 /* ─── Newsletter : double opt-in ─────────────────────────────── */
 
 export async function sendNewsletterConfirmation(data: {

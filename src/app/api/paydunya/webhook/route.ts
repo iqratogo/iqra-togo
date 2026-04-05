@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { prisma } from "@/lib/db/prisma"
 import { verifyWebhookSignature, getInvoiceStatus } from "@/lib/paydunya"
-import { sendDonationThankYou } from "@/lib/email"
+import { sendDonationThankYou, sendDonationFailed, sendCotisationConfirmation } from "@/lib/email"
 
 /* Schéma Zod strict du payload PayDunya */
 const webhookSchema = z.object({
@@ -72,16 +72,6 @@ export async function POST(req: NextRequest) {
     /* Récupérer le statut depuis l'API PayDunya */
     const invoiceStatus = await getInvoiceStatus(token)
 
-    /* Trouver la donation via le token */
-    const donation = await prisma.donation.findFirst({
-      where: { paydunyaToken: token },
-    })
-
-    if (!donation) {
-      console.error("[PayDunya webhook] Donation introuvable pour token:", token)
-      return NextResponse.json({ error: "Donation introuvable" }, { status: 404 })
-    }
-
     const newStatus =
       invoiceStatus.status === "completed"
         ? "SUCCESS"
@@ -89,14 +79,82 @@ export async function POST(req: NextRequest) {
         ? "CANCELLED"
         : "FAILED"
 
+    /* ── Cotisation PayDunya ── */
+    const cotisation = await prisma.cotisation.findFirst({
+      where: { paydunyaRef: token },
+      include: {
+        member: {
+          include: { user: { select: { email: true } } },
+        },
+      },
+    })
+
+    if (cotisation) {
+      await prisma.$transaction([
+        prisma.cotisation.update({
+          where: { id: cotisation.id },
+          data: {
+            status: newStatus,
+            paidAt: newStatus === "SUCCESS" ? new Date() : null,
+          },
+        }),
+        prisma.payment.create({
+          data: {
+            type: "COTISATION",
+            amount: cotisation.amount,
+            status: newStatus,
+            paydunyaRef: token,
+            paymentMethod: bill?.payment_method ?? "mobile_money",
+            webhookPayload: payload as import("@prisma/client").Prisma.InputJsonValue,
+            cotisationId: cotisation.id,
+            processedAt: newStatus === "SUCCESS" ? new Date() : null,
+          },
+        }),
+        ...(newStatus === "SUCCESS"
+          ? [prisma.member.update({
+              where: { id: cotisation.memberId },
+              data: { cotisationStatus: "UP_TO_DATE" },
+            })]
+          : []),
+        prisma.auditLog.create({
+          data: {
+            action: "PAYDUNYA_WEBHOOK_COTISATION",
+            module: "cotisations",
+            targetId: cotisation.id,
+            details: { token, status: newStatus, amount: cotisation.amount },
+          },
+        }),
+      ])
+
+      if (newStatus === "SUCCESS" && cotisation.member.user.email) {
+        sendCotisationConfirmation({
+          email: cotisation.member.user.email,
+          firstName: cotisation.member.firstName,
+          period: cotisation.period,
+          amount: cotisation.amount,
+          paymentMethod: "mobile_money",
+          memberNumber: cotisation.member.memberNumber,
+        }).catch((err) => console.error("[webhook] Email cotisation:", err))
+      }
+
+      return NextResponse.json({ success: true })
+    }
+
+    /* ── Donation PayDunya ── */
+    const donation = await prisma.donation.findFirst({
+      where: { paydunyaToken: token },
+    })
+
+    if (!donation) {
+      console.error("[PayDunya webhook] Token inconnu:", token)
+      return NextResponse.json({ error: "Paiement introuvable" }, { status: 404 })
+    }
+
     /* §9.2 + §9.4 — Mise à jour BDD dans une transaction */
     await prisma.$transaction([
       prisma.donation.update({
         where: { id: donation.id },
-        data: {
-          status: newStatus,
-          paydunyaRef: token,
-        },
+        data: { status: newStatus, paydunyaRef: token },
       }),
       prisma.payment.create({
         data: {
@@ -120,7 +178,6 @@ export async function POST(req: NextRequest) {
       }),
     ])
 
-    /* Email de remerciement au donateur (si succès + non anonyme + email fourni) */
     if (newStatus === "SUCCESS" && !donation.isAnonymous && donation.donorEmail) {
       const AFFECTATION_LABELS: Record<string, string> = {
         GENERAL: "Fonds général",
@@ -133,7 +190,15 @@ export async function POST(req: NextRequest) {
         firstName: donation.donorFirstName ?? "Donateur",
         amount: donation.amount,
         affectation: AFFECTATION_LABELS[donation.affectation] ?? donation.affectation,
-      }).catch((err) => console.error("[webhook] Email remerciement:", err))
+      }).catch((err) => console.error("[webhook] Email don remerciement:", err))
+    }
+
+    if (newStatus === "FAILED" && !donation.isAnonymous && donation.donorEmail) {
+      sendDonationFailed({
+        email: donation.donorEmail,
+        firstName: donation.donorFirstName ?? "Donateur",
+        amount: donation.amount,
+      }).catch((err) => console.error("[webhook] Email don échoué:", err))
     }
 
     return NextResponse.json({ success: true })

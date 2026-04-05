@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db/prisma"
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { createInvoice } from "@/lib/paydunya"
+import { sendCotisationConfirmation } from "@/lib/email"
 
 const ALLOWED_ROLES = ["SUPER_ADMIN", "ADMIN"]
 
@@ -121,7 +122,7 @@ export async function POST(req: NextRequest) {
 
     const member = await prisma.member.findUnique({
       where: { id: data.memberId },
-      include: { user: { select: { email: true } } },
+      include: { user: { select: { email: true, name: true } } },
     })
     if (!member) return NextResponse.json({ error: "Membre introuvable" }, { status: 404 })
 
@@ -158,6 +159,17 @@ export async function POST(req: NextRequest) {
           details: { memberId: data.memberId, amount: data.amount, period: data.period },
         },
       })
+
+      if (member.user.email) {
+        sendCotisationConfirmation({
+          email: member.user.email,
+          firstName: member.firstName,
+          period: data.period,
+          amount: data.amount,
+          paymentMethod: "cash",
+          memberNumber: member.memberNumber,
+        }).catch((err) => console.error("[admin/cotisations] Email confirmation:", err))
+      }
 
       return NextResponse.json({ success: true, cotisation })
     }
