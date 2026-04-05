@@ -8,7 +8,16 @@ import { fr } from "date-fns/locale"
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
+  type TooltipProps,
 } from "recharts"
+
+/* Formatters recharts — extraits pour éviter les conflits de types génériques */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const barFormatter: TooltipProps<any, any>["formatter"] = (v) =>
+  [`${Number(v ?? 0).toLocaleString("fr-FR")} FCFA`, "Montant"]
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const pieFormatter: TooltipProps<any, any>["formatter"] = (v, _name, entry) =>
+  [`${v} (${((entry as { payload?: { amount?: number } })?.payload?.amount ?? 0).toLocaleString("fr-FR")} FCFA)`]
 import {
   Plus, Download, Search, CheckCircle, Clock, AlertCircle,
   Banknote, Smartphone, X, Users, TrendingUp, CreditCard, AlertTriangle,
@@ -168,7 +177,7 @@ export default function CotisationsAdmin() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
                   <XAxis dataKey="period" tick={{ fontSize: 11 }} />
                   <YAxis tick={{ fontSize: 11 }} tickFormatter={v => `${(v / 1000).toFixed(0)}k`} />
-                  <Tooltip formatter={(v: unknown) => [`${Number(v ?? 0).toLocaleString("fr-FR")} FCFA`, "Montant"]} />
+                  <Tooltip formatter={barFormatter} />
                   <Bar dataKey="montant" fill="#22c55e" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -186,7 +195,7 @@ export default function CotisationsAdmin() {
                   <Pie data={pieData} cx="50%" cy="50%" innerRadius={55} outerRadius={80} dataKey="value" paddingAngle={3}>
                     {pieData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
                   </Pie>
-                  <Tooltip formatter={(v: number, _: string, p) => [`${v} (${p.payload.amount?.toLocaleString("fr-FR")} FCFA)`, p.payload.name]} />
+                  <Tooltip formatter={pieFormatter} />
                   <Legend iconType="circle" iconSize={10} />
                 </PieChart>
               </ResponsiveContainer>
