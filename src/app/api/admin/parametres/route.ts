@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/db/prisma"
 import { NextRequest, NextResponse } from "next/server"
+import { logAudit, getRequestContext } from "@/lib/audit"
 
 const ALLOWED_ROLES = ["SUPER_ADMIN", "ADMIN"]
 
@@ -55,6 +56,14 @@ export async function PATCH(req: NextRequest) {
     )
   }
 
+  const updatedKeys = Object.keys(body)
+  const existingSettings = await prisma.setting.findMany({
+    where: { key: { in: updatedKeys } },
+    select: { key: true, value: true },
+  })
+  const oldValues: Record<string, unknown> = {}
+  for (const s of existingSettings) oldValues[s.key] = s.value
+
   await Promise.all(
     Object.entries(body).map(([key, value]) =>
       prisma.setting.upsert({
@@ -65,12 +74,16 @@ export async function PATCH(req: NextRequest) {
     )
   )
 
-  await prisma.auditLog.create({
-    data: {
-      action: "SETTINGS_UPDATED",
-      module: "PARAMETRES",
-      userId: (session.user as { id: string }).id,
+  await logAudit({
+    action: "SETTINGS_UPDATED",
+    module: "PARAMETRES",
+    userId: (session.user as { id: string }).id,
+    details: {
+      updatedFields: updatedKeys,
+      oldValues,
+      newValues: body as Record<string, unknown>,
     },
+    ...getRequestContext(req),
   })
 
   return NextResponse.json({ success: true })

@@ -9,11 +9,12 @@ import {
   ChevronRight,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
-import { FacebookIcon, InstagramIcon, YoutubeIcon, LinkedinIcon } from "@/components/ui/SocialIcons"
+import { FacebookIcon, InstagramIcon, TwitterXIcon, YoutubeIcon } from "@/components/ui/SocialIcons"
 import ContactForm from "./_components/ContactForm"
+import { getSettings } from "@/lib/settings"
 
-/* P3 — Page statique : revalidation toutes les 24h */
-export const revalidate = 86400
+/* P3 — Revalidation horaire (settings peuvent changer) */
+export const revalidate = 3600
 
 export async function generateMetadata() {
   const t = await getTranslations("pages.contact")
@@ -23,18 +24,26 @@ export async function generateMetadata() {
   }
 }
 
-/* §5.8 — liens réseaux sociaux */
-const SOCIAL_LINKS = [
-  { icon: FacebookIcon, href: "#", label: "Facebook" },
-  { icon: InstagramIcon, href: "#", label: "Instagram" },
-  { icon: YoutubeIcon, href: "#", label: "YouTube" },
-  { icon: LinkedinIcon, href: "#", label: "LinkedIn" },
-]
+const SOCIAL_ICONS = [
+  { key: "social_facebook", icon: FacebookIcon, label: "Facebook" },
+  { key: "social_instagram", icon: InstagramIcon, label: "Instagram" },
+  { key: "social_twitter", icon: TwitterXIcon, label: "Twitter/X" },
+  { key: "social_youtube", icon: YoutubeIcon, label: "YouTube" },
+] as const
+
+const SOCIAL_SETTINGS_KEYS = [
+  "social_facebook",
+  "social_instagram",
+  "social_twitter",
+  "social_youtube",
+  "social_whatsapp",
+] as const
 
 export default async function ContactPage() {
-  const [t, tNav] = await Promise.all([
+  const [t, tNav, settings] = await Promise.all([
     getTranslations("pages.contact"),
     getTranslations("nav"),
+    getSettings([...SOCIAL_SETTINGS_KEYS]),
   ])
 
   return (
@@ -157,64 +166,55 @@ export default async function ContactPage() {
                   </div>
 
                   {/* WhatsApp §5.8 */}
-                  <div className="flex items-start gap-3">
-                    <div
-                      className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg"
-                      style={{ backgroundColor: "#25D366" }}
-                    >
-                      <MessageCircle className="h-4 w-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900">{t("whatsapp_label")}</p>
-                      <a
-                        href="https://wa.me/22890000000"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-gray-600 transition-colors hover:text-[var(--azae-orange)]"
+                  {settings.social_whatsapp && (
+                    <div className="flex items-start gap-3">
+                      <div
+                        className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg"
+                        style={{ backgroundColor: "#25D366" }}
                       >
-                        +228 90 00 00 00
-                      </a>
+                        <MessageCircle className="h-4 w-4 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">{t("whatsapp_label")}</p>
+                        <a
+                          href={
+                            settings.social_whatsapp.startsWith("http")
+                              ? settings.social_whatsapp
+                              : `https://wa.me/${settings.social_whatsapp.replace(/[^0-9]/g, "")}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-gray-600 transition-colors hover:text-[var(--azae-orange)]"
+                        >
+                          {settings.social_whatsapp}
+                        </a>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </address>
 
-                {/* Réseaux sociaux §5.8 */}
-                <div className="mt-6 border-t border-gray-100 pt-6">
-                  <p className="mb-3 text-sm font-semibold text-gray-900">
-                    {t("follow")}
-                  </p>
-                  <div className="flex gap-2">
-                    {SOCIAL_LINKS.map(({ icon: Icon, href, label }) => (
-                      <a
-                        key={label}
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={label}
-                        className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition-colors hover:border-[var(--azae-orange)] hover:text-[var(--azae-orange)]"
-                      >
-                        <Icon className="h-4 w-4" />
-                      </a>
-                    ))}
-                    {/* TikTok §5.8 */}
-                    <a
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="TikTok"
-                      className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition-colors hover:border-[var(--azae-orange)] hover:text-[var(--azae-orange)]"
-                    >
-                      <svg
-                        className="h-4 w-4"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.16 8.16 0 004.77 1.52V6.75a4.85 4.85 0 01-1-.06z" />
-                      </svg>
-                    </a>
+                {/* Réseaux sociaux §5.8 — depuis les paramètres admin */}
+                {SOCIAL_ICONS.some(({ key }) => !!settings[key]) && (
+                  <div className="mt-6 border-t border-gray-100 pt-6">
+                    <p className="mb-3 text-sm font-semibold text-gray-900">
+                      {t("follow")}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {SOCIAL_ICONS.filter(({ key }) => !!settings[key]).map(({ key, icon: Icon, label }) => (
+                        <a
+                          key={label}
+                          href={settings[key]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={label}
+                          className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition-colors hover:border-[var(--azae-orange)] hover:text-[var(--azae-orange)]"
+                        >
+                          <Icon className="h-4 w-4" />
+                        </a>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Carte Google Maps §5.8 — iframe embed (pas d'API key requis) */}

@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/db/prisma"
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
+import { logAudit, getRequestContext } from "@/lib/audit"
 
 const ALLOWED_ROLES = ["SUPER_ADMIN", "ADMIN", "EDITOR"]
 
@@ -101,13 +102,17 @@ export async function POST(req: NextRequest) {
     },
   })
 
-  await prisma.auditLog.create({
-    data: {
-      action: "POST_CREATED",
-      module: "PUBLICATIONS",
-      targetId: post.id,
-      userId: (session.user as { id: string }).id,
+  await logAudit({
+    action: "POST_CREATED",
+    module: "PUBLICATIONS",
+    targetId: post.id,
+    userId: (session.user as { id: string }).id,
+    details: {
+      title: post.title,
+      slug: post.slug,
+      status: post.status.toLowerCase() as "draft" | "published",
     },
+    ...getRequestContext(req),
   })
 
   return NextResponse.json(post, { status: 201 })

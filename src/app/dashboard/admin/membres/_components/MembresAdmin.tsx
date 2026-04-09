@@ -7,7 +7,7 @@ import { format } from "date-fns"
 import { fr } from "date-fns/locale"
 import {
   Users, Search, CheckCircle, XCircle, Clock,
-  UserCheck, UserX, AlertTriangle,
+  UserCheck, UserX, AlertTriangle, Mail,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -220,26 +220,35 @@ export default function MembresAdmin() {
                           {format(new Date(app.createdAt), "d MMM yyyy", { locale: fr })}
                         </td>
                         <td className="px-4 py-3">
-                          {app.status === "pending" ? (
-                            <div className="flex items-center justify-end gap-2">
-                              <button
-                                onClick={() => handleApprove(app.id)}
-                                disabled={actionLoading === app.id}
-                                className="flex items-center gap-1 rounded-lg bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50"
-                              >
-                                <UserCheck className="h-3.5 w-3.5" /> Approuver
-                              </button>
-                              <button
-                                onClick={() => setRejectTarget(app.id)}
-                                disabled={actionLoading === app.id}
-                                className="flex items-center gap-1 rounded-lg bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50"
-                              >
-                                <UserX className="h-3.5 w-3.5" /> Rejeter
-                              </button>
-                            </div>
-                          ) : (
-                            <span className="text-xs text-gray-400">Traité</span>
-                          )}
+                          <div className="flex items-center justify-end gap-2">
+                            <a
+                              href={`mailto:${app.email}`}
+                              className="rounded p-1.5 text-gray-400 hover:text-[var(--azae-orange)] transition-colors"
+                              title={`Envoyer un email à ${app.firstName}`}
+                            >
+                              <Mail className="h-4 w-4" />
+                            </a>
+                            {app.status === "pending" ? (
+                              <>
+                                <button
+                                  onClick={() => handleApprove(app.id)}
+                                  disabled={actionLoading === app.id}
+                                  className="flex items-center gap-1 rounded-lg bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50"
+                                >
+                                  <UserCheck className="h-3.5 w-3.5" /> Approuver
+                                </button>
+                                <button
+                                  onClick={() => setRejectTarget(app.id)}
+                                  disabled={actionLoading === app.id}
+                                  className="flex items-center gap-1 rounded-lg bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50"
+                                >
+                                  <UserX className="h-3.5 w-3.5" /> Rejeter
+                                </button>
+                              </>
+                            ) : (
+                              <span className="text-xs text-gray-400">Traité</span>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     )
@@ -300,6 +309,13 @@ export default function MembresAdmin() {
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center justify-end gap-1">
+                            <a
+                              href={`mailto:${m.user.email}`}
+                              className="rounded p-1.5 text-gray-400 hover:text-[var(--azae-orange)] transition-colors"
+                              title={`Contacter ${m.firstName} par email`}
+                            >
+                              <Mail className="h-4 w-4" />
+                            </a>
                             {m.status === "ACTIVE" && (
                               <button
                                 onClick={() => handleMemberStatus(m.id, "SUSPENDED")}

@@ -16,6 +16,7 @@ import {
   UserRound,
   Mail,
   CreditCard,
+  Shield,
 } from "lucide-react"
 import { signOut } from "next-auth/react"
 import { cn } from "@/lib/utils"
@@ -30,6 +31,7 @@ const NAV_ITEMS = [
   { href: "/dashboard/admin/newsletter", label: "Newsletter", icon: Mail },
   { href: "/dashboard/admin/medias", label: "Médiathèque", icon: Image },
   { href: "/dashboard/admin/parametres", label: "Paramètres", icon: Settings },
+  { href: "/dashboard/admin/audit-logs", label: "Logs d'audit", icon: Shield },
 ]
 
 export default function AdminSidebar() {

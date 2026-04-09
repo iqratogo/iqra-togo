@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db/prisma"
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import type { Session } from "next-auth"
+import { logAudit, getRequestContext } from "@/lib/audit"
 
 const ALLOWED_ROLES = ["SUPER_ADMIN", "ADMIN", "EDITOR"]
 
@@ -65,19 +66,23 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     },
   })
 
-  await prisma.auditLog.create({
-    data: {
-      action: "POST_UPDATED",
-      module: "PUBLICATIONS",
-      targetId: id,
-      userId: (session!.user as { id: string }).id,
+  await logAudit({
+    action: "POST_UPDATED",
+    module: "PUBLICATIONS",
+    targetId: id,
+    userId: (session!.user as { id: string }).id,
+    details: {
+      title: updated.title,
+      slug: updated.slug,
+      status: updated.status.toLowerCase() as "draft" | "published",
     },
+    ...getRequestContext(req),
   })
 
   return NextResponse.json(updated)
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
   if (!checkAuth(session)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
@@ -85,15 +90,24 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   if (!["SUPER_ADMIN", "ADMIN"].includes(role)) return NextResponse.json({ error: "Forbidden" }, { status: 403 })
 
   const { id } = await params
+  const postSnapshot = await prisma.post.findUnique({
+    where: { id },
+    select: { title: true, slug: true, status: true },
+  })
+
   await prisma.post.delete({ where: { id } })
 
-  await prisma.auditLog.create({
-    data: {
-      action: "POST_DELETED",
-      module: "PUBLICATIONS",
-      targetId: id,
-      userId: (session!.user as { id: string }).id,
+  await logAudit({
+    action: "POST_DELETED",
+    module: "PUBLICATIONS",
+    targetId: id,
+    userId: (session!.user as { id: string }).id,
+    details: {
+      title: postSnapshot?.title ?? "",
+      slug: postSnapshot?.slug ?? "",
+      status: (postSnapshot?.status?.toLowerCase() ?? "draft") as "draft" | "published",
     },
+    ...getRequestContext(req),
   })
 
   return NextResponse.json({ success: true })

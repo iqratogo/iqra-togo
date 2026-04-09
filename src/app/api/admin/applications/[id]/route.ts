@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db/prisma"
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { sendApplicationApproved, sendApplicationRejected } from "@/lib/email"
+import { logAudit, getRequestContext } from "@/lib/audit"
 
 const ALLOWED_ROLES = ["SUPER_ADMIN", "ADMIN"]
 
@@ -86,15 +87,20 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         where: { id: application.userId },
         data: { role: "MEMBER", status: "ACTIVE" },
       })
+    })
 
-      await tx.auditLog.create({
-        data: {
-          action: "APPLICATION_APPROVED",
-          module: "MEMBRES",
-          targetId: id,
-          userId: (session.user as { id: string }).id,
-        },
-      })
+    await logAudit({
+      action: "APPLICATION_APPROVED",
+      module: "MEMBRES",
+      targetId: id,
+      userId: (session.user as { id: string }).id,
+      details: {
+        memberName: `${application.firstName} ${application.lastName}`,
+        dossierNumber: memberNumber,
+        email: application.user.email!,
+        decidedAt: new Date().toISOString(),
+      },
+      ...getRequestContext(req),
     })
 
     sendApplicationApproved({
@@ -112,14 +118,20 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       where: { id },
       data: { status: "rejected" },
     })
-    await tx.auditLog.create({
-      data: {
-        action: "APPLICATION_REJECTED",
-        module: "MEMBRES",
-        targetId: id,
-        userId: (session.user as { id: string }).id,
-      },
-    })
+  })
+
+  await logAudit({
+    action: "APPLICATION_REJECTED",
+    module: "MEMBRES",
+    targetId: id,
+    userId: (session.user as { id: string }).id,
+    details: {
+      memberName: `${application.firstName} ${application.lastName}`,
+      dossierNumber: id,
+      email: application.user.email!,
+      decidedAt: new Date().toISOString(),
+    },
+    ...getRequestContext(req),
   })
 
   sendApplicationRejected({

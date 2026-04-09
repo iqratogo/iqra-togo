@@ -1,8 +1,9 @@
 import Image from "next/image"
 import { Link } from "@/i18n/navigation"
 import { getTranslations, getLocale } from "next-intl/server"
-import { InstagramIcon, YoutubeIcon } from "@/components/ui/SocialIcons"
+import { FacebookIcon, InstagramIcon, TwitterXIcon, YoutubeIcon } from "@/components/ui/SocialIcons"
 import { prisma } from "@/lib/db/prisma"
+import { getSettings } from "@/lib/settings"
 import { format } from "date-fns"
 import { fr, enUS } from "date-fns/locale"
 
@@ -41,16 +42,19 @@ const CATEGORY_SLUG: Record<string, string> = {
   ACTUALITE: "actualites",
 }
 
-const SOCIAL_LINKS = [
-  { icon: InstagramIcon, href: "#", label: "Instagram" },
-  { icon: YoutubeIcon, href: "#", label: "YouTube" },
-]
+const SOCIAL_ICONS = [
+  { key: "social_facebook", icon: FacebookIcon, label: "Facebook" },
+  { key: "social_instagram", icon: InstagramIcon, label: "Instagram" },
+  { key: "social_twitter", icon: TwitterXIcon, label: "Twitter/X" },
+  { key: "social_youtube", icon: YoutubeIcon, label: "YouTube" },
+] as const
 
 export default async function Footer() {
-  const [recentPosts, t, locale] = await Promise.all([
+  const [recentPosts, t, locale, settings] = await Promise.all([
     getRecentPosts(),
     getTranslations("footer"),
     getLocale(),
+    getSettings(["social_facebook", "social_instagram", "social_twitter", "social_youtube"]),
   ])
 
   const tNav = await getTranslations("nav")
@@ -86,10 +90,10 @@ export default async function Footer() {
               {t("description")}
             </p>
             <div className="flex items-center gap-2 pt-1">
-              {SOCIAL_LINKS.map(({ icon: Icon, href, label }) => (
+              {SOCIAL_ICONS.filter(({ key }) => !!settings[key]).map(({ key, icon: Icon, label }) => (
                 <a
                   key={label}
-                  href={href}
+                  href={settings[key]}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
@@ -98,18 +102,6 @@ export default async function Footer() {
                   <Icon className="h-4 w-4" />
                 </a>
               ))}
-              {/* TikTok */}
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="TikTok"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 text-gray-300 transition-colors hover:border-[var(--azae-orange)] hover:text-[var(--azae-orange)]"
-              >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.16 8.16 0 004.77 1.52V6.75a4.85 4.85 0 01-1-.06z" />
-                </svg>
-              </a>
             </div>
           </div>
 
