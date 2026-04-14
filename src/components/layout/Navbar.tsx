@@ -139,9 +139,9 @@ export default function Navbar() {
           <Image
             src="/logo-iqra.jpg"
             alt="IQRA TOGO"
-            width={140}
-            height={48}
-            className="h-12 w-auto"
+            width={180}
+            height={68}
+            className="h-14 w-auto"
             priority
           />
         </Link>
