@@ -37,7 +37,7 @@ export default function HeroSection({
   useEffect(() => { setMounted(true) }, [])
 
   const STATS = [
-    { value: "200+", label: statLabels.families },
+    { value: "100+", label: statLabels.families },
     { value: "150+", label: statLabels.members },
     { value: "5 ans", label: statLabels.projectsDone },
   ]
@@ -49,7 +49,7 @@ export default function HeroSection({
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=1600&q=80')",
+            "url('https://images.unsplash.com/photo-1509099863731-ef4bff19e808?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29tbXVuYXV0JUMzJUE5JTIwYWZyaWNhaW5lfGVufDB8fDB8fHww')",
         }}
         aria-hidden="true"
       />

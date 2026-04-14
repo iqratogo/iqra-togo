@@ -44,7 +44,7 @@ const TIMELINE = [
   {
     year: "2026",
     title: "Creation de la plateforme web",
-    text: "En debut du mois d'Avril, nous avons déploié officiellement en ligne notre site web qui sert desormain de plateforme de communication  et gestion d'activités.",
+    text: "En debut du mois d'Avril, nous avons déploié officiellement en ligne notre site web qui sert désormains de plateforme de communication  et gestion d'activités.",
   },
 ]
 
