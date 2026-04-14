@@ -77,15 +77,6 @@ export default async function Footer() {
 
           {/* ── Col 1 : Logo + description + réseaux ── */}
           <div className="space-y-4">
-            <Link href="/">
-              <Image
-                src="/logo-iqra.jpg"
-                alt="IQRA TOGO"
-                width={130}
-                height={44}
-                className="h-11 w-auto brightness-0 invert"
-              />
-            </Link>
             <p className="text-sm leading-relaxed text-gray-300">
               {t("description")}
             </p>
